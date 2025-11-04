@@ -1,0 +1,908 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
+using System.Collections.ObjectModel;
+using Microsoft.UI.Composition;
+using Microsoft.UI.Xaml.Hosting;
+using WinUI3Helper;
+using SSMT.SSMTHelper;
+using SSMT_Core;
+
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+namespace SSMT
+{
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class HomePage : Page
+    {
+        private ObservableCollection<GameIconItem> GameIconItemList = new ObservableCollection<GameIconItem>();
+        private Visual imageVisual;
+        private bool IsLoading = false;
+
+        public HomePage()
+        {
+            this.InitializeComponent();
+            this.Loaded += HomePageLoaded;
+        }
+
+
+        private void HomePageLoaded(object sender, RoutedEventArgs e)
+        {
+            HyperlinkButton_SSMTVersion.Content = GlobalConfig.SSMT_Title;
+            HyperlinkButton_SSMTVersion.NavigateUri = new Uri("https://github.com/StarBobis/SSMT3/releases/latest");
+
+            // 初始化Composition组件
+            // 获取Image控件的Visual对象
+            imageVisual = ElementCompositionPreview.GetElementVisual(MainWindowImageBrush);
+
+            GameIconGridView.ItemsSource = GameIconItemList;
+
+            //初始化LogcName列表，在当前游戏改变时会自动选中对应的条目
+            InitializeLogicNameList();
+            //初始化GameType Folder列表，在当前游戏改变时会自动选中对应的条目
+            InitializeGameTypeFolderList();
+
+            InitializeGameIconItemList();
+
+            InitializeGameNameList();
+
+
+            //是否显示防报错按钮
+            string IgnoreGIErrorExePath = Path.Combine(GlobalConfig.Path_PluginsFolder, GlobalConfig.GIPluginName);
+            if (!File.Exists(IgnoreGIErrorExePath))
+            {
+                StackPanel_GIError.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                StackPanel_GIError.Visibility = Visibility.Visible;
+            }
+            
+        }
+
+
+
+        private void InitializeGameIconItemList()
+        {
+            IsLoading = true;
+            //初始化图标列表
+            if (!Directory.Exists(GlobalConfig.Path_GamesFolder))
+            {
+                return;
+            }
+
+            string[] GamesFolderList = Directory.GetDirectories(GlobalConfig.Path_GamesFolder);
+
+            GameIconItemList.Clear();
+
+            foreach (string GameFolderPath in GamesFolderList)
+            {
+                string GameFolderName = Path.GetFileName(GameFolderPath);
+
+                GameIconConfig gameIconConfig = new GameIconConfig();
+
+                if (!gameIconConfig.GameName_Show_Dict.ContainsKey(GameFolderName))
+                {
+                    //如果是默认的GIMI、SRMI、HIMI、ZZMI则显示，其他的都不显示
+                    if (GameFolderName == "GIMI" 
+                        || GameFolderName == "HIMI"
+                        || GameFolderName == "SRMI"
+                        || GameFolderName == "ZZMI"
+                        )
+                    {
+                        //如果这个配置里不包含，则默认显示
+                        GameIconItem gameIconItem2 = new GameIconItem();
+                        gameIconItem2.GameName = GameFolderName;
+                        gameIconItem2.GameIconImage = Path.Combine(GlobalConfig.Path_GamesFolder, GameFolderName + "\\Icon.png");
+                        GameIconItemList.Add(gameIconItem2);
+                    }
+                   
+
+                    continue;
+                }
+
+                //上面已经说了不包含的都显示，这里包含的话，就读取其中的配置来决定是否显示。
+                if (!gameIconConfig.GameName_Show_Dict[GameFolderName])
+                {
+                    continue;
+                }
+
+                GameIconItem gameIconItem = new GameIconItem();
+                gameIconItem.GameName = GameFolderName;
+                gameIconItem.GameIconImage = Path.Combine(GlobalConfig.Path_GamesFolder, GameFolderName + "\\Icon.png");
+                GameIconItemList.Add(gameIconItem);
+            }
+
+            IsLoading = false;
+        }
+
+        private void InitializeGameTypeFolderList()
+        {
+            IsLoading = true;
+
+            ComboBox_GameTypeFolder.Items.Clear();
+
+            string[] GameTypeFolderPathList = Directory.GetDirectories (GlobalConfig.Path_GameTypeConfigsFolder);
+
+            foreach (string GameTypeFolderPath in GameTypeFolderPathList)
+            {
+                string GameTypeFolderName = Path.GetFileName(GameTypeFolderPath);
+                ComboBox_GameTypeFolder.Items.Add(GameTypeFolderName);
+            }
+
+            IsLoading = false;
+        }
+
+
+        private void InitializeLogicNameList()
+        {
+            IsLoading = true;
+
+            ComboBox_LogicName.Items.Clear();
+
+            ComboBox_LogicName.Items.Add(LogicName.GIMI);
+            ComboBox_LogicName.Items.Add(LogicName.HIMI);
+            ComboBox_LogicName.Items.Add(LogicName.SRMI);
+            ComboBox_LogicName.Items.Add(LogicName.ZZMI);
+            ComboBox_LogicName.Items.Add(LogicName.WWMI);
+            ComboBox_LogicName.Items.Add(LogicName.UnityCPU);
+            ComboBox_LogicName.Items.Add(LogicName.CTXMC);
+            ComboBox_LogicName.Items.Add(LogicName.IdentityV2);
+            ComboBox_LogicName.Items.Add(LogicName.YYSLS);
+            ComboBox_LogicName.Items.Add(LogicName.AILIMIT);
+            ComboBox_LogicName.Items.Add(LogicName.UnityVS);
+            ComboBox_LogicName.Items.Add(LogicName.UnityCS);
+            ComboBox_LogicName.Items.Add(LogicName.SnowBreak);
+            ComboBox_LogicName.Items.Add(LogicName.HOK);
+            ComboBox_LogicName.Items.Add(LogicName.NierR);
+
+            IsLoading = false;
+        }
+
+     
+
+        private void GameNameChanged(string ChangeToGameName)
+        {
+            GlobalConfig.CurrentGameName = ChangeToGameName;
+            GlobalConfig.SaveConfig();
+
+            //(1) 以动画的方式设置背景图
+            string BackgroundWebpPath = Path.Combine(GlobalConfig.Path_CurrentGamesFolder + "\\Background.webp");
+            if (File.Exists(BackgroundWebpPath))
+            {
+                VisualHelper.CreateScaleAnimation(imageVisual);
+                VisualHelper.CreateFadeAnimation(imageVisual);
+                MainWindowImageBrush.Source = new BitmapImage(new Uri(BackgroundWebpPath));
+            }
+            else
+            {
+                string BackgroundPngPath = Path.Combine(GlobalConfig.Path_CurrentGamesFolder + "\\Background.png");
+                if (File.Exists(BackgroundPngPath))
+                {
+                    VisualHelper.CreateScaleAnimation(imageVisual);
+                    VisualHelper.CreateFadeAnimation(imageVisual);
+                    MainWindowImageBrush.Source = new BitmapImage(new Uri(BackgroundPngPath));
+                }
+                else
+                {
+                    MainWindowImageBrush.Source = null;
+                }
+            }
+            
+
+            InitializePanel();
+            ReadConfigsToPanel();
+
+            
+
+            //判断当前3Dmigoto目录是否存在，如果不存在则默认设置为SSMT缓存文件夹中的3Dmigoto目录
+            if (TextBox_3DmigotoPath.Text.Trim() == "" || !Directory.Exists(TextBox_3DmigotoPath.Text.Trim()))
+            {
+                if (Directory.Exists(GlobalConfig.SSMTCacheFolderPath))
+                {
+                    string DefaultGameMigotoPath = Path.Combine(GlobalConfig.SSMTCacheFolderPath, "3Dmigoto\\" + GlobalConfig.CurrentGameName + "\\");
+                    if (!Directory.Exists(DefaultGameMigotoPath))
+                    {
+                        Directory.CreateDirectory(DefaultGameMigotoPath);
+                    }
+                    TextBox_3DmigotoPath.Text = DefaultGameMigotoPath;
+
+                    //设置完要保存3Dmigoto路径
+                    DoAfter3DmigotoPathChanged();
+
+                    //同步复制过去dll文件
+                    InstallBasicDllFileTo3DmigotoFolder();
+                }
+            }
+
+            InitializeToggleConfig();
+
+            IsLoading = true;
+
+            //读取LogicName
+            GameConfig gameConfig = new GameConfig();
+            if (ComboBox_LogicName.Items.Contains(gameConfig.LogicName))
+            {
+                ComboBox_LogicName.SelectedItem = gameConfig.LogicName;
+            }
+            else
+            {
+                ComboBox_LogicName.SelectedIndex = 0;
+            }
+
+            //读取GameType Folder
+            if (ComboBox_GameTypeFolder.Items.Contains(gameConfig.GameTypeName))
+            {
+                ComboBox_GameTypeFolder.SelectedItem = gameConfig.GameTypeName;
+            }
+            else
+            {
+                ComboBox_GameTypeFolder.SelectedIndex = 0;
+            }
+
+            //读取dll初始化延迟
+
+            NumberBox_DllInitializationDelay.Value = gameConfig.DllInitializationDelay;
+            ToggleSwitch_DllMode.IsOn = gameConfig.PlayVersionDll;
+            ToggleSwitch_AutoSetAnalyseOptions.IsOn = gameConfig.AutoSetAnalyseOptions;
+
+
+            SelectGameIconToCurrentGame();
+            InitializeGameNameList();
+
+            IsLoading = false;
+
+
+            //最后保底配置，如果真的还有没配置的，就会触发这里的从d3dx.ini读取配置
+            LoadD3DxIniConfigIfNoteConfigured();
+
+            LoadAtLeastPicture();
+
+            UpdatePackageVersionLink();
+        }
+     
+
+        private void UpdatePackageVersionLink()
+        {
+            GameConfig gameConfig = new GameConfig();
+            //设置左上角Package版本
+            string PackageName = ComboBox_LogicName.SelectedItem.ToString();
+            RepositoryInfo repositoryInfo = GithubUtils.GetCurrentRepositoryInfo(PackageName);
+            HyperlinkButton_MigotoPackageVersion.Content = repositoryInfo.RepositoryName + " " + gameConfig.GithubPackageVersion;
+            var url = $"https://github.com/{repositoryInfo.OwnerName}/{repositoryInfo.RepositoryName}/releases/latest";
+            HyperlinkButton_MigotoPackageVersion.NavigateUri = new Uri(url);
+        }
+
+        private void LoadAtLeastPicture()
+        {
+            //只有米的四个游戏会根据游戏名称默认触发保底背景图更新
+            try
+            {
+                string CurrentGameName = ComboBox_GameName.SelectedItem.ToString();
+
+                if (CurrentGameName == LogicName.GIMI ||
+                    CurrentGameName == LogicName.SRMI ||
+                    CurrentGameName == LogicName.HIMI ||
+                    CurrentGameName == LogicName.ZZMI
+                    )
+                {
+                    //_ = SSMTMessageHelper.Show(CurrentLogicName);
+                    string PossibleWebpPicture = Path.Combine(GlobalConfig.Path_CurrentGamesFolder, "Background.webp");
+                    string PossiblePngBackgroundPath = Path.Combine(GlobalConfig.Path_CurrentGamesFolder, "Background.png");
+
+                    if (!File.Exists(PossibleWebpPicture))
+                    {
+                        if (!File.Exists(PossiblePngBackgroundPath))
+                        {
+                            //自动加载当前背景图，因为满足LogicName且并未设置背景图
+                            AutoUpdateBackgroundPicture(CurrentGameName);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+
+        }
+
+        private void SelectGameIconToCurrentGame()
+        {
+            int i = 0;
+            foreach (GameIconItem gameIconItem in GameIconItemList)
+            {
+                if (gameIconItem.GameName == GlobalConfig.CurrentGameName)
+                {
+                    GameIconGridView.SelectedIndex = i;
+                    break;
+                }
+                i++;
+            }
+        }
+
+        private void GameIconGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoading)
+            {
+                return;
+            }
+            string IconGameName = GameIconItemList[GameIconGridView.SelectedIndex].GameName;
+            GameNameChanged(IconGameName);
+        }
+
+        private void ComboBox_GameName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoading)
+            {
+                return;
+            }
+            string ComboBoxGameName = ComboBox_GameName.SelectedItem.ToString();
+            GameNameChanged(ComboBoxGameName);
+        }
+
+        private void InitializeToggleConfig()
+        {
+            IsLoading = true;
+
+            GameConfig gameConfig = new GameConfig();
+
+
+            //读取三个设置
+            string d3dxiniPath = Path.Combine(gameConfig.MigotoPath, "d3dx.ini");
+            if (File.Exists(d3dxiniPath))
+            {
+
+
+
+
+                string ShowWarningsStr = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxiniPath, "show_warnings").Trim();
+                if (ShowWarningsStr.Trim() == "1")
+                {
+                    ToggleSwitch_ShowWarning.IsOn = false;
+                }
+                else if (ShowWarningsStr.Trim() == "0")
+                {
+                    ToggleSwitch_ShowWarning.IsOn = true;
+                }
+                else
+                {
+                    ToggleSwitch_ShowWarning.IsOn = false;
+                }
+
+
+                string AnalyseOptions = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxiniPath, "analyse_options");
+                if (AnalyseOptions.Contains("symlink"))
+                {
+                    ToggleSwitch_Symlink.IsOn = true;
+                }
+                else
+                {
+                    ToggleSwitch_Symlink.IsOn = false;
+                }
+
+            }
+
+
+            GameIconConfig gameIconConfig = new GameIconConfig();
+
+            bool ShowIcon = false;
+            if (gameIconConfig.GameName_Show_Dict.ContainsKey(GlobalConfig.CurrentGameName))
+            {
+                ShowIcon = gameIconConfig.GameName_Show_Dict[GlobalConfig.CurrentGameName];
+            }
+            else
+            {
+                ShowIcon = false;
+            }
+
+            ToggleSwitch_ShowIcon.IsOn = ShowIcon;
+
+            IsLoading = false;
+        }
+
+      
+
+
+
+
+        private void InitializeGameNameList()
+        {
+            if (!Directory.Exists(GlobalConfig.Path_GamesFolder))
+            {
+                return;
+            }
+
+            string[] GamesFolderList = Directory.GetDirectories(GlobalConfig.Path_GamesFolder);
+
+            ComboBox_GameName.Items.Clear();
+
+            foreach (string GameFolderPath in GamesFolderList)
+            {
+                string GameFolderName = Path.GetFileName(GameFolderPath);
+
+                ComboBox_GameName.Items.Add(GameFolderName);
+            }
+
+            if (ComboBox_GameName.Items.Contains(GlobalConfig.CurrentGameName))
+            {
+                ComboBox_GameName.SelectedItem = GlobalConfig.CurrentGameName;
+            }
+            else
+            {
+                if (ComboBox_GameName.Items.Count > 0)
+                {
+                    ComboBox_GameName.SelectedIndex = 0;
+                }
+            }
+        }
+
+
+
+
+
+        private void SyncD3D11DllFile()
+        {
+            try
+            {
+                //这个函数只会在初始化的时候调用，所以默认复制Dev版本的d3d11.dll
+                string DllModeFolderName = "ReleaseX64Dev";
+
+                if (ToggleSwitch_DllMode.IsOn)
+                {
+                    //如果是Play版本，则复制Play版本的d3d11.dll
+                    DllModeFolderName = "ReleaseX64Play";
+                }
+
+
+                string MigotoSourceDll = Path.Combine(GlobalConfig.Path_AssetsFolder, DllModeFolderName + "\\d3d11.dll");
+
+
+                string MigotoFolder = Path.Combine(GlobalConfig.SSMTCacheFolderPath, "3Dmigoto\\");
+                Directory.CreateDirectory(MigotoFolder);
+
+                string TargetCopyDllDir = Path.Combine(MigotoFolder, GlobalConfig.CurrentGameName);
+
+
+
+                if (TextBox_3DmigotoPath.Text.Trim() != "")
+                {
+                    if (Directory.Exists(TextBox_3DmigotoPath.Text))
+                    {
+                        TargetCopyDllDir = TextBox_3DmigotoPath.Text;
+                    }
+                }
+
+                string MigotoTargetDll = Path.Combine(TargetCopyDllDir, "d3d11.dll");
+
+
+                File.Copy(MigotoSourceDll, MigotoTargetDll, true);
+            }
+            catch(Exception ex)
+            {
+
+                _ = SSMTMessageHelper.Show(ex.ToString());
+            }
+            
+        }
+   
+
+    
+
+
+
+        private void ToggleSwitch_ShowWarning_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (IsLoading)
+            {
+                return;
+            }
+
+            if (ToggleSwitch_ShowWarning.IsOn)
+            {
+                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI,"[Logging]", "show_warnings", "0");
+            }
+            else
+            {
+                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[Logging]", "show_warnings", "1");
+            }
+        }
+
+
+      
+
+
+
+
+        private void ToggleSwitch_Symlink_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (IsLoading)
+            {
+                return;
+            }
+
+            if (!File.Exists(GlobalConfig.Path_D3DXINI))
+            {
+                _ = SSMTMessageHelper.Show("请先选择正确的3Dmigoto路径，确保d3dx.ini存在于当前选择的3Dmigoto路径下。");
+                return;
+            }
+
+            //设置symlink特性
+            string AnalyseOptions = D3dxIniConfig.ReadAttributeFromD3DXIni(GlobalConfig.Path_D3DXINI, "analyse_options");
+            if (AnalyseOptions == "")
+            {
+                _ = SSMTMessageHelper.Show("当前3Dmigoto的d3dx.ini中暂未设置analyse_options，无法开启symlink特性");
+                return;
+            }
+
+            if (ToggleSwitch_Symlink.IsOn)
+            {
+                if (!AnalyseOptions.Contains("symlink"))
+                {
+                    D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", AnalyseOptions + " symlink");
+                }
+                _ = SSMTMessageHelper.Show("Symlink特性已开启，游戏中F10刷新即可生效");
+            }
+            else
+            {
+                AnalyseOptions = AnalyseOptions.Replace("symlink", " ");
+                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", AnalyseOptions);
+                _ = SSMTMessageHelper.Show("Symlink特性已关闭，游戏中F10刷新即可生效");
+            }
+
+        }
+
+
+        public void InstallBasicDllFileTo3DmigotoFolder()
+        {
+            //默认路径
+            string MigotoFolder = Path.Combine(GlobalConfig.SSMTCacheFolderPath, "3Dmigoto\\");
+            Directory.CreateDirectory(MigotoFolder);
+
+            string CurrentGame3DmigotoFolder = Path.Combine(MigotoFolder, GlobalConfig.CurrentGameName);
+
+            //如果手动设置了当前3Dmigoto的路径，则使用手动设置的路径
+            string SelectedMigotoFolderPath = TextBox_3DmigotoPath.Text.Trim();
+            if (Directory.Exists(SelectedMigotoFolderPath) && SelectedMigotoFolderPath != "")
+            {
+                CurrentGame3DmigotoFolder = SelectedMigotoFolderPath;
+            }
+
+            string MigotoSourceDll = Path.Combine(GlobalConfig.Path_AssetsFolder, "ReleaseX64Dev\\d3d11.dll");
+            string MigotoTargetDll = Path.Combine(CurrentGame3DmigotoFolder, "d3d11.dll");
+
+            //只有dll不存在时才复制
+            if (!File.Exists(MigotoTargetDll))
+            {
+                File.Copy(MigotoSourceDll, MigotoTargetDll, true);
+            }
+
+            string MigotoSource47Dll = Path.Combine(GlobalConfig.Path_AssetsFolder, "d3dcompiler_47.dll");
+            string MigotoTarget47Dll = Path.Combine(CurrentGame3DmigotoFolder, "d3dcompiler_47.dll");
+
+            if (File.Exists(MigotoSource47Dll))
+            {
+                File.Copy(MigotoSource47Dll, MigotoTarget47Dll, true);
+            }
+            else
+            {
+                string MigotoSource46Dll = Path.Combine(GlobalConfig.Path_AssetsFolder, "d3dcompiler_46.dll");
+                string MigotoTarget46Dll = Path.Combine(CurrentGame3DmigotoFolder, "d3dcompiler_46.dll");
+                File.Copy(MigotoSource46Dll, MigotoTarget46Dll, true);
+            }
+        }
+
+
+    
+        private void Button_ShowSetting_Click(object sender, RoutedEventArgs e)
+        {
+            if (Border_GameConfig.Visibility == Visibility.Collapsed)
+            {
+                Border_GameConfig.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Border_GameConfig.Visibility = Visibility.Collapsed;
+            }
+        }
+
+
+        private void InitializePanel()
+        {
+            IsLoading = true;
+
+            TextBox_3DmigotoPath.Text = "";
+            TextBox_TargetPath.Text = "";
+            TextBox_LaunchPath.Text = "";
+            TextBox_LaunchArgsPath.Text = "";
+
+            ToggleSwitch_DllMode.IsOn = false;
+            ToggleSwitch_AutoSetAnalyseOptions.IsOn = false;
+            //ToggleSwitch_IgnoreGIError25.IsOn = false;
+
+            //ToggleSwitch_IgnoreGameError.IsOn = false;  
+
+            IsLoading = false;
+        }
+
+        private void ReadConfigsToPanel()
+        {
+            if (IsLoading)
+            {
+                return;
+            }
+
+            GameConfig CurrentGameConfig = new GameConfig();
+
+            //只有路径存在时才进行设置
+            if (Directory.Exists(CurrentGameConfig.MigotoPath)) { 
+                TextBox_3DmigotoPath.Text = CurrentGameConfig.MigotoPath;
+            }
+
+            //如果是具有文件夹层级的路径，则必须判断是否存在
+            //如果没有就直接设置，比如有些人会直接填写YuanShen.exe
+            if (CurrentGameConfig.TargetPath.Contains("\\"))
+            {
+                if (File.Exists(CurrentGameConfig.TargetPath))
+                {
+                    TextBox_TargetPath.Text = CurrentGameConfig.TargetPath;
+                }
+            }
+            else
+            {
+                TextBox_TargetPath.Text = CurrentGameConfig.TargetPath;
+            }
+
+            if (File.Exists(CurrentGameConfig.LaunchPath))
+            {
+                TextBox_LaunchPath.Text = CurrentGameConfig.LaunchPath;
+            }
+
+            TextBox_LaunchArgsPath.Text = CurrentGameConfig.LaunchArgs;
+
+        }
+
+
+     
+
+        private void Button_Open3DmigotoFolder_Click(object sender, RoutedEventArgs e)
+        {
+            GameConfig gameConfig = new GameConfig();
+            if (Directory.Exists(gameConfig.MigotoPath))
+            {
+                SSMTCommandHelper.ShellOpenFolder(gameConfig.MigotoPath);
+            }
+        }
+
+
+        private void Button_CreateNewGame_Click(object sender, RoutedEventArgs e)
+        {
+            string GameName = ComboBox_GameName.Text;
+
+            try
+            {
+                string NewGameDirectory = Path.Combine(GlobalConfig.Path_GamesFolder, GameName + "\\");
+                Directory.CreateDirectory(NewGameDirectory);
+
+                ToggleSwitch_ShowIcon.IsOn = true;
+
+                GlobalConfig.CurrentGameName = GameName;
+                GlobalConfig.SaveConfig();
+
+                Frame.Navigate(typeof(HomePage));
+
+            }
+            catch (Exception ex)
+            {
+                _ = SSMTMessageHelper.Show(ex.ToString());
+            }
+
+        }
+
+        private void Button_DeleteSelectedGame_Click(object sender, RoutedEventArgs e)
+        {
+            string GameName = ComboBox_GameName.Text;
+
+            try
+            {
+                Directory.Delete(GlobalConfig.Path_CurrentGamesFolder,true);
+                Frame.Navigate(typeof(HomePage));
+            }
+            catch (Exception ex)
+            {
+                _ = SSMTMessageHelper.Show(ex.ToString());
+            }
+        }
+
+  
+
+        private void ComboBox_LogicName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string LogicNameStr = ComboBox_LogicName.SelectedItem.ToString();
+
+
+            if (IsLoading)
+            {
+                return;
+            }
+            GameConfig gameConfig = new GameConfig();
+            gameConfig.LogicName = LogicNameStr;
+            gameConfig.SaveConfig();
+        }
+
+        private void ToggleSwitch_ShowIcon_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (IsLoading)
+            {
+                return;
+            }
+            GameIconConfig gameIconConfig = new GameIconConfig();
+            gameIconConfig.GameName_Show_Dict[GlobalConfig.CurrentGameName] = ToggleSwitch_ShowIcon.IsOn;
+            gameIconConfig.SaveConfig();
+
+            IsLoading = true;
+
+            InitializeGameIconItemList();
+            SelectGameIconToCurrentGame();
+            IsLoading = false;
+        }
+
+        private async void Button_ChooseGameIcon_Click(object sender, RoutedEventArgs e)
+        {
+            string filepath = await SSMTCommandHelper.ChooseFileAndGetPath(".png");
+            if (filepath == "")
+            {
+                return;
+            }
+
+
+            try
+            {
+                string NewBackgroundPath = Path.Combine(GlobalConfig.Path_CurrentGamesFolder, "Icon.png");
+                File.Copy(filepath, NewBackgroundPath, true);
+
+                IsLoading = true;
+                InitializeGameIconItemList();
+                SelectGameIconToCurrentGame();
+
+                IsLoading = false;
+                _ = SSMTMessageHelper.Show("图标已更换成功，请重启SSMT使图标生效");
+            }
+            catch (Exception ex)
+            {
+                _ = SSMTMessageHelper.Show(ex.ToString());
+            }
+
+        }
+
+        private void ToggleSwitch_DllMode_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (IsLoading)
+            {
+                return;
+            }
+
+            GameConfig gameConfig = new GameConfig();
+            gameConfig.PlayVersionDll = ToggleSwitch_DllMode.IsOn;
+            gameConfig.SaveConfig();
+        }
+
+
+        private async void Button_RunIgnoreGIError40_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+
+                string IgnoreGIErrorExePath = Path.Combine(GlobalConfig.Path_PluginsFolder, GlobalConfig.GIPluginName);
+                if (!File.Exists(IgnoreGIErrorExePath))
+                {
+                    _ = SSMTMessageHelper.Show("您还没有安装此插件，请联系NicoMico获取并安装此插件。");
+                    return;
+                }
+
+                await SSMTCommandHelper.ProcessRunFile(IgnoreGIErrorExePath, "", "");
+            }
+            catch (Exception ex)
+            {
+                _ = SSMTMessageHelper.Show(ex.ToString());
+                return;
+            }
+
+        }
+
+        private void ToggleSwitch_AutoSetAnalyseOptions_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (IsLoading)
+            {
+                return;
+            }
+
+            GameConfig gameConfig = new GameConfig();
+            gameConfig.AutoSetAnalyseOptions = ToggleSwitch_AutoSetAnalyseOptions.IsOn;
+            gameConfig.SaveConfig();
+        }
+
+        //private void ToggleSwitch_IgnoreGIError25_Toggled(object sender, RoutedEventArgs e)
+        //{
+        //    if (IsLoading)
+        //    {
+        //        return;
+        //    }
+
+        //    GameConfig gameConfig = new GameConfig();
+        //    gameConfig.IgnoreErrorGI25 = ToggleSwitch_IgnoreGIError25.IsOn;
+        //    gameConfig.SaveConfig();
+        //}
+
+       
+
+        private void Button_CleanGICache_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //获取原神安装路径
+                string TargetExePath = TextBox_TargetPath.Text;
+
+
+                string localLow = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    "AppData", "LocalLow");
+
+                string LocalLogFilePath = Path.Combine(localLow,"miHoYo", "原神", "LocalLog.log");
+                if (File.Exists(LocalLogFilePath))
+                {
+                    File.Delete(LocalLogFilePath);
+                }
+
+                string OutputLogFilePath = Path.Combine(localLow, "miHoYo", "原神", "output_log.txt");
+                if (File.Exists(OutputLogFilePath))
+                {
+                    File.Delete(OutputLogFilePath);
+                }
+
+                _ = SSMTMessageHelper.Show("缓存日志清理完成");
+
+            }
+            catch (Exception ex)
+            {
+                _ = SSMTMessageHelper.Show(ex.ToString());
+            }
+
+        }
+
+        private void ComboBox_GameTypeFolder_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string GameTypeName = ComboBox_GameTypeFolder.SelectedItem.ToString();
+
+
+            if (IsLoading)
+            {
+                return;
+            }
+            GameConfig gameConfig = new GameConfig();
+            gameConfig.GameTypeName = GameTypeName;
+            gameConfig.SaveConfig();
+        }
+
+        private void NumberBox_DllInitializationDelay_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (IsLoading)
+            {
+                return;
+            }
+            GameConfig gameConfig = new GameConfig();
+            gameConfig.DllInitializationDelay = (int)NumberBox_DllInitializationDelay.Value;
+            gameConfig.SaveConfig();
+        }
+    }
+}

@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="SSMT.WorkPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SSMT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:community="using:CommunityToolkit.WinUI.UI.Controls"
+    Background="Transparent"
+    >
+
+    <Grid>
+        <!-- 定义行 -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 定义列 -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.7*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+
+        <!-- 顶部菜单 -->
+        <MenuBar 
+            Grid.Row="0" 
+            Grid.Column="0" 
+            Margin="10,5,0,0">
+            <MenuBarItem 
+                x:Name="Menu_File">
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenWorkSpaceGeneratedModFolder" 
+                    Click="OpenWorkSpaceGenerateModFolder"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenModsFolder" 
+                    Click="OpenModsFolder"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_Open3DmigotoFolder" 
+                    Click="Open3DmigotoFolder"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenD3dxini" 
+                    Click="OpenD3dxIniFile"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenShaderFixesFolder" 
+                    Click="OpenShaderFixesFolder"/>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenLatestFrameAnalysisFolder" 
+                    Click="OpenLatestFrameAnalysisFolder"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenLatestFrameAnalysisLogTxt" 
+                    Click="OpenLatestFrameAnalysisLogTxtFile"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenLatestFrameAnalysisDedupedFolder" 
+                    Click="OpenLatestFrameAnalysisDedupedFolder"/>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenDBMTLocationFolder" 
+                    Click="OpenSSMTPackageFolder"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenLogsFolder" 
+                    Click="OpenLogsFolder"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenLatestLogFile" 
+                    Click="OpenLatestLogFile"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenConfigsFolder" 
+                    Click="OpenConfigsFolder"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_OpenPluginsFolder" 
+                    Click="Menu_OpenPluginsFolder_Click"/>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem 
+                    x:Name="Menu_GameTypeFolder" 
+                    Click="Menu_GameTypeFolder_Click"/>
+                <MenuFlyoutItem
+                    x:Name="Menu_OpenAssetsFolder"
+                    Click="Menu_OpenAssetsFolder_Click"
+                    />
+                <MenuFlyoutItem
+                    x:Name="Menu_OpenGlobalConfigFolder"
+                    Click="Menu_OpenGlobalConfigFolder_Click"
+                    />
+
+
+
+            </MenuBarItem>
+
+            <MenuBarItem 
+                x:Name="Menu_ToolBox" 
+                >
+                <MenuFlyoutItem 
+                    x:Name="Menu_AutoDetect_UnityVS_GPUPreSkinning_DrawIBList" 
+                    Click="AutoDetectPointlistDrawIBList_UnityVSPreSkinning"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_AutoDetect_CPUPreSkinning_DrawIBList" 
+                    Click="Menu_AutoDetect_CPUPreSkinning_DrawIBList_Click"/>
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                <MenuFlyoutItem 
+                    x:Name="Menu_ObfuscateDev" 
+                    Click="Encryption_Obfuscate"/>
+            </MenuBarItem>
+
+            <MenuBarItem 
+                x:Name="Menu_Texture">
+                <MenuFlyoutItem 
+                    x:Name="Menu_ConvertDDSToTargetFormat" 
+                    Click="Menu_ConvertDDSToTargetFormat_Click"  />
+                <MenuFlyoutItem 
+                    x:Name="Menu_ExtractTextureFiles" 
+                    Click="Menu_ExtractTextureFiles_Click"/>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem 
+                    x:Name="Menu_ExtractDedupedTextures" 
+                    Click="Menu_ExtractDedupedTextures_Click"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_ExtractTrianglelistTextures" 
+                    Click="Menu_ExtractTrianglelistTextures_Click" />
+                <MenuFlyoutItem 
+                    x:Name="Menu_ExtractRenderTextures" 
+                    Click="Menu_ExtractRenderTextures_Click" />
+            </MenuBarItem>
+
+            <MenuBarItem 
+                x:Name="Menu_ModEncryption" >
+                <MenuFlyoutItem 
+                    x:Name="Menu_ObfuscateAndEncryptBufferAndIni" 
+                    Click="Encryption_EncryptAll"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_EncryptBufferAndIni" 
+                    Click="Encryption_EncryptBufferAndIni"/>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem 
+                    x:Name="Menu_Obfuscate" 
+                    Click="Encryption_ObfuscatePlay"/>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem 
+                    x:Name="Menu_EncryptBuffer" 
+                    Click="Encryption_EncryptBuffer"/>
+                <MenuFlyoutItem 
+                    x:Name="Menu_EncryptIni" 
+                    Click="Encryption_EncryptIni"/>
+            </MenuBarItem>
+
+        </MenuBar>
+
+        <!--右侧工作空间操作按钮-->
+        <ScrollViewer
+            Grid.Row="1"
+            Grid.Column="1"
+            >
+            <StackPanel Orientation="Vertical">
+
+                <ComboBox 
+                    x:Name="WorkGameSelectionComboBox" 
+                    Width="200"
+                    Margin="5"
+                    SelectionChanged="WorkGameSelectionComboBox_SelectionChanged" >
+                </ComboBox>
+
+                <ComboBox 
+                    Margin="5"
+                    x:Name="ComboBoxWorkSpaceSelection" 
+                    Width="200" 
+                    IsEditable="True" 
+                    SelectionChanged="ComboBoxWorkSpaceSelection_SelectionChanged">
+                </ComboBox>
+
+                <Button 
+                    x:Name="Button_CreateWorkSpace" 
+                    Margin="5" 
+                    Click="CreateWorkSpaceFolder"/>
+                <Button 
+                    x:Name="Button_OpenWorkSpaceFolder" 
+                    Margin="5" 
+                    Click="OpenCurrentWorkSpaceFolder"/>
+                <Button 
+                    x:Name="Button_CleanWorkSpace" 
+                    Margin="5" 
+                    Click="CleanCurrentWorkSpaceFile" />
+
+                <Button
+                    x:Name="Button_DeleteCurrentWorkSpaceFolder"
+                    Margin="5"
+                    Click="Button_DeleteCurrentWorkSpaceFolder_Click"/>
+
+                <MenuFlyoutSeparator Margin="5"></MenuFlyoutSeparator>
+
+                <ToggleSwitch
+                    Margin="5"
+                    x:Name="ToggleSwitch_DumpIBListConfig"
+                    Toggled="ToggleSwitch_DumpIBListConfig_Toggled"
+                    ></ToggleSwitch>
+
+                <ToggleSwitch
+                    IsOn="True"
+                    x:Name="ToggleSwitch_ConvertDedupedTextures"
+                    Margin="5"
+                    ></ToggleSwitch>
+
+            </StackPanel>
+        </ScrollViewer>
+        
+
+        <!--主要内容，包含DrawIB列表、SkipIB列表、VSCheck列表-->
+        <ScrollViewer
+            Margin="20"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            >
+            <StackPanel Orientation="Vertical">
+
+                <Expander
+                    HorizontalContentAlignment="Stretch"
+                    HorizontalAlignment="Stretch"
+                    IsExpanded="True">
+                    <Expander.Header>
+                        <StackPanel Margin="10">
+                            <TextBlock 
+                                x:Name="TextBlock_DrawIBList"
+                                FontSize="14" 
+                                FontWeight="Bold" 
+                                />
+                        </StackPanel>
+                    </Expander.Header>
+                    
+
+                    <!-- DataGrid  DrawIB列表 -->
+                    <StackPanel  Orientation="Horizontal">
+                        <community:DataGrid 
+                            Margin="5"
+                            AutoGenerateColumns="False"  
+                            Height="Auto"
+                            x:Name="myDataGrid"  
+                            HorizontalAlignment="Left" 
+                            CellEditEnding="MyDataGrid_CellEditEnding" >
+
+                            <community:DataGrid.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem 
+                                        x:Name="Menu_DeleteDrawIBLine" 
+                                        Click="Menu_DeleteDrawIBLine_Click" >
+                                    </MenuFlyoutItem>
+                                </MenuFlyout>
+                            </community:DataGrid.ContextFlyout>
+
+                            <community:DataGrid.Columns>
+                                <community:DataGridTextColumn 
+                                    x:Name="DataGridTextColumn_DrawIBList_DrawIB"
+                                    Width="120" 
+                                    Binding="{Binding DrawIB}" 
+                                    IsReadOnly="False"/>
+                                <community:DataGridTextColumn 
+                                    x:Name="DataGridTextColumn_DrawIBList_Alias"
+                                    Width="260" 
+                                    Binding="{Binding Alias}" 
+                                    IsReadOnly="False"/>
+                            </community:DataGrid.Columns>
+                        </community:DataGrid>
+
+                        <!-- 按钮 -->
+                        <StackPanel Orientation="Vertical"  HorizontalAlignment="Left">
+
+                            <StackPanel Orientation="Horizontal">
+                                <Button 
+                                    x:Name="Button_ExtractModel" 
+                                    Style="{StaticResource AccentButtonStyle}" 
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Left"  
+                                    Margin="5" 
+                                    Click="ExtractModel"/>
+                            </StackPanel>
+
+
+                            <Button 
+                                x:Name="Button_InitializeDrawIBConfig" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Left"  
+                                Margin="5" 
+                                Click="CleanDrawIBList"/>
+
+                            <Button 
+                                x:Name="Button_SaveDrawIBList" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Left"  
+                                Margin="5" 
+                                Click="Button_SaveDrawIBList_Click"/>
+
+
+                            <Button 
+                                x:Name="Button_CleanLastExtract" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Left" 
+                                Margin="5"
+                                Click="Button_CleanLastExtract_Click">
+                            </Button>
+
+                            <StackPanel Orientation="Vertical" x:Name="StackPanel_GameTypeRegion">
+
+                                <ComboBox
+                                    Margin="5"
+                                    Width="350"
+                                    x:Name="ComboBox_GameType"
+                                    IsEditable="True"
+                                    >
+                                </ComboBox>
+
+                                <Button
+                                    Click="Button_AutoDetectGameTypeDrawIBList_Click"
+                                    Margin="5"
+                                    x:Name="Button_AutoDetectGameTypeDrawIBList">
+                                </Button>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </StackPanel>
+                </Expander>
+                
+                <Expander
+                    HorizontalContentAlignment="Stretch"
+                    HorizontalAlignment="Stretch"
+                    IsExpanded="True">
+                    <Expander.Header>
+                        <StackPanel Margin="10">
+                            <TextBlock 
+                                x:Name="TextBlock_SkipIBList"
+                                FontSize="14" 
+                                FontWeight="Bold"/>
+                        </StackPanel>
+                    </Expander.Header>
+
+                    <StackPanel  Orientation="Horizontal">
+
+                        <community:DataGrid 
+                            Margin="5"
+                            AutoGenerateColumns="False"  
+                            Height="auto"
+                            x:Name="SkipIBDataGrid"  
+                            HorizontalAlignment="Left" 
+                            CellEditEnding="SkipIBDataGrid_CellEditEnding">
+
+                            <community:DataGrid.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem 
+                                        x:Name="Menu_DeleteSkipIBLine" 
+                                        Click="Menu_DeleteSkipIBLine_Click" ></MenuFlyoutItem>
+                                </MenuFlyout>
+                            </community:DataGrid.ContextFlyout>
+
+                            <community:DataGrid.Columns>
+                                <community:DataGridTextColumn 
+                                    x:Name="DataGridTextColumn_SkipIBList_SkipIB"
+                                    Width="120" 
+                                    Binding="{Binding DrawIB}" 
+                                    IsReadOnly="False"/>
+                                <community:DataGridTextColumn 
+                                    x:Name="DataGridTextColumn_SkipIBList_Alias"
+                                    Width="260" 
+                                    Binding="{Binding Alias}" 
+                                    IsReadOnly="False"/>
+                            </community:DataGrid.Columns>
+                        </community:DataGrid>
+
+                        <!-- 第1行：SkipIB列表 -->
+                        <StackPanel Orientation="Vertical" >
+                            <Button 
+                                x:Name="Button_SkipIBDraw" 
+                                VerticalAlignment="Center" 
+                                Margin="5" 
+                                Click="ExecuteSkipIB"/>
+                            <Button 
+                                x:Name="Button_CleanSkipIBList" 
+                                Margin="5" 
+                                VerticalAlignment="Center"
+                                Click="CleanSkipIBListTextBox"/>
+
+                            <Button 
+                                x:Name="Button_SaveSkipIBList" 
+                                Margin="5" 
+                                VerticalAlignment="Center"
+                                Click="Button_SaveSkipIBList_Click"/>
+
+                        </StackPanel>
+                    </StackPanel>
+                </Expander>
+
+                <Expander
+                    HorizontalContentAlignment="Stretch"
+                    HorizontalAlignment="Stretch"
+                    IsExpanded="True">
+                    <Expander.Header>
+                        <StackPanel Margin="10">
+                            <TextBlock 
+                                x:Name="TextBlock_VSCheckList"
+                                FontSize="14" 
+                                FontWeight="Bold" 
+                                />
+                        
+                        </StackPanel>
+                    </Expander.Header>
+
+                    <StackPanel  Orientation="Horizontal">
+
+                        <community:DataGrid 
+                            Margin="5"
+                            AutoGenerateColumns="False"  
+                            Height="auto"
+                            x:Name="DataGrid_VSCheck"  
+                            HorizontalAlignment="Left" 
+                            CellEditEnding="DataGrid_VSCheck_CellEditEnding">
+
+                            <community:DataGrid.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem 
+                                        x:Name="Menu_DeleteVSCheckLine" 
+                                        Click="Menu_DeleteVSCheckLine_Click"></MenuFlyoutItem>
+                                </MenuFlyout>
+                            </community:DataGrid.ContextFlyout>
+
+                            <community:DataGrid.Columns>
+                                <community:DataGridCheckBoxColumn 
+                                    x:Name="DataGridCheckBoxColumn_VSCheckList_Enable"
+                                    Header="Enable" Width="120" 
+                                    Binding="{Binding Enable}" 
+                                    IsReadOnly="False"/>
+                                <community:DataGridTextColumn 
+                                    x:Name="DataGridTextColumn_VSCheckList_VSHash"
+                                    Header="Vertex Shader Hash"  
+                                    Width="260" Binding="{Binding VSHash}" 
+                                    IsReadOnly="False"/>
+                            </community:DataGrid.Columns>
+                        </community:DataGrid>
+
+
+                        <StackPanel Orientation="Vertical" >
+                            <Button
+                                Margin="5"
+                                Click="Button_ClearVSCheckList_Click"
+                                x:Name="Button_ClearVSCheckList"
+                                >
+                            </Button>
+
+                            <Button
+                                Style="{StaticResource AccentButtonStyle}"
+                                x:Name="Button_UpdateVSCheckList"
+                                Margin="5"
+                                Click="Button_UpdateVSCheckList_Click"
+                                >
+                            </Button>
+
+                            <Button
+                                Style="{StaticResource AccentButtonStyle}"
+                                x:Name="Button_GenerateVSCheckIni"
+                                Margin="5"
+                                Click="Button_GenerateVSCheckIni_Click"
+                                >
+                            </Button>
+
+                        </StackPanel>
+
+                    </StackPanel>
+                </Expander>
+
+
+
+            </StackPanel>
+            
+            
+        </ScrollViewer>
+
+        
+
+    </Grid>
+
+</Page>
