@@ -212,17 +212,27 @@ namespace SSMT
 
 
 
-        
+
 
 
 
 
         private void nvSample_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            
-            // 如果点击的是设置按钮，则导航到设置页面
+            // PxncAcd: 添加重复点击设置页则回退到前一页的功能
             if (args.IsSettingsInvoked)
             {
+                // 如果当前页面就是设置页，则返回上一页
+                if (contentFrame.CurrentSourcePageType == typeof(SettingsPage))
+                {
+                    if (contentFrame.CanGoBack)
+                    {
+                        contentFrame.GoBack();
+                    }
+                    return;
+                }
+
+                // 否则导航到设置页
                 contentFrame.Navigate(typeof(SettingsPage));
             }
             else if (args.InvokedItemContainer is NavigationViewItem item)

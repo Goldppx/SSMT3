@@ -42,7 +42,7 @@ namespace SSMT
         {
             this.InitializeComponent();
             
-            HyperlinkButton_SSMTVersion.Content =  GlobalConfig.SSMT_Title;
+            HyperlinkButton_SSMTVersion.Content = GlobalConfig.SSMT_Title;
 
             try
             {
@@ -52,10 +52,8 @@ namespace SSMT
             {
                 _ = SSMTMessageHelper.Show("Error: " + ex.ToString());
             }
-
         }
 
- 
 
         public void SaveSettingsToConfig()
         {
@@ -262,7 +260,8 @@ namespace SSMT
             if (ReadOver)
             {
                 SaveSettingsToConfig();
-                Frame.Navigate(typeof(SettingsPage));
+                //Frame.Navigate(typeof(SettingsPage));
+                TranslatePage();
             }
         }
 
