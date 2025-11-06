@@ -60,13 +60,6 @@ namespace SSMT
                 Menu_ExtractTrianglelistTextures.Text = "提取TrianglelistTextures";
                 Menu_ExtractRenderTextures.Text = "提取RenderTextures";
 
-                Menu_ModEncryption.Title = "Mod加密";
-                Menu_ObfuscateAndEncryptBufferAndIni.Text = "一键混淆名称并加密Buffer和ini文件";
-                Menu_EncryptBufferAndIni.Text = "一键加密Buffer和ini文件";
-
-                Menu_Obfuscate.Text = "一键混淆Mod中的资源名称(Play版)";
-                Menu_EncryptBuffer.Text = "一键加密Buffer文件";
-                Menu_EncryptIni.Text = "一键加密ini文件";
 
 
                 //侧边栏
@@ -161,14 +154,7 @@ namespace SSMT
                 Menu_ExtractTrianglelistTextures.Text = "Extract TrianglelistTextures";
                 Menu_ExtractRenderTextures.Text = "Extract RenderTextures";
 
-                Menu_ModEncryption.Title = "Mod Encryption";
-                Menu_ObfuscateAndEncryptBufferAndIni.Text = "Obfuscate And Encrypt Mod's Buffer And Ini File";
-                Menu_EncryptBufferAndIni.Text = "Encrypt Mod's Buffer And Ini File";
-
-                Menu_Obfuscate.Text = "Obfuscate Resource Name In Mod's .ini File(Used Only In Play Version d3d11.dll)";
-                Menu_EncryptBuffer.Text = "Encrypt Mod's Buffer File";
-                Menu_EncryptIni.Text = "Encrypt Mod's .ini File";
-
+                
 
                 //侧边栏
                 WorkGameSelectionComboBox.Header = "GameName";

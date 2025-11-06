@@ -74,16 +74,16 @@ namespace SSMT
                 TextBlock_ShowPagesSetting.Text = "页面显示设置";
 
                 
-                ToggleSwitch_ShowGameTypePage.OnContent = "显示数据类型管理页面";
-                ToggleSwitch_ShowGameTypePage.OffContent = "不显示数据类型管理页面";
+                ToggleSwitch_ShowGameTypePage.OnContent = "显示 数据类型管理页面";
+                ToggleSwitch_ShowGameTypePage.OffContent = "隐藏 数据类型管理页面";
 
                 
                 ToggleSwitch_ShowModManagePage.OnContent = "显示 Mod 管理页面";
                 ToggleSwitch_ShowModManagePage.OffContent = "隐藏 Mod 管理页面";
 
 
-                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "显示贴图工具箱页面";
-                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "隐藏贴图工具箱页面";
+                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "显示 贴图工具箱页面";
+                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "隐藏 贴图工具箱页面";
 
 
             }
