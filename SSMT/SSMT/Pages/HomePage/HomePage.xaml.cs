@@ -69,7 +69,7 @@ namespace SSMT
                 StackPanel_GIError.Visibility = Visibility.Visible;
             }
 
-            LoadBackgroundIfExists();
+            GameNameChanged(GlobalConfig.CurrentGameName);
 
         }
 
@@ -179,29 +179,60 @@ namespace SSMT
             GlobalConfig.CurrentGameName = ChangeToGameName;
             GlobalConfig.SaveConfig();
 
-            //(1) 以动画的方式设置背景图
-            string BackgroundWebpPath = Path.Combine(GlobalConfig.Path_CurrentGamesFolder + "\\Background.webp");
-            if (File.Exists(BackgroundWebpPath))
+            string folder = GlobalConfig.Path_CurrentGamesFolder;
+            string BackgroundWebpPath = Path.Combine(folder, "Background.webp");
+            string BackgroundPngPath = Path.Combine(folder, "Background.png");
+            string BackgroundMp4Path = Path.Combine(folder, "Background.mp4");
+
+            // 默认：隐藏视频，清空图片
+            if (BackgroundVideo != null)
             {
-                VisualHelper.CreateScaleAnimation(imageVisual);
-                VisualHelper.CreateFadeAnimation(imageVisual);
+                BackgroundVideo.Visibility = Visibility.Collapsed;
+                BackgroundVideo.SetMediaPlayer(null);
+            }
+            MainWindowImageBrush.Source = null;
+
+            // 优先级：mp4 > webp > png
+            if (File.Exists(BackgroundMp4Path))
+            {
+                MainWindowImageBrush.Visibility = Visibility.Collapsed;
+                BackgroundVideo.Visibility = Visibility.Visible;
+
+                var player = new MediaPlayer
+                {
+                    Source = MediaSource.CreateFromUri(new Uri(BackgroundMp4Path)),
+                    IsLoopingEnabled = true
+                };
+                BackgroundVideo.SetMediaPlayer(player);
+                player.Play();
+
+                VisualHelper.CreateFadeAnimation(BackgroundVideo);
+            }
+            else if (File.Exists(BackgroundWebpPath))
+            {
+                BackgroundVideo.Visibility = Visibility.Collapsed;
+                MainWindowImageBrush.Visibility = Visibility.Visible;
+
+                VisualHelper.CreateScaleAnimation(MainWindowImageBrush);
+                VisualHelper.CreateFadeAnimation(MainWindowImageBrush);
                 MainWindowImageBrush.Source = new BitmapImage(new Uri(BackgroundWebpPath));
+            }
+            else if (File.Exists(BackgroundPngPath))
+            {
+                BackgroundVideo.Visibility = Visibility.Collapsed;
+                MainWindowImageBrush.Visibility = Visibility.Visible;
+
+                VisualHelper.CreateScaleAnimation(MainWindowImageBrush);
+                VisualHelper.CreateFadeAnimation(MainWindowImageBrush);
+                MainWindowImageBrush.Source = new BitmapImage(new Uri(BackgroundPngPath));
             }
             else
             {
-                string BackgroundPngPath = Path.Combine(GlobalConfig.Path_CurrentGamesFolder + "\\Background.png");
-                if (File.Exists(BackgroundPngPath))
-                {
-                    VisualHelper.CreateScaleAnimation(imageVisual);
-                    VisualHelper.CreateFadeAnimation(imageVisual);
-                    MainWindowImageBrush.Source = new BitmapImage(new Uri(BackgroundPngPath));
-                }
-                else
-                {
-                    MainWindowImageBrush.Source = null;
-                }
+                // 没有任何背景文件时
+                BackgroundVideo.Visibility = Visibility.Collapsed;
+                MainWindowImageBrush.Source = null;
             }
-            
+
 
             InitializePanel();
             ReadConfigsToPanel();
@@ -909,59 +940,6 @@ namespace SSMT
             gameConfig.SaveConfig();
         }
 
-        private void LoadBackgroundIfExists()
-        {
-            try
-            {
-                string folder = GlobalConfig.Path_CurrentGamesFolder;
-                string png = Path.Combine(folder, "Background.png");
-                string mp4 = Path.Combine(folder, "Background.mp4");
-
-                if (File.Exists(mp4))
-                {
-                    // 显示视频、隐藏图片
-                    if (BackgroundVideo != null && MainWindowImageBrush != null)
-                    {
-                        MainWindowImageBrush.Visibility = Visibility.Collapsed;
-                        BackgroundVideo.Visibility = Visibility.Visible;
-
-                        var player = new MediaPlayer
-                        {
-                            Source = MediaSource.CreateFromUri(new Uri(mp4)),
-                            IsLoopingEnabled = true
-                        };
-                        BackgroundVideo.SetMediaPlayer(player);
-                        player.Play();
-
-                        VisualHelper.CreateFadeAnimation(BackgroundVideo);
-                    }
-                }
-                else if (File.Exists(png))
-                {
-                    // 显示图片、隐藏视频
-                    if (BackgroundVideo != null && MainWindowImageBrush != null)
-                    {
-                        BackgroundVideo.Visibility = Visibility.Collapsed;
-                        MainWindowImageBrush.Visibility = Visibility.Visible;
-                        MainWindowImageBrush.Source = new BitmapImage(new Uri(png));
-
-                        VisualHelper.CreateScaleAnimation(MainWindowImageBrush);
-                        VisualHelper.CreateFadeAnimation(MainWindowImageBrush);
-                    }
-                }
-                else
-                {
-                    // 两者都不存在
-                    if (BackgroundVideo != null)
-                        BackgroundVideo.Visibility = Visibility.Collapsed;
-                    if (MainWindowImageBrush != null)
-                        MainWindowImageBrush.Source = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("LoadBackgroundIfExists failed: " + ex);
-            }
-        }
+        
     }
 }
