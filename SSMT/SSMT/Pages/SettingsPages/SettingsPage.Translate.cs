@@ -73,9 +73,11 @@ namespace SSMT
 
                 TextBlock_ShowPagesSetting.Text = "页面显示设置";
 
+                
                 ToggleSwitch_ShowGameTypePage.OnContent = "显示数据类型管理页面";
-                ToggleSwitch_ShowGameTypePage.OffContent = "隐藏数据类型管理页面";
+                ToggleSwitch_ShowGameTypePage.OffContent = "不显示数据类型管理页面";
 
+                
                 ToggleSwitch_ShowModManagePage.OnContent = "显示 Mod 管理页面";
                 ToggleSwitch_ShowModManagePage.OffContent = "隐藏 Mod 管理页面";
 
