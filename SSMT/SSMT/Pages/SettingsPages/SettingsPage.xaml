@@ -240,6 +240,22 @@
         VerticalAlignment="Center"
         HorizontalAlignment="Stretch"
         Toggled="ToggleSwitch_ShowTextureToolBoxPage_Toggled"/>
+                    <StackPanel Orientation="Vertical">
+
+                        <ToggleSwitch 
+                            Margin="5"
+                            x:Name="ToggleSwitch_ShowGameTypePage"
+                            Toggled="ToggleSwitch_ShowGameTypePage_Toggled"
+                            />
+
+                        <ToggleSwitch 
+                            Margin="5"
+                            x:Name="ToggleSwitch_ShowModManagePage"
+                            Toggled="ToggleSwitch_ShowModManagePage_Toggled"
+                            />
+                        
+
+                        
 
                     </StackPanel>
 
