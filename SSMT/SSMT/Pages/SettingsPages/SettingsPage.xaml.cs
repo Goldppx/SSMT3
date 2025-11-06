@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using SSMT;
-using Microsoft.UI.Xaml.Media.Imaging;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.UI.Xaml.Media.Animation;
-using Windows.System;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Velopack;
 using Velopack.Sources;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.System;
 
 
 
@@ -221,9 +222,39 @@ namespace SSMT
             }
             catch (Exception ex)
             {
-                ProgressRing_UpdateRing.Visibility = Visibility.Visible;
+                ProgressRing_UpdateRing.Visibility = Visibility.Collapsed;
                 CheckUpdateIng = false;
-                _ = SSMTMessageHelper.Show(ex.ToString());
+
+                string message = null;
+
+                // 检查是否是 Octokit.ApiException（GitHub API 错误）
+                if (ex.GetType().Name == "ApiException" && ex.Message.Contains("401"))
+                {
+                    message = "更新失败：GitHub 拒绝访问（401 Unauthorized）。\n可能是 GitHub API 限流或未授权访问导致，请稍后重试或检查网络代理。";
+                }
+                // 检查是否为普通 HttpRequestException
+                else if (ex is HttpRequestException httpEx && httpEx.Message.Contains("401"))
+                {
+                    message = "更新失败：网络请求返回 401 未授权。\n请检查您的网络环境或代理设置。";
+                }
+                // 检查是否为 Octokit 的 rate limit（403）
+                else if (ex.Message.Contains("403") && ex.Message.Contains("rate"))
+                {
+                    message = "更新失败：GitHub 访问频率受限（403 Rate Limit）。\n请稍后再试。";
+                }
+                // 其他常见错误（DNS、网络中断）
+                else if (ex is HttpRequestException || ex.Message.Contains("NameResolutionFailure"))
+                {
+                    message = "无法连接到 GitHub，请检查网络连接或系统代理。";
+                }
+
+                if (message == null)
+                {
+                    // 默认兜底
+                    message = "自动更新失败。\n详细错误信息如下，请联系开发者添加报错处理：\n" + ex.Message;
+                }
+
+                await SSMTMessageHelper.Show(message);
             }
 
         }
