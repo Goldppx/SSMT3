@@ -17,7 +17,7 @@ namespace SSMT
     {
         public static string analyse_options = "deferred_ctx_immediate dump_rt dump_cb dump_vb dump_ib buf txt dds dump_tex dds";
 
-        public static string SSMT_Version = "V3.0.2";
+        public static string SSMT_Version = "V3.0.4";
 
         public static string GIPluginName = "GoodWorkGI.exe";
 
@@ -79,6 +79,10 @@ namespace SSMT
             get { return Path.Combine(Path_AppDataLocal, PathManager.Name_GlobalConfigFileName); }
         }
 
+
+        /// <summary>
+        /// 使用古法读取，不要自作聪明用C#的某些语法糖特性实现全自动
+        /// </summary>
         public static void ReadConfig()
         {
             try
@@ -94,26 +98,11 @@ namespace SSMT
                     }
                 }
                 catch (Exception ex) {
+                    //如果全局的配置文件读取错误的话，直接删掉重新保存一个全局的配置文件
+                    //这是因为蓝屏的时候这里的配置文件会直接被损坏。
                     ex.ToString();
-                    //如果全局配置文件被蓝屏破坏等原因读取不到，或者Linux Wine模拟不存在时，读取工作空间下的配置文件
-                    if (File.Exists(GlobalConfig.Path_MainConfig))
-                    {
-                        try
-                        {
-                            string json = File.ReadAllText(GlobalConfig.Path_MainConfig); // 读取文件内容
-                            SettingsJsonObject = JObject.Parse(json);
-                        }
-                        catch (Exception ext)
-                        {
-                            ext.ToString();
-                            File.Delete(GlobalConfig.Path_MainConfig);
-                            GlobalConfig.SaveConfig();
-
-                            string json = File.ReadAllText(GlobalConfig.Path_MainConfig); // 读取文件内容
-                            SettingsJsonObject = JObject.Parse(json);
-                        }
-                       
-                    }
+                    File.Delete(GlobalConfig.Path_MainConfig);
+                    GlobalConfig.SaveConfig();
                 }
                 
                 //古法读取
@@ -126,8 +115,6 @@ namespace SSMT
                 {
                     CurrentWorkSpace = (string)SettingsJsonObject["CurrentWorkSpace"];
                 }
-
-
 
                 if (SettingsJsonObject.ContainsKey("DBMTWorkFolder"))
                 {
@@ -236,6 +223,9 @@ namespace SSMT
             }
         }
 
+        /// <summary>
+        /// 使用古法保存，不要自作聪明用C#的某些语法糖特性实现全自动
+        /// </summary>
         public static void SaveConfig()
         {
             //古法保存
@@ -254,22 +244,14 @@ namespace SSMT
             SettingsJsonObject["OpenToWorkPage"] = OpenToWorkPage;
             SettingsJsonObject["Theme"] = Theme;
             SettingsJsonObject["Chinese"] = Chinese;
-
             SettingsJsonObject["ShowGameTypePage"] = ShowGameTypePage;
             SettingsJsonObject["ShowModManagePage"] = ShowModManagePage;
             SettingsJsonObject["ShowModReversePage"] = ShowModReversePage;
             SettingsJsonObject["ShowModProtectPage"] = ShowModProtectPage;
             SettingsJsonObject["ShowTextureToolBoxPage"] = ShowTextureToolBoxPage;
 
-
             //写出内容
             string WirteStirng = SettingsJsonObject.ToString();
-
-            //保存到DBMT的工作空间文件夹下面
-            if (Directory.Exists(GlobalConfig.Path_ConfigsFolder))
-            {
-                File.WriteAllText(Path_MainConfig, WirteStirng);
-            }
 
             //保存配置时，全局配置也顺便保存一份
             File.WriteAllText(Path_MainConfig_Global, WirteStirng);
