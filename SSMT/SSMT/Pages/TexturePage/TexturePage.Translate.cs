@@ -30,6 +30,10 @@ namespace SSMT
                 Menu_GenerateTextureMod.Title = "贴图Mod生成";
                 Menu_GenerateHashStyleTextureModTemplate.Text = "生成Hash风格贴图Mod模板";
 
+                ComboBoxDrawIB.Header = "绘制IB hash列表";
+                ComboBoxComponent.Header = "组件";
+                ComboBoxDrawCall.Header = "绘制调用";
+
                 ComboBox_MarkName.Header = "标记名称";
                 Text_Block_MarkName.Text = "标记名称";
                 Button_MarkTexture.Content = "标记此贴图";
@@ -54,6 +58,10 @@ namespace SSMT
 
                 Menu_GenerateTextureMod.Title = "Texture Mod";
                 Menu_GenerateHashStyleTextureModTemplate.Text = "Generate Hash Style Texture Mod Template";
+
+                ComboBoxDrawIB.Header = "Draw Index Buffer List";
+                ComboBoxComponent.Header = "Component";
+                ComboBoxDrawCall.Header = "Draw Call";
 
                 ComboBox_MarkName.Header = "MarkName";
                 Text_Block_MarkName.Text = "MarkName";

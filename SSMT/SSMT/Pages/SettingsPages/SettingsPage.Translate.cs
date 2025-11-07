@@ -72,18 +72,19 @@ namespace SSMT
                 Slider_LuminosityOpacity.Header = "透光度";
 
                 TextBlock_ShowPagesSetting.Text = "页面显示设置";
+                ToolTipService.SetToolTip(TextBlock_ShowPagesSetting, "用于控制侧栏非常用界面是否显示");
 
                 
-                ToggleSwitch_ShowGameTypePage.OnContent = "显示数据类型管理页面";
-                ToggleSwitch_ShowGameTypePage.OffContent = "不显示数据类型管理页面";
+                ToggleSwitch_ShowGameTypePage.OnContent = "当前显示数据类型管理页面";
+                ToggleSwitch_ShowGameTypePage.OffContent = "当前隐藏数据类型管理页面";
 
                 
-                ToggleSwitch_ShowModManagePage.OnContent = "显示 Mod 管理页面";
-                ToggleSwitch_ShowModManagePage.OffContent = "隐藏 Mod 管理页面";
+                ToggleSwitch_ShowModManagePage.OnContent = "当前显示 Mod 管理页面";
+                ToggleSwitch_ShowModManagePage.OffContent = "当前隐藏 Mod 管理页面";
 
 
-                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "显示贴图工具箱页面";
-                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "隐藏贴图工具箱页面";
+                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "当前显示贴图工具箱页面";
+                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "当前隐藏贴图工具箱页面";
 
 
             }
@@ -113,7 +114,7 @@ namespace SSMT
 
                 TextBlock_FrameAnalysisFolderReserveNumber.Text = "The Number Of FrameAnalysis Folder To Keep When Auto Deleting";
 
-               
+
 
                 TextBlock_About.Text = "About";
 
@@ -137,16 +138,17 @@ namespace SSMT
                 Slider_LuminosityOpacity.Header = "Luminosity Opacity";
 
                 TextBlock_ShowPagesSetting.Text = "Pages Show Setting";
+                ToolTipService.SetToolTip(TextBlock_ShowPagesSetting, "To control if some unfrequently used pages show or not");
 
-                ToggleSwitch_ShowGameTypePage.OnContent = "Show Game Type Management Page";
-                ToggleSwitch_ShowGameTypePage.OffContent = "Hide Game Type Management Page";
+                ToggleSwitch_ShowGameTypePage.OnContent = "Show Game Type Management Page Now";
+                ToggleSwitch_ShowGameTypePage.OffContent = "Hide Game Type Management Page Now";
 
-                ToggleSwitch_ShowModManagePage.OnContent = "Show Mod Management Page";
-                ToggleSwitch_ShowModManagePage.OffContent = "Hide Mod Management Page";
+                ToggleSwitch_ShowModManagePage.OnContent = "Show Mod Management Page Now";
+                ToggleSwitch_ShowModManagePage.OffContent = "Hide Mod Management Page Now";
 
 
-                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "Show Texture Toolbox Page";
-                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "Hide Texture Toolbox Page";
+                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "Show Texture Toolbox Page Now";
+                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "Hide Texture Toolbox Page Now";
 
 
             }
