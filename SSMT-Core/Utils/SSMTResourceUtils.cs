@@ -219,41 +219,7 @@ namespace SSMT
         }
 
 
-        public static bool ExistsPluginReverse()
-        {
-            if (File.Exists(GlobalConfig.Path_SwordLv5Exe))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static bool ExistsPluginEncryption()
-        {
-            if (File.Exists(GlobalConfig.Path_EncryptorExe))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static bool ExistsPluginProtect()
-        {
-            if (File.Exists(GlobalConfig.Path_ProtectExe))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        
 
     }
 }

@@ -63,68 +63,7 @@ namespace SSMT
             process.WaitForExit();
         }
 
-        public static bool RunPluginExeCommand(string arguments, string targetExe = "",bool ShowRunResultWindow = true,bool ShellExecute = false)
-        {
-
-            InitializeRunInputJson(arguments);
-            InitializeRunResultJson();
-            Process process = new Process();
-            if (targetExe == "")
-            {
-
-            }
-            else
-            {
-                process.StartInfo.FileName = Path.Combine(GlobalConfig.Path_PluginsFolder, targetExe);
-            }
-            //运行前必须检查路径
-            if (!File.Exists(process.StartInfo.FileName))
-            {
-                _ = SSMTMessageHelper.Show("Current run path didn't exsits: " + process.StartInfo.FileName, "当前要执行的插件不存在: " + process.StartInfo.FileName + "\n请联系NicoMico赞助获取此插件。");
-                return false;
-            }
-
-            process.StartInfo.Arguments = arguments;  // 可选，如果该程序接受命令行参数
-            //MessageBox.Show("当前运行参数： " + arguments);
-
-            //运行目录必须是调用的文件所在的目录，不然的话就会在当前SSMT.exe下面运行，就会导致很多东西错误，比如逆向的日志无法显示。
-            process.StartInfo.WorkingDirectory = GlobalConfig.Path_PluginsFolder; // <-- 新增
-
-            // 配置进程启动信息
-            process.StartInfo.UseShellExecute = ShellExecute;  // 不使用操作系统的shell启动程序
-            process.StartInfo.RedirectStandardOutput = false;  // 重定向标准输出
-            process.StartInfo.RedirectStandardError = false;   // 重定向标准错误输出
-            process.StartInfo.CreateNoWindow = true;  // 不创建新窗口
-            // 启动程序
-            process.Start();
-            process.WaitForExit();
-
-            try
-            {
-                string runResultJson = File.ReadAllText(GlobalConfig.Path_RunResultJson);
-                JObject resultJsonObject = JObject.Parse(runResultJson);
-                string runResult = (string)resultJsonObject["result"];
-                if (runResult != "success")
-                {
-                    if (ShowRunResultWindow)
-                    {
-                        _ = SSMTMessageHelper.Show(
-                        "运行结果: " + runResult + ". \n\n很遗憾运行失败了，参考运行结果和运行日志改变策略再试一次吧。\n\n1.请检查您的配置是否正确.\n2.请查看日志获取更多细节信息.\n3.请检查您是否使用的是最新版本，新版本可能已修复此问题\n4.请联系NicoMico寻求帮助或在Github上提交issue: https://github.com/StarBobis/DirectX-BufferModTool.\n\n点击确认为后您打开本次运行日志。",
-                        "Run result: " + runResult + ". \n1.Please check your config.\n2.Please check log for more information.\n3.Please ask NicoMico for help, remember to send him the latest log file.\n4.Ask @Developer in ShaderFreedom for help.\n5.Read the source code of SSMT and try analyse the reason for Error with latest log file.");
-                    }
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                _ = SSMTMessageHelper.Show("执行SSMT核心时发生中断，请查看Log日志获取具体内容", "Error when execute SSMT.exe, please see log file for details." + ex.ToString());
-                return false;
-            }
-        }
+        
 
 
         public static async Task<bool> ProcessRunFile(string FilePath, string WorkingDirectory = "",string arguments = "")

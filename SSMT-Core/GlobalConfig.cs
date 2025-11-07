@@ -34,9 +34,6 @@ namespace SSMT
         public static double WindowHeight { get; set; } = 720;
         public static double WindowLuminosityOpacity { get; set; } = 0.65f;
 
-        public static int WindowPositionX { get; set; } = -1;
-        public static int WindowPositionY { get; set; } = -1;
-
         //Others
         public static bool AutoCleanFrameAnalysisFolder { get; set; } = true;
         public static int FrameAnalysisFolderReserveNumber { get; set; } = 1;
@@ -127,18 +124,6 @@ namespace SSMT
                     WindowHeight = (double)SettingsJsonObject["WindowHeight"];
                 }
 
-                //WindowPositionX
-                if (SettingsJsonObject.ContainsKey("WindowPositionX"))
-                {
-                    WindowPositionX = (int)SettingsJsonObject["WindowPositionX"];
-                }
-
-                //WindowPositionY
-                if (SettingsJsonObject.ContainsKey("WindowPositionY"))
-                {
-                    WindowPositionY = (int)SettingsJsonObject["WindowPositionY"];
-                }
-
                 //AutoCleanFrameAnalysisFolder
                 if (SettingsJsonObject.ContainsKey("AutoCleanFrameAnalysisFolder"))
                 {
@@ -221,8 +206,6 @@ namespace SSMT
             SettingsJsonObject["DBMTWorkFolder"] = SSMTCacheFolderPath;
             SettingsJsonObject["WindowWidth"] = WindowWidth;
             SettingsJsonObject["WindowHeight"] = WindowHeight;
-            SettingsJsonObject["WindowPositionX"] = WindowPositionX;
-            SettingsJsonObject["WindowPositionY"] = WindowPositionY;
             SettingsJsonObject["AutoCleanFrameAnalysisFolder"] = AutoCleanFrameAnalysisFolder;
             SettingsJsonObject["FrameAnalysisFolderReserveNumber"] = FrameAnalysisFolderReserveNumber;
             SettingsJsonObject["WindowLuminosityOpacity"] = WindowLuminosityOpacity;
@@ -335,29 +318,12 @@ namespace SSMT
             get { return Path.Combine(Path_TextureConfigsFolder, GlobalConfig.CurrentGameName + "\\"); }
         }
 
-
-        //三种注入器的路径
-        public static string Path_3Dmigoto_Loader_EXE
-        {
-            get { return Path.Combine(Path_3DmigotoLoaderFolder, "3Dmigoto Loader.exe"); }
-        }
-
-        public static string Path_3Dmigoto_Loader_PY
-        {
-            get { return Path.Combine(Path_3DmigotoLoaderFolder, "3Dmigoto Loader.py"); }
-        }
-
-        public static string Path_3Dmigoto_Loader_ByPassACE_EXE
-        {
-            get { return Path.Combine(Path_3DmigotoLoaderFolder, "3Dmigoto Loader-ByPassACE.exe"); }
-        }
+      
 
         public static string Path_PluginsFolder
         {
             get { return Path.Combine(GlobalConfig.SSMTCacheFolderPath, "Plugins\\"); }
         }
-
-
 
 
 
@@ -504,8 +470,6 @@ namespace SSMT
             }
         }
 
-        
-
 
         public static string Path_CurrentWorkSpace_VSCheckConfigJson
         {
@@ -545,21 +509,7 @@ namespace SSMT
             get { return Path.Combine(GlobalConfig.Path_ConfigsFolder, "TexturePageIndexConfig.json"); }
         }
 
-
-        public static string Path_SwordLv5Exe
-        {
-            get { return Path.Combine(GlobalConfig.Path_PluginsFolder, "3Dmigoto-Sword-Lv5.exe"); }
-        }
-
-        public static string Path_EncryptorExe
-        {
-            get { return Path.Combine(GlobalConfig.Path_PluginsFolder, "DBMT-Encryptor.exe"); }
-        }
-
-        public static string Path_ProtectExe
-        {
-            get { return Path.Combine(GlobalConfig.Path_PluginsFolder, "DBMT-Protect.exe"); }
-        }
+   
         public static string Path_RunResultJson
         {
             get { return Path.Combine(Path_ConfigsFolder, "RunResult.json"); }
@@ -570,10 +520,6 @@ namespace SSMT
             get { return Path.Combine(Path_ConfigsFolder, "RunInput.json"); }
         }
 
-        public static string Path_ReversedFolder
-        {
-            get { return Path.Combine(GlobalConfig.SSMTCacheFolderPath, "Reversed\\"); }
-        }
 
         public static string Path_BaseFolder
         {
@@ -582,15 +528,6 @@ namespace SSMT
                 return AppContext.BaseDirectory;
             }
         }
-
-        //public static string Path_AssetsFolder
-        //{
-        //    get
-        //    {
-        //        return Path.Combine(GlobalConfig.Path_BaseFolder,"Assets\\");
-        //    }
-        //}
-
 
     }
 }

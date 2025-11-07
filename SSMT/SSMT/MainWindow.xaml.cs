@@ -274,20 +274,6 @@ namespace SSMT
             GlobalConfig.WindowWidth = WindowWidth;
             GlobalConfig.WindowHeight = WindowHeight;
 
-            //保存窗口位置
-            if (this.AppWindow != null)
-            {
-                // 获取窗口当前位置
-                PointInt32 position = this.AppWindow.Position;
-
-                // position.X 和 position.Y 分别是窗口左上角的X和Y坐标
-                int x = position.X;
-                int y = position.Y;
-
-                GlobalConfig.WindowPositionX = x;
-                GlobalConfig.WindowPositionY = y;
-            }
-
 
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
