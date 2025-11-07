@@ -132,16 +132,7 @@ namespace SSMT
             //切换游戏后，要读取当前游戏的配置，来确定当前选择的是哪个工作空间
             //如果没有就算了
 
-            string SavedWorkSpace = "";
-            if (File.Exists(GlobalConfig.Path_CurrentGameMainConfigJsonFile))
-            {
-                JObject jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameMainConfigJsonFile);
-                if (jobj.ContainsKey("WorkSpace"))
-                {
-                    SavedWorkSpace = (string)jobj["WorkSpace"];
-                }
-            }
-
+            string SavedWorkSpace = gameConfig.WorkSpace;
             if (SavedWorkSpace == "")
             {
                 LOG.Info("上次保存的工作空间为空，初始化空的工作空间");
@@ -219,14 +210,9 @@ namespace SSMT
                 GlobalConfig.SaveConfig();
 
                 //并且要把当前工作空间保存到当前游戏的配置里
-                JObject jobj = DBMTJsonUtils.CreateJObject();
-
-                if (File.Exists(GlobalConfig.Path_CurrentGameMainConfigJsonFile))
-                {
-                    jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameMainConfigJsonFile);
-                }
-                jobj["WorkSpace"] = GlobalConfig.CurrentWorkSpace;
-                DBMTJsonUtils.SaveJObjectToFile(jobj, GlobalConfig.Path_CurrentGameMainConfigJsonFile);
+                GameConfig gameConfig = new GameConfig();
+                gameConfig.WorkSpace = GlobalConfig.CurrentWorkSpace;
+                gameConfig.SaveConfig();
 
                 ReadDrawIBListFromWorkSpace();
                 ReadSkipIBListFromWorkSpace();

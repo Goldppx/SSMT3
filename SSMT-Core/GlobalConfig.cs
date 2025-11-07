@@ -545,10 +545,6 @@ namespace SSMT
             get { return Path.Combine(GlobalConfig.Path_ConfigsFolder, "TexturePageIndexConfig.json"); }
         }
 
-        public static string Path_CurrentGameMainConfigJsonFile
-        {
-            get { return Path.Combine(Path_GamesFolder, GlobalConfig.CurrentGameName + "\\MainConfig.json"); }
-        }
 
         public static string Path_SwordLv5Exe
         {

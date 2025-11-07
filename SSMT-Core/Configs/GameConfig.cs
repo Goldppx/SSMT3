@@ -39,6 +39,12 @@ namespace SSMT
         public string LaunchPath { get; set; } = "";
         public string LaunchArgs { get; set; } = "";
 
+        /// <summary>
+        /// Nico: 之前我们是存在Games对应游戏文件夹下面的MainConfig.json中的
+        /// 但是整个json里就一个WorkSpace字段，所以新版本咱们迁移到这个整体的配置文件里
+        /// </summary>
+        public string WorkSpace { get; set; } = "";
+
         public string LogicName { get; set; } = "GIMI";
 
         public string GameTypeName { get; set; } = "GIMI";
@@ -88,6 +94,13 @@ namespace SSMT
                 {
                     string TargetPath = jobj["TargetPath"]?.ToString() ?? "";
                     this.TargetPath = TargetPath;
+                }
+
+                //WorkSpace
+                if (jobj.ContainsKey("WorkSpace"))
+                {
+                    string WorkSpace = jobj["WorkSpace"]?.ToString() ?? "";
+                    this.WorkSpace = WorkSpace;
                 }
 
                 if (jobj.ContainsKey("LogicName"))
@@ -201,6 +214,7 @@ namespace SSMT
             jobj["3DmigotoPath"] = this.MigotoPath;
             jobj["LaunchPath"] = this.LaunchPath;
             jobj["LaunchArgs"] = this.LaunchArgs;
+            jobj["WorkSpace"] = this.WorkSpace;
 
             jobj["LogicName"] = this.LogicName;
             jobj["GameTypeName"] = this.GameTypeName;
