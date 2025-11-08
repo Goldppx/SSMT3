@@ -63,8 +63,6 @@ namespace SSMT
                 Debug.WriteLine("保存配置");
                 GlobalConfig.SSMTCacheFolderPath = TextBox_SSMTPackagePath.Text;
 
-                GlobalConfig.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
-                GlobalConfig.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
 
                 GlobalConfig.WindowLuminosityOpacity = Slider_LuminosityOpacity.Value;
 
@@ -93,8 +91,6 @@ namespace SSMT
 
             TextBox_SSMTPackagePath.Text = GlobalConfig.SSMTCacheFolderPath;
 
-            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = GlobalConfig.AutoCleanFrameAnalysisFolder;
-            NumberBox_FrameAnalysisFolderReserveNumber.Value = GlobalConfig.FrameAnalysisFolderReserveNumber;
 
 
             Slider_LuminosityOpacity.Value = GlobalConfig.WindowLuminosityOpacity;

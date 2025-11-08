@@ -86,49 +86,6 @@
                         Toggled="RefreshSettings"/>
                 </Expander>
 
-
-
-                <Expander
-                    HorizontalContentAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-                    IsExpanded="True">
-                    <Expander.Header>
-                        <StackPanel Margin="10">
-                            <TextBlock 
-                                x:Name="TextBlock_AutoCleanFrameAnalysisFolder"
-                                FontSize="14" 
-                                FontWeight="Bold"/>
-                        </StackPanel>
-                    </Expander.Header>
-
-                    <ToggleSwitch 
-                        Grid.Column="1"  
-                        Grid.Row="1" 
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Center" 
-                        x:Name="ToggleSwitch_AutoCleanFrameAnalysisFolder"   
-                        Toggled="RefreshSettings"/>
-
-                </Expander>
-
-                <Expander
-                    HorizontalContentAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-                    IsExpanded="True">
-                    <Expander.Header>
-                        <StackPanel Margin="10">
-                            <TextBlock 
-                                x:Name="TextBlock_FrameAnalysisFolderReserveNumber"
-                                FontSize="14" 
-                                FontWeight="Bold"/>
-                        </StackPanel>
-                    </Expander.Header>
-                    <NumberBox 
-                        x:Name="NumberBox_FrameAnalysisFolderReserveNumber" 
-                        PlaceholderText="0"  
-                        SmallChange="1"  
-                        LargeChange="10" />
-                </Expander>
                 <Expander
                     HorizontalContentAlignment="Stretch"
                     HorizontalAlignment="Stretch"

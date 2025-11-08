@@ -34,10 +34,6 @@ namespace SSMT
         public static double WindowHeight { get; set; } = 720;
         public static double WindowLuminosityOpacity { get; set; } = 0.65f;
 
-        //Others
-        public static bool AutoCleanFrameAnalysisFolder { get; set; } = true;
-        public static int FrameAnalysisFolderReserveNumber { get; set; } = 1;
- 
 
         /// <summary>
         /// 打开页面后跳转到工作台页面
@@ -124,17 +120,7 @@ namespace SSMT
                     WindowHeight = (double)SettingsJsonObject["WindowHeight"];
                 }
 
-                //AutoCleanFrameAnalysisFolder
-                if (SettingsJsonObject.ContainsKey("AutoCleanFrameAnalysisFolder"))
-                {
-                    AutoCleanFrameAnalysisFolder = (bool)SettingsJsonObject["AutoCleanFrameAnalysisFolder"];
-                }
-
-                //FrameAnalysisFolderReserveNumber
-                if (SettingsJsonObject.ContainsKey("FrameAnalysisFolderReserveNumber"))
-                {
-                    FrameAnalysisFolderReserveNumber = (int)SettingsJsonObject["FrameAnalysisFolderReserveNumber"];
-                }
+               
 
            
 
@@ -208,8 +194,6 @@ namespace SSMT
                 SettingsJsonObject["DBMTWorkFolder"] = SSMTCacheFolderPath;
                 SettingsJsonObject["WindowWidth"] = WindowWidth;
                 SettingsJsonObject["WindowHeight"] = WindowHeight;
-                SettingsJsonObject["AutoCleanFrameAnalysisFolder"] = AutoCleanFrameAnalysisFolder;
-                SettingsJsonObject["FrameAnalysisFolderReserveNumber"] = FrameAnalysisFolderReserveNumber;
                 SettingsJsonObject["WindowLuminosityOpacity"] = WindowLuminosityOpacity;
                 SettingsJsonObject["OpenToWorkPage"] = OpenToWorkPage;
                 SettingsJsonObject["Theme"] = Theme;

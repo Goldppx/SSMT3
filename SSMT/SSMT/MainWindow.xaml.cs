@@ -273,15 +273,8 @@ namespace SSMT
             GlobalConfig.WindowWidth = App.m_window.AppWindow.Size.Width;
             GlobalConfig.WindowHeight = App.m_window.AppWindow.Size.Height;
             GlobalConfig.SaveConfig();
-
-            //TODO 清理3Dmigoto文件夹下的帧分析文件，不应该在这里进行
-            //应该交给用户自己清理，提供清理按钮
-            //不然关闭程序时，窗口会卡顿，然后这个卡顿，用户就体验非常差
-            if (GlobalConfig.AutoCleanFrameAnalysisFolder)
-            {
-                DBMTFileUtils.CleanFrameAnalysisFiles(GlobalConfig.Path_3DmigotoLoaderFolder,GlobalConfig.FrameAnalysisFolderReserveNumber);
-            }
         }
+
 
         private void nvSample_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
