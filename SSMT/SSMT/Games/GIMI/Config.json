@@ -1,0 +1,15 @@
+{
+  "TargetPath": "",
+  "3DmigotoPath": "",
+  "LaunchPath": "",
+  "LaunchArgs": "",
+  "WorkSpace": "Default",
+  "LogicName": "GIMI",
+  "GameTypeName": "GIMI",
+  "AutoSetAnalyseOptions": true,
+  "GithubPackageVersion": "",
+  "DllInitializationDelay": 100,
+  "DllReplaceSelectedIndex": 0,
+  "DllPreProcessSelectedIndex": 1,
+  "LaunchItems": []
+}
