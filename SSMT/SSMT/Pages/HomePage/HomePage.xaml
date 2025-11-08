@@ -152,10 +152,6 @@ The following sets the maximum # of items to show before wrapping.-->
             <StackPanel 
                 Orientation="Horizontal">
 
-                <HyperlinkButton
-                    x:Name="HyperlinkButton_SSMTVersion"
-                    Content="SSMT Version: "
-                    ></HyperlinkButton>
                 
                 
                 <HyperlinkButton

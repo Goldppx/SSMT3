@@ -39,8 +39,6 @@ namespace SSMT
 
         private void HomePageLoaded(object sender, RoutedEventArgs e)
         {
-            HyperlinkButton_SSMTVersion.Content = GlobalConfig.SSMT_Title;
-            HyperlinkButton_SSMTVersion.NavigateUri = new Uri("https://github.com/StarBobis/SSMT3/releases/latest");
 
             // 初始化Composition组件
             // 获取Image控件的Visual对象
