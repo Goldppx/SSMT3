@@ -51,6 +51,12 @@ namespace SSMT
 
             this.InitializeComponent();
 
+            //全局配置文件夹不存在就创建一个
+            if (!Directory.Exists(GlobalConfig.Path_SSMT3GlobalConfigsFolder))
+            {
+                Directory.CreateDirectory(GlobalConfig.Path_SSMT3GlobalConfigsFolder);
+            }
+
             CurrentWindow = this;
 
             //为了最大程度提升用户体验，这个标题栏必须的显示出来，不能隐藏

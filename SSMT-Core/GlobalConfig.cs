@@ -61,10 +61,27 @@ namespace SSMT
             get { return Path.Combine(Path_ConfigsFolder, PathManager.Name_GlobalConfigFileName); }
         }
 
+        /// <summary>
+        /// 肯定是要放在我们的全局配置文件夹里，放别的地方不得劲
+        /// </summary>
         public static string Path_MainConfig_Global
         {
-            get { return Path.Combine(Path_AppDataLocal, PathManager.Name_GlobalConfigFileName); }
+            get { return Path.Combine(Path_SSMT3GlobalConfigsFolder, PathManager.Name_GlobalConfigFileName); }
         }
+
+        /// <summary>
+        /// 全局的配置文件存储位置
+        /// 因为有些东西，比如贴图标记的配置，最理想的情况下是随着用户不断地使用
+        /// 最后所有之前标记过的PS Hash都能直接快速进行识别然后自动标记
+        /// 此时存在一个随时会变动的缓存文件夹中就会导致缓存文件夹每次发生变化后
+        /// 这些标记过的配置都丢失了
+        /// 为此我们单独开一个文件夹来存储这些内容
+        /// </summary>
+        public static string Path_SSMT3GlobalConfigsFolder
+        {
+            get { return Path.Combine(Path_AppDataLocal, "SSMT3GlobalConfigs\\"); }
+        }
+
 
 
         /// <summary>

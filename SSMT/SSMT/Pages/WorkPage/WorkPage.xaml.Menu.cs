@@ -14,11 +14,12 @@ namespace SSMT
     {
         private void Menu_OpenGlobalConfigFolder_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(GlobalConfig.Path_AppDataLocal))
+            if (Directory.Exists(GlobalConfig.Path_SSMT3GlobalConfigsFolder))
             {
-                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_AppDataLocal);
+                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_SSMT3GlobalConfigsFolder);
             }
         }
+
         private void Menu_OpenAssetsFolder_Click(object sender, RoutedEventArgs e)
         {
             if (Directory.Exists(GlobalConfig.Path_AssetsFolder))
