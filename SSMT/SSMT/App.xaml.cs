@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Shapes;
 using Microsoft.Windows.AppNotifications;
+using SSMT_Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Display;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,6 +38,7 @@ namespace SSMT
         {
             this.InitializeComponent();
 
+            
             VelopackApp.Build().Run();
         }
 
@@ -51,6 +54,8 @@ namespace SSMT
             // 注册 Toast 激活处理器
             AppNotificationManager.Default.NotificationInvoked += OnToastActivated;
             AppNotificationManager.Default.Register();
+
+           
         }
 
         //必须设为public static 这样非打包的WinUI3程序的Page里才能获取主窗口句柄来实现调用显示其它窗口
@@ -69,6 +74,8 @@ namespace SSMT
                 }
             }
         }
+
+       
 
     }
 }

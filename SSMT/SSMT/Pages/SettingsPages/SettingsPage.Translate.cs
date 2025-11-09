@@ -41,14 +41,6 @@ namespace SSMT
                 ToggleSwitch_Chinese.OnContent = "简体中文";
                 ToggleSwitch_Chinese.OffContent = "英语";
 
-                TextBlock_AutoCleanFrameAnalysisFolder.Text = "退出SSMT之前自动清理当前游戏Dump生成的FrameAnalysis文件夹";
-                ToolTipService.SetToolTip(TextBlock_AutoCleanFrameAnalysisFolder, "建议开启，这样就不用担心Dump的FrameAnalysis文件夹一直积累了，适合已经熟练使用SSMT的Mod作者。");
-
-                ToggleSwitch_AutoCleanFrameAnalysisFolder.OnContent = "当前:退出SSMT之前自动清理FrameAnalysis文件夹";
-                ToggleSwitch_AutoCleanFrameAnalysisFolder.OffContent = "当前:退出SSMT之前不清理FrameAnalysis文件夹";
-
-                TextBlock_FrameAnalysisFolderReserveNumber.Text = "自动清理时保留的FrameAnalysis文件夹数量";
-                ToolTipService.SetToolTip(TextBlock_FrameAnalysisFolderReserveNumber, "有经验的Mod作者通常设为2，保留上一次和上上次的Dump文件方便使用的同时不会留下太多文件");
 
                 TextBlock_About.Text = "关于";
 
@@ -107,12 +99,6 @@ namespace SSMT
                 ToggleSwitch_Chinese.OnContent = "Chinese(zh-CN)";
                 ToggleSwitch_Chinese.OffContent = "English(en-US)";
 
-                TextBlock_AutoCleanFrameAnalysisFolder.Text = "Auto Delete Current Game's FrameAnalysis Folder Before Quit SSMT";
-
-                ToggleSwitch_AutoCleanFrameAnalysisFolder.OnContent = "Current: Auto Delete FrameAnalysis Folder Before Quit SSMT";
-                ToggleSwitch_AutoCleanFrameAnalysisFolder.OffContent = "Current: Do Not Delete FrameAnalysis Folder Before Quit SSMT";
-
-                TextBlock_FrameAnalysisFolderReserveNumber.Text = "The Number Of FrameAnalysis Folder To Keep When Auto Deleting";
 
 
 

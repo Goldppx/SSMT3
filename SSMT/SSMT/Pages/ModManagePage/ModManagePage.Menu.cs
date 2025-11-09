@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SSMT_Core;
 
 namespace SSMT
 {
@@ -12,9 +13,9 @@ namespace SSMT
     {
         private void Menu_OpenModsFolder_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(GlobalConfig.Path_ModsFolder))
+            if (Directory.Exists(PathManager.Path_ModsFolder))
             {
-                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_ModsFolder);
+                SSMTCommandHelper.ShellOpenFolder(PathManager.Path_ModsFolder);
             }
             else
             {
@@ -26,9 +27,9 @@ namespace SSMT
         private void Menu_OpenCategoryRepoFolder_Click(object sender, RoutedEventArgs e)
         {
             MakeSureModRepoExists();
-            if (Directory.Exists(GlobalConfig.Path_ModRepoFolder))
+            if (Directory.Exists(PathManager.Path_ModsFolder))
             {
-                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_ModRepoFolder);
+                SSMTCommandHelper.ShellOpenFolder(PathManager.Path_ModsFolder);
             }
         }
 

@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using SSMT;
+using SSMT_Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,7 +44,7 @@ namespace SSMT
         {
             this.InitializeComponent();
             
-            HyperlinkButton_SSMTVersion.Content = GlobalConfig.SSMT_Title;
+            HyperlinkButton_SSMTVersion.Content = ConstantsManager.SSMT_Title;
 
             try
             {
@@ -63,8 +64,6 @@ namespace SSMT
                 Debug.WriteLine("保存配置");
                 GlobalConfig.SSMTCacheFolderPath = TextBox_SSMTPackagePath.Text;
 
-                GlobalConfig.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
-                GlobalConfig.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
 
                 GlobalConfig.WindowLuminosityOpacity = Slider_LuminosityOpacity.Value;
 
@@ -93,8 +92,6 @@ namespace SSMT
 
             TextBox_SSMTPackagePath.Text = GlobalConfig.SSMTCacheFolderPath;
 
-            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = GlobalConfig.AutoCleanFrameAnalysisFolder;
-            NumberBox_FrameAnalysisFolderReserveNumber.Value = GlobalConfig.FrameAnalysisFolderReserveNumber;
 
 
             Slider_LuminosityOpacity.Value = GlobalConfig.WindowLuminosityOpacity;

@@ -132,16 +132,7 @@ namespace SSMT
             //切换游戏后，要读取当前游戏的配置，来确定当前选择的是哪个工作空间
             //如果没有就算了
 
-            string SavedWorkSpace = "";
-            if (File.Exists(GlobalConfig.Path_CurrentGameMainConfigJsonFile))
-            {
-                JObject jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameMainConfigJsonFile);
-                if (jobj.ContainsKey("WorkSpace"))
-                {
-                    SavedWorkSpace = (string)jobj["WorkSpace"];
-                }
-            }
-
+            string SavedWorkSpace = gameConfig.WorkSpace;
             if (SavedWorkSpace == "")
             {
                 LOG.Info("上次保存的工作空间为空，初始化空的工作空间");
@@ -149,7 +140,7 @@ namespace SSMT
             }
             else
             {
-                string TargetWorkSpaceFolder = Path.Combine(GlobalConfig.Path_TotalWorkSpaceFolder, GlobalConfig.CurrentGameName + "\\" + SavedWorkSpace + "\\");
+                string TargetWorkSpaceFolder = Path.Combine(PathManager.Path_TotalWorkSpaceFolder, GlobalConfig.CurrentGameName + "\\" + SavedWorkSpace + "\\");
                 if (Directory.Exists(TargetWorkSpaceFolder))
                 {
                     InitializeWorkSpace(SavedWorkSpace);
@@ -162,7 +153,7 @@ namespace SSMT
             }
 
             //切换游戏时，检测当前总工作空间目录下是否有文件夹，没有就新建
-            string[] CurrentGameWorkSpaceList = Directory.GetDirectories(GlobalConfig.Path_CurrentGameTotalWorkSpaceFolder);
+            string[] CurrentGameWorkSpaceList = Directory.GetDirectories(PathManager.Path_CurrentGameTotalWorkSpaceFolder);
             if (CurrentGameWorkSpaceList.Length == 0)
             {
                 CreateNewWorkSpace("Default");
@@ -193,12 +184,12 @@ namespace SSMT
             ComboBox_GameType.Items.Add("Auto");
             ComboBox_GameType.SelectedIndex = 0;
 
-            if (!Directory.Exists(GlobalConfig.Path_CurrentGame_GameTypeFolder))
+            if (!Directory.Exists(PathManager.Path_CurrentGame_GameTypeFolder))
             {
                 return;
             }
 
-            string[] FilePathList = Directory.GetFiles(GlobalConfig.Path_CurrentGame_GameTypeFolder);
+            string[] FilePathList = Directory.GetFiles(PathManager.Path_CurrentGame_GameTypeFolder);
             foreach (string FilePath in FilePathList)
             {
                 string FileName = Path.GetFileNameWithoutExtension(FilePath);
@@ -219,14 +210,9 @@ namespace SSMT
                 GlobalConfig.SaveConfig();
 
                 //并且要把当前工作空间保存到当前游戏的配置里
-                JObject jobj = DBMTJsonUtils.CreateJObject();
-
-                if (File.Exists(GlobalConfig.Path_CurrentGameMainConfigJsonFile))
-                {
-                    jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameMainConfigJsonFile);
-                }
-                jobj["WorkSpace"] = GlobalConfig.CurrentWorkSpace;
-                DBMTJsonUtils.SaveJObjectToFile(jobj, GlobalConfig.Path_CurrentGameMainConfigJsonFile);
+                GameConfig gameConfig = new GameConfig();
+                gameConfig.WorkSpace = GlobalConfig.CurrentWorkSpace;
+                gameConfig.SaveConfig();
 
                 ReadDrawIBListFromWorkSpace();
                 ReadSkipIBListFromWorkSpace();
@@ -246,15 +232,15 @@ namespace SSMT
             Debug.WriteLine("工作空间名称: " + WorkSpaceName);
             GlobalConfig.CurrentWorkSpace = WorkSpaceName;
 
-            if (!Directory.Exists(GlobalConfig.Path_CurrentWorkSpaceFolder))
+            if (!Directory.Exists(PathManager.Path_CurrentWorkSpaceFolder))
             {
-                Debug.WriteLine("创建工作空间文件夹: " + GlobalConfig.Path_CurrentWorkSpaceFolder);
-                Directory.CreateDirectory(GlobalConfig.Path_CurrentWorkSpaceFolder);
+                Debug.WriteLine("创建工作空间文件夹: " + PathManager.Path_CurrentWorkSpaceFolder);
+                Directory.CreateDirectory(PathManager.Path_CurrentWorkSpaceFolder);
             }
 
             ComboBoxWorkSpaceSelection.Items.Clear();
 
-            string[] WorkSpaceNameList = DBMTFileUtils.ReadWorkSpaceNameList(GlobalConfig.Path_CurrentGameTotalWorkSpaceFolder);
+            string[] WorkSpaceNameList = DBMTFileUtils.ReadWorkSpaceNameList(PathManager.Path_CurrentGameTotalWorkSpaceFolder);
             foreach (string WorkSpaceNameItem in WorkSpaceNameList)
             {
                 ComboBoxWorkSpaceSelection.Items.Add(WorkSpaceNameItem);
@@ -290,7 +276,7 @@ namespace SSMT
             ////如果包含了此命名空间，就不创建文件夹，否则就创建
             if (!ComboBoxWorkSpaceSelection.Items.Contains(WorkSpaceName))
             {
-                string NewWorkSpaceFolderPath = Path.Combine(GlobalConfig.Path_CurrentGameTotalWorkSpaceFolder, WorkSpaceName + "\\");
+                string NewWorkSpaceFolderPath = Path.Combine(PathManager.Path_CurrentGameTotalWorkSpaceFolder, WorkSpaceName + "\\");
                 Directory.CreateDirectory(NewWorkSpaceFolderPath);
                 
                 InitializeWorkSpace(WorkSpaceName);
@@ -324,7 +310,7 @@ namespace SSMT
                 bool confirm = await SSMTMessageHelper.ShowConfirm("请再次确认是否清除当前工作空间","Please confirm if you want to clean WorkSpace");
                 if (confirm)
                 {
-                    string WorkSpaceFolderPath = GlobalConfig.Path_CurrentGameTotalWorkSpaceFolder + ComboBoxWorkSpaceSelection.Text;
+                    string WorkSpaceFolderPath = PathManager.Path_CurrentGameTotalWorkSpaceFolder + ComboBoxWorkSpaceSelection.Text;
                     Directory.Delete(WorkSpaceFolderPath, true);
                     Directory.CreateDirectory(WorkSpaceFolderPath);
                     InitializeWorkSpace(GlobalConfig.CurrentWorkSpace);
@@ -400,10 +386,9 @@ namespace SSMT
 
         public void ExtractModel(object sender, RoutedEventArgs e)
         {
-         
+            //初始化日志类
+            LOG.Initialize(PathManager.Path_LogsFolder);
 
-
-            LOG.Initialize(GlobalConfig.Path_LogsFolder);
             try
             {
                 bool Prepare = PreCheckBeforeExtract();
@@ -411,7 +396,6 @@ namespace SSMT
                 {
                     return;
                 }
-
                 SaveDrawIBList();
 
 
@@ -426,7 +410,8 @@ namespace SSMT
                 GameConfig gameConfig = new GameConfig();
                 LOG.Info("游戏名称: " + GlobalConfig.CurrentGameName);
                 LOG.Info("执行逻辑名称: " + gameConfig.LogicName);
-
+                LOG.Info("数据类型文件夹名称: " + gameConfig.GameTypeName);
+                LOG.NewLine();
 
                 List<DrawIBItem> DrawIBItemList = [];
                 foreach (DrawIBItem drawIBItem in DrawIBItems)
@@ -439,11 +424,7 @@ namespace SSMT
                 bool RunResult = CoreFunctions.ExtractModel(DrawIBItemList);
                 if (RunResult)
                 {
-                    if (ToggleSwitch_ConvertDedupedTextures.IsOn)
-                    {
-                        LOG.Info("ConvertDedupedTexturesToTargetFormat:");
-                        SSMTTextureHelper.ConvertDedupedTexturesToTargetFormat();
-                    }
+                    
 
                     LOG.Info("PostDoAfterExtract:");
                     CoreFunctions.PostDoAfterExtract();
@@ -451,14 +432,14 @@ namespace SSMT
 
                     LOG.Info("OpenCurrentWorkSpaceFolder:");
 
-                    LOG.SaveFile(GlobalConfig.Path_LogsFolder);
+                    LOG.SaveFile(PathManager.Path_LogsFolder);
 
                     OpenCurrentWorkSpaceFolder(sender, e);
 
                 }
                 else
                 {
-                    LOG.SaveFile(GlobalConfig.Path_LogsFolder);
+                    LOG.SaveFile(PathManager.Path_LogsFolder);
                     OpenLatestLogFile(sender, e);
                 }
             }
@@ -515,7 +496,7 @@ namespace SSMT
 
             List<DrawIBItem> SkipIBItemList = GetSkipIBItemList();
             GenerateSkipIB(SkipIBItemList);
-            SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder);
+            SSMTCommandHelper.ShellOpenFolder(PathManager.Path_CurrentWorkSpaceGeneratedModFolder);
         }
 
 
@@ -540,7 +521,7 @@ namespace SSMT
             SaveDrawIBList();
             CoreFunctions.ExtractTextures();
             SSMTTextureHelper.ConvertDedupedTexturesToTargetFormat();
-            SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceFolder);
+            SSMTCommandHelper.ShellOpenFolder(PathManager.Path_CurrentWorkSpaceFolder);
         }
 
         private async void Menu_ConvertDDSToTargetFormat_Click(object sender, RoutedEventArgs e)
@@ -571,26 +552,26 @@ namespace SSMT
             SaveDrawIBList();
             CoreFunctions.ExtractDedupedTextures();
             SSMTTextureHelper.ConvertDedupedTexturesToTargetFormat();
-            SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceFolder);
+            SSMTCommandHelper.ShellOpenFolder(PathManager.Path_CurrentWorkSpaceFolder);
         }
 
         private void Menu_ExtractTrianglelistTextures_Click(object sender, RoutedEventArgs e)
         {
             SaveDrawIBList();
             CoreFunctions.ExtractTrianglelistTextures();
-            SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceFolder);
+            SSMTCommandHelper.ShellOpenFolder(PathManager.Path_CurrentWorkSpaceFolder);
         }
 
         private void Menu_ExtractRenderTextures_Click(object sender, RoutedEventArgs e)
         {
             SaveDrawIBList();
             CoreFunctions.ExtractRenderTextures();
-            SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceFolder);
+            SSMTCommandHelper.ShellOpenFolder(PathManager.Path_CurrentWorkSpaceFolder);
         }
 
         private void Menu_OpenPluginsFolder_Click(object sender, RoutedEventArgs e)
         {
-            SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_PluginsFolder);
+            SSMTCommandHelper.ShellOpenFolder(PathManager.Path_PluginsFolder);
         }
 
 
@@ -599,7 +580,7 @@ namespace SSMT
 
         private void Menu_GameTypeFolder_Click(object sender, RoutedEventArgs e)
         {
-            string CurrentGameTypeFolder = Path.Combine(GlobalConfig.Path_GameTypeConfigsFolder, GlobalConfig.CurrentGameName + "\\");
+            string CurrentGameTypeFolder = Path.Combine(PathManager.Path_GameTypeConfigsFolder, GlobalConfig.CurrentGameName + "\\");
             if (Directory.Exists(CurrentGameTypeFolder))
             {
                 SSMTCommandHelper.ShellOpenFolder(CurrentGameTypeFolder);
@@ -623,7 +604,7 @@ namespace SSMT
                 foreach (string DrawIB in DrawIBList)
                 {
                 
-                        string DrawIBOutputFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                        string DrawIBOutputFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
                         if (Directory.Exists(DrawIBOutputFolder))
                         {
                             Directory.Delete(DrawIBOutputFolder,true);
@@ -656,14 +637,14 @@ namespace SSMT
 
         private void Button_AutoDetectGameTypeDrawIBList_Click(object sender, RoutedEventArgs e)
         {
-            LOG.Initialize(GlobalConfig.Path_LogsFolder);
+            LOG.Initialize(PathManager.Path_LogsFolder);
 
             try
             {
                 string GameType = ComboBox_GameType.SelectedItem.ToString();
                 //1.获取所有可能的DrawIB
                 List<string> TotalDrawIBList = new List<string>();
-                List<string> IBFileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile(GlobalConfig.WorkFolder, "-ib=", ".buf");
+                List<string> IBFileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile(PathManager.WorkFolder, "-ib=", ".buf");
                 foreach (string IBFileName in IBFileNameList)
                 {
                     string DrawIB = IBFileName.Substring(10, 8);
@@ -682,7 +663,7 @@ namespace SSMT
                 foreach (string DrawIB in TotalDrawIBList)
                 {
                     LOG.Info("当前DrawIB: " + DrawIB);
-                    string PointlistIndex = FrameAnalysisLogUtilsV2.Get_PointlistIndex_ByHash(DrawIB, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                    string PointlistIndex = FrameAnalysisLogUtilsV2.Get_PointlistIndex_ByHash(DrawIB, PathManager.Path_LatestFrameAnalysisLogTxt);
                     LOG.Info("当前识别到的PointlistIndex: " + PointlistIndex);
                     if (PointlistIndex == "")
                     {
@@ -690,7 +671,7 @@ namespace SSMT
                     }
                     LOG.NewLine();
 
-                    List<string> TrianglelistIndexList = FrameAnalysisLogUtilsV2.Get_DrawCallIndexList_ByHash(DrawIB, false, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                    List<string> TrianglelistIndexList = FrameAnalysisLogUtilsV2.Get_DrawCallIndexList_ByHash(DrawIB, false, PathManager.Path_LatestFrameAnalysisLogTxt);
                     foreach (string TrianglelistIndex in TrianglelistIndexList)
                     {
                         LOG.Info("TrianglelistIndex: " + TrianglelistIndex);
@@ -721,17 +702,17 @@ namespace SSMT
                     LOG.Info(IB);
                 }
 
-                DBMTJsonUtils.SaveJObjectToFile(jArray, GlobalConfig.Path_CurrentWorkSpaceFolder + "Config.json");
+                DBMTJsonUtils.SaveJObjectToFile(jArray, PathManager.Path_CurrentWorkSpaceFolder + "Config.json");
 
                 InitializeWorkSpace(GlobalConfig.CurrentWorkSpace);
 
-                LOG.SaveFile(GlobalConfig.Path_LogsFolder);
+                LOG.SaveFile(PathManager.Path_LogsFolder);
 
                 _ = SSMTMessageHelper.Show("识别完成，从" +TotalDrawIBList.Count.ToString() + "个DrawIB中，共识别到: " + MatchedDrawIBList.Count.ToString()  + "个DrawIB，已自动填写到DrawIB列表");
             }
             catch (Exception ex)
             {
-                LOG.SaveFile(GlobalConfig.Path_LogsFolder);
+                LOG.SaveFile(PathManager.Path_LogsFolder);
                 _ = SSMTMessageHelper.Show(ex.ToString());
             }
 
@@ -748,7 +729,7 @@ namespace SSMT
 
             try
             {
-                string WorkSpaceOutputFolder = GlobalConfig.Path_CurrentGameTotalWorkSpaceFolder + ComboBoxWorkSpaceSelection.Text + "\\";
+                string WorkSpaceOutputFolder = PathManager.Path_CurrentGameTotalWorkSpaceFolder + ComboBoxWorkSpaceSelection.Text + "\\";
                 if (!string.IsNullOrEmpty(WorkSpaceOutputFolder))
                 {
                     if (Directory.Exists(WorkSpaceOutputFolder))
@@ -785,7 +766,7 @@ namespace SSMT
                     {
                         DumpIBListConfigIniList.Add("[TextureOverride_IB_Dump_" + item.DrawIB + "]");
                         DumpIBListConfigIniList.Add("hash = " + item.DrawIB);
-                        DumpIBListConfigIniList.Add("analyse_options = " + GlobalConfig.analyse_options);
+                        DumpIBListConfigIniList.Add("analyse_options = " + ConstantsManager.analyse_options);
                         DumpIBListConfigIniList.Add("");
                     }
 
@@ -828,15 +809,15 @@ namespace SSMT
                 DumpIBListConfigIniList.Add("[ShaderOverride_Dump_" + RootShader + "]");
                 DumpIBListConfigIniList.Add("hash = " + RootShader);
                 //DumpIBListConfigIniList.Add("allow_duplicate_hash = overrule");
-                DumpIBListConfigIniList.Add("analyse_options = " + GlobalConfig.analyse_options);
+                DumpIBListConfigIniList.Add("analyse_options = " + ConstantsManager.analyse_options);
                 DumpIBListConfigIniList.Add("");
             }
 
            
-            File.WriteAllLines(GlobalConfig.Path_DumpIBListConfig, DumpIBListConfigIniList);
+            File.WriteAllLines(PathManager.Path_DumpIBListConfig, DumpIBListConfigIniList);
             //string analyse_options = "deferred_ctx_immediate dump_rt dump_cb dump_vb dump_ib buf txt dds dump_tex dds";
             //全局Dump设为空
-            D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", "");
+            D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", "");
         }
 
         
@@ -844,12 +825,12 @@ namespace SSMT
         private void SetD3dxConfig_RecoverGlobalDumpConfig()
         {
   
-            if (File.Exists(GlobalConfig.Path_DumpIBListConfig))
+            if (File.Exists(PathManager.Path_DumpIBListConfig))
             {
-                File.Delete(GlobalConfig.Path_DumpIBListConfig);
+                File.Delete(PathManager.Path_DumpIBListConfig);
             }
 
-            D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", GlobalConfig.analyse_options);
+            D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", ConstantsManager.analyse_options);
         }
        
 
@@ -870,7 +851,7 @@ namespace SSMT
                 if (ToggleSwitch_DumpIBListConfig.IsOn)
                 {
                     //读取d3dx.ini
-                    MigotoIniFile migotoIniFile = new MigotoIniFile(GlobalConfig.Path_D3DXINI);
+                    MigotoIniFile migotoIniFile = new MigotoIniFile(PathManager.Path_D3DXINI);
 
                     //关闭include_recursive = Mods
                     migotoIniFile.ReplaceSelf_IniSectionIniLine("include", "include_recursive = Mods", ";include_recursive = Mods");
@@ -881,7 +862,7 @@ namespace SSMT
                     migotoIniFile.SaveSelf();
 
                     //清除全局Dump
-                    D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", "");
+                    D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", "");
 
                     //生成特定Dump配置
                     SetD3dxConfig_DumpSpecificIBListConfig();
@@ -891,17 +872,17 @@ namespace SSMT
                 else
                 {
                     //移除特定Dump配置
-                    string DumpIBListConfigIniFilePath = Path.Combine(GlobalConfig.Path_ModsFolder, "DumpIBListConfig.ini");
+                    string DumpIBListConfigIniFilePath = Path.Combine(PathManager.Path_ModsFolder, "DumpIBListConfig.ini");
                     if (File.Exists(DumpIBListConfigIniFilePath))
                     {
                         File.Delete(DumpIBListConfigIniFilePath);
                     }
 
                     //恢复全局Dump
-                    D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", GlobalConfig.analyse_options);
+                    D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", ConstantsManager.analyse_options);
 
                     //恢复Mods引用并取消特定Dump引用
-                    MigotoIniFile migotoIniFile = new MigotoIniFile(GlobalConfig.Path_D3DXINI);
+                    MigotoIniFile migotoIniFile = new MigotoIniFile(PathManager.Path_D3DXINI);
                     //开启include_recursive = Mods
                     migotoIniFile.ReplaceSelf_IniSectionIniLine("include", ";include_recursive = Mods", "include_recursive = Mods");
                     migotoIniFile.ReplaceSelf_AddNewLineIfNotExists("include", "include_recursive = Mods");

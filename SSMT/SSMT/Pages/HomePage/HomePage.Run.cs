@@ -21,7 +21,7 @@ namespace SSMT
                 GameConfig gameConfig = new GameConfig();
 
                 string LoaderExeName = "LOD.exe";
-                string OriginalLoaderExePath = Path.Combine(GlobalConfig.Path_AssetsFolder, LoaderExeName);
+                string OriginalLoaderExePath = Path.Combine(PathManager.Path_AssetsFolder, LoaderExeName);
                 if (!File.Exists(OriginalLoaderExePath))
                 {
                     _ = SSMTMessageHelper.Show("您的SSMT中自带的LOD.exe缺失了，请检查是否被杀软误删，或重新安装SSMT以解决此问题");
@@ -41,39 +41,51 @@ namespace SSMT
                 SyncD3D11DllFile();
 
                 string MigotoTargetDll = Path.Combine(gameConfig.MigotoPath, "d3d11.dll");
-                
-                //用户需要仪式感和掌控力，所以不能直接运行，必须检测到按钮开启才运行
-                //必须是能看见的情况下才解决报错，否则不解决。
-                if (ComboBox_DllPreProcess.SelectedIndex == 1)
+
+				//使用UPX压缩DLL，避开最基础的md5识别，当然目前原神热更新已经修复了这个，所以大部分情况下不管用了
+                //但是不是每个游戏都有反作弊，都能意识到这一点，所以保留此功能，万一有用，呵呵
+				if (ComboBox_DllPreProcess.SelectedIndex == 1)
                 {
                     SSMTCommandHelper.RunUPX(MigotoTargetDll, false);
                 }
 
 
                 //强制设置analyse_options 使用deferred_ctx_immediate确保IdentityV和YYSLS都能正确Dump出东西
-                string analyse_options = GlobalConfig.analyse_options;
+                string analyse_options = ConstantsManager.analyse_options;
 
-                if (ToggleSwitch_Symlink.IsOn)
+                if (ComboBox_Symlink.SelectedIndex == 0)
                 {
                     analyse_options = analyse_options + " symlink";
                 }
 
-                if (ToggleSwitch_AutoSetAnalyseOptions.IsOn)
+                if (ComboBox_AutoSetAnalyseOptions.SelectedIndex == 0)
                 {
-                    D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", analyse_options);
+                    D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", analyse_options);
                 }
 
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[loader]", "target", gameConfig.TargetPath);
+                string target_path = gameConfig.TargetPath;
+                if (target_path.Trim() == "") {
+                    target_path = TextBox_TargetPath.Text;
+                    if (target_path.Trim() == "")
+                    {
+                        _ = SSMTMessageHelper.Show("启动前请先填写进程路径","Please set your target path before start");
+                        return;
+                    }
+			    }
 
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[loader]", "launch", "");
-                //D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[loader]", "launch_args", gameConfig.LaunchArgs);
+                
+
+				D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "target", target_path);
+
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "launch", "");
+                //D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "launch_args", gameConfig.LaunchArgs);
 
                 int dllInitializationDelay = (int)NumberBox_DllInitializationDelay.Value;
 
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[system]", "dll_initialization_delay", dllInitializationDelay.ToString());
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[system]", "dll_initialization_delay", dllInitializationDelay.ToString());
 
                 //强制设置hunting
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "hunting", "2");
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "hunting", "2");
 
                 await SSMTCommandHelper.ProcessRunFile(MigotoLoaderExePath);
 
@@ -100,7 +112,7 @@ namespace SSMT
 
                     if (gameConfig.LaunchPath == "" || !File.Exists(gameConfig.LaunchPath))
                     {
-                        _ = SSMTMessageHelper.Show("您当前并未正确设置启动路径，或启动路径文件并不存在，请前往设置页面检查。");
+                        _ = SSMTMessageHelper.Show("您当前并未正确设置启动路径，或启动路径文件并不存在，请重新设置。");
                         return;
                     }
 

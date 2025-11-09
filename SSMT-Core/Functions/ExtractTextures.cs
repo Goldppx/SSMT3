@@ -23,7 +23,7 @@ namespace SSMT
                 FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
 
                 //在当前工作空间文件夹中创建每个DrawIB的输出文件夹
-                string DrawIBOutputFolder = GlobalConfig.Path_CurrentWorkSpaceFolder + DrawIB + "\\";
+                string DrawIBOutputFolder = PathManager.Path_CurrentWorkSpaceFolder + DrawIB + "\\";
                 Directory.CreateDirectory(DrawIBOutputFolder);
 
                 //创建TrianglelistTextures
@@ -77,7 +77,7 @@ namespace SSMT
         }
 
 
-        public static void ExtractDedupedTextures(bool ReverseExtract = false)
+        public static void  ExtractDedupedTextures(bool ReverseExtract = false)
         {
             Debug.WriteLine("ExtractDedupedTextures::Start");
             List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig();
@@ -85,7 +85,7 @@ namespace SSMT
             foreach (string DrawIB in DrawIBList)
             {
                 //在当前工作空间文件夹中创建每个DrawIB的输出文件夹
-                string DrawIBOutputFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                string DrawIBOutputFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
                 Directory.CreateDirectory(DrawIBOutputFolder);
 
                 //创建DedupedTextures
@@ -126,7 +126,7 @@ namespace SSMT
             LOG.Info("ExtractDedupedTextures::End");
         }
 
-        public static void ExtractRenderTextures(bool ReverseExtract = false)
+        public static async Task ExtractRenderTextures(bool ReverseExtract = false)
         {
             LOG.Info("ExtractRenderTextures::Start");
 
@@ -135,7 +135,7 @@ namespace SSMT
             foreach (string DrawIB in DrawIBList)
             {
                 //在当前工作空间文件夹中创建每个DrawIB的输出文件夹
-                string DrawIBOutputFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                string DrawIBOutputFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
                 Directory.CreateDirectory(DrawIBOutputFolder);
 
 
@@ -178,7 +178,7 @@ namespace SSMT
             foreach (string DrawIB in DrawIBList)
             {
                 //在当前工作空间文件夹中创建每个DrawIB的输出文件夹
-                string DrawIBOutputFolder = GlobalConfig.Path_CurrentWorkSpaceFolder + DrawIB + "\\";
+                string DrawIBOutputFolder = PathManager.Path_CurrentWorkSpaceFolder + DrawIB + "\\";
                 Directory.CreateDirectory(DrawIBOutputFolder);
 
                 //创建TrianglelistTextures

@@ -24,7 +24,7 @@ namespace SSMT
             foreach (string DrawIB in DrawIBList)
             {
                 //如果这个DrawIB的文件夹存在，说明提取成功了，否则直接跳过
-                if (!Directory.Exists(Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\")))
+                if (!Directory.Exists(Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\")))
                 {
                     continue;
                 }
@@ -56,7 +56,7 @@ namespace SSMT
                 }
 
                 string TrianglelistDedupedFileNameJsonName = "TrianglelistDedupedFileName.json";
-                string TrianglelistDedupedFileNameJsonPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder + DrawIB + "\\", TrianglelistDedupedFileNameJsonName);
+                string TrianglelistDedupedFileNameJsonPath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder + DrawIB + "\\", TrianglelistDedupedFileNameJsonName);
                 DBMTJsonUtils.SaveJObjectToFile(Trianglelist_DedupedFileName_JObject, TrianglelistDedupedFileNameJsonPath);
             }
 
@@ -79,7 +79,7 @@ namespace SSMT
             foreach (string DrawIB in DrawIBList)
             {
                 //如果这个DrawIB的文件夹存在，说明提取成功了，否则直接跳过
-                if (!Directory.Exists(Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\")))
+                if (!Directory.Exists(Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\")))
                 {
                     continue;
                 }
@@ -110,7 +110,7 @@ namespace SSMT
                 }
 
                 string SaveFileName = "ComponentName_DrawCallIndexList.json";
-                string SaveJsonFilePath = Path.Combine(Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\"), SaveFileName);
+                string SaveJsonFilePath = Path.Combine(Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\"), SaveFileName);
                 DBMTJsonUtils.SaveJObjectToFile(ComponentName_DrawIndexList_JObject, SaveJsonFilePath);
 
                 DrawIB_ComponentName_DrawCallIndexList_Dict_Dict[DrawIB] = ComponentName_DrawCallIndexList;
@@ -124,6 +124,16 @@ namespace SSMT
         /// </summary>
         public static void PostDoAfterExtract(bool ReverseExtract = false)
         {
+            CoreFunctions.ExtractDedupedTextures();
+
+            
+                //异步执行，我才懒得等它全部转换完毕才弹出文件夹
+                LOG.Info("ConvertDedupedTexturesToTargetFormat:");
+                _ = SSMTTextureHelper.ConvertDedupedTexturesToTargetFormat();
+            
+            //提取Render贴图直接异步执行算了，无所谓是否成功，反正用不上
+            _ = CoreFunctions.ExtractRenderTextures();
+
             List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig();
 
             //(1) 贴图标记功能前置1
@@ -135,7 +145,7 @@ namespace SSMT
 
             //(3)自动检测贴图配置并自动上贴图
             //要自动检测贴图的前提条件是存在贴图配置文件夹
-            if (!Directory.Exists(GlobalConfig.Path_GameTextureConfigFolder))
+            if (!Directory.Exists(PathManager.Path_GameTextureConfigFolder))
             {
                 return;
             }
@@ -152,7 +162,7 @@ namespace SSMT
             foreach (string DrawIB in DrawIBList)
             {
                 //如果这个DrawIB的文件夹存在，说明提取成功了，否则直接跳过
-                if (!Directory.Exists(Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\")))
+                if (!Directory.Exists(Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\")))
                 {
                     LOG.Info("跳过DrawIB: " + DrawIB + "，因为没有提取成功。");
                     continue;
@@ -207,7 +217,7 @@ namespace SSMT
                     LOG.Info("找到了匹配的贴图配置: " + MatchTextureConfigName);
                     //根据MatchTextureConfigName读取MarkName
 
-                    string TextureConfigSavePath = GlobalConfig.Path_GameTextureConfigFolder + MatchTextureConfigName + ".json";
+                    string TextureConfigSavePath = PathManager.Path_GameTextureConfigFolder + MatchTextureConfigName + ".json";
                     LOG.Info("TextureConfigSavePath: " + TextureConfigSavePath);
                     if (File.Exists(TextureConfigSavePath))
                     {

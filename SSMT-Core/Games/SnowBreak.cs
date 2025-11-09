@@ -40,7 +40,7 @@ namespace SSMT
                         string CategorySlot = item.Value;
                         LOG.Info("CategorySlot: " + CategorySlot);
 
-                        string CategoryFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
+                        string CategoryFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
                         if (CategoryFileName == "")
                         {
                             LOG.Info("未找到当前CategorySlot对应文件: " + CategorySlot);
@@ -76,7 +76,7 @@ namespace SSMT
                     }
 
                     string CategorySlotFileName = CategorySlot_FileName_Dict[CategorySlot];
-                    string CategorySlotFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CategorySlotFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                    string CategorySlotFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CategorySlotFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                     int SlotFileSize = (int)DBMTFileUtils.GetFileSize(CategorySlotFilePath);
                     int SlotVertexCount = SlotFileSize / CategoryStride;
                     if (VertexCount == 0)
@@ -197,7 +197,7 @@ namespace SSMT
                 //WWMI提取逻辑
 
                 //1.获取所有的TrianglelistIndex，而且WWMI很特殊，不能从Log获取，必须从FrameAnalyse文件里分析文件名来获取。
-                List<string> TrianglelistIndexList = FrameAnalysisDataUtils.Get_TrianglelistIndexListByDrawIB(GlobalConfig.WorkFolder, DrawIB);
+                List<string> TrianglelistIndexList = FrameAnalysisDataUtils.Get_TrianglelistIndexListByDrawIB(PathManager.WorkFolder, DrawIB);
                 if (TrianglelistIndexList.Count == 0)
                 {
                     LOG.Error("无法找到当前DrawIB: " + DrawIB + " 对应的数据文件，请检查是否Dump错误或者DrawIB输入错误。");
@@ -265,7 +265,7 @@ namespace SSMT
                             string CategorySlot = item.Value;
                             LOG.Info("CategorySlot: " + CategorySlot);
 
-                            string CategoryFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
+                            string CategoryFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
                             if (CategoryFileName == "")
                             {
                                 LOG.Info("未找到当前CategorySlot对应文件: " + CategorySlot);
@@ -279,7 +279,7 @@ namespace SSMT
                     LOG.NewLine();
 
                     string GameTypeFolderName = "TYPE_" + d3D11GameType.GameTypeName;
-                    string DrawIBFolderPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                    string DrawIBFolderPath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
                     string GameTypeOutputPath = Path.Combine(DrawIBFolderPath, GameTypeFolderName + "\\");
                     if (!Directory.Exists(GameTypeOutputPath))
                     {
@@ -304,7 +304,7 @@ namespace SSMT
                     {
                         string CategoryName = item.Key;
                         string CategoryBufFileName = item.Value;
-                        string CategoryBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CategoryBufFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                        string CategoryBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CategoryBufFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                         int CategoryStride = d3D11GameType.CategoryStrideDict[CategoryName];
 
                         Dictionary<int, byte[]> BufDict = DBMTBinaryUtils.ReadBinaryFileByStride(CategoryBufFilePath, CategoryStride);
@@ -318,13 +318,13 @@ namespace SSMT
 
 
                     //想办法获取IB文件的Format，用于判断是R16_UINT还是R32_UINT,WWMI比较特殊两种都用到了。
-                    string IBTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, MaxSlotTrianglelistIndex + "-ib", ".txt");
+                    string IBTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, MaxSlotTrianglelistIndex + "-ib", ".txt");
                     if (IBTxtFileName == "")
                     {
                         LOG.Error("无法找到Index: " + MaxSlotTrianglelistIndex + " 的IB的txt文件，跳过此数据类型");
                         continue;
                     }
-                    string IBTxtFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBTxtFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                    string IBTxtFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBTxtFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                     string IBFileFormat = "DXGI_FORMAT_R16_UINT";
                     string ReadDXGIFormat = DBMTFileUtils.FindMigotoIniAttributeInFile(IBTxtFilePath, "format");
                     if (ReadDXGIFormat == "DXGI_FORMAT_R32_UINT")
@@ -333,7 +333,7 @@ namespace SSMT
                     }
 
                     string IBBufFileName = Path.GetFileNameWithoutExtension(IBTxtFileName) + ".buf";
-                    string IBBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBBufFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                    string IBBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBBufFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
 
                     IndexBufferBufFile IBBufFile = new IndexBufferBufFile(IBBufFilePath, IBFileFormat);
 
@@ -355,7 +355,7 @@ namespace SSMT
                     }
 
                     //获取cb4_hash
-                    string cb4FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, MaxSlotTrianglelistIndex + "-vs-cb4=", ".buf");
+                    string cb4FileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, MaxSlotTrianglelistIndex + "-vs-cb4=", ".buf");
                     if (cb4FileName != "")
                     {
                         string vscb4_hash = cb4FileName.Substring(14, 8);
@@ -382,7 +382,7 @@ namespace SSMT
                         //收集脸部形态键数据,如果有的话
                         string ShapeKeyHash = Total_CategorySlot_Hash_Dict["vb6"];
                         //根据ShapeKeyHash获取对应Index列表，然后逐个判断是否含有cs-t0和cs-t1槽位
-                        List<string> ShapeKeyIndexList = FrameAnalysisLogUtilsV2.Get_DrawCallIndexList_ByHash(ShapeKeyHash, false, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                        List<string> ShapeKeyIndexList = FrameAnalysisLogUtilsV2.Get_DrawCallIndexList_ByHash(ShapeKeyHash, false, PathManager.Path_LatestFrameAnalysisLogTxt);
 
                         LOG.Info("ShapeKeyIndexList:");
                         foreach (string ShapeKeyIndex in ShapeKeyIndexList)
@@ -410,13 +410,13 @@ namespace SSMT
 
                     if (ShapeKeyExtractIndex != "")
                     {
-                        string CSCB0_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-cs-cb0", ".buf");
-                        string CST0_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-cs-t0", ".buf");
-                        string CST1_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-cs-t1", ".buf");
+                        string CSCB0_FileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, ShapeKeyExtractIndex + "-cs-cb0", ".buf");
+                        string CST0_FileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, ShapeKeyExtractIndex + "-cs-t0", ".buf");
+                        string CST1_FileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, ShapeKeyExtractIndex + "-cs-t1", ".buf");
 
-                        string CSCB0_FilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CSCB0_FileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);   //ShapeKeyOffset
-                        string CST0_FilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CST0_FileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);     //ShapeKeyVertexId
-                        string CST1_FilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CST1_FileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);     //ShapeKeyVertexOffset
+                        string CSCB0_FilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CSCB0_FileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);   //ShapeKeyOffset
+                        string CST0_FilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CST0_FileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);     //ShapeKeyVertexId
+                        string CST1_FilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CST1_FileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);     //ShapeKeyVertexOffset
 
                         shapekeydata = new ShapeKey(CSCB0_FilePath, CST0_FilePath, CST1_FilePath);
 
@@ -424,7 +424,7 @@ namespace SSMT
                         //offsets_hash 就是vb6的hash
                         metaDataJson.shapekeys.offsets_hash = Total_CategorySlot_Hash_Dict["vb6"];
                         //scale_hash 就是ShapeKeyExtractIndex的cs-u1的Hash值
-                        string CSU1_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-u1=", ".buf");
+                        string CSU1_FileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, ShapeKeyExtractIndex + "-u1=", ".buf");
                         if (CSU1_FileName != "")
                         {
                             string csu1_hash = CSU1_FileName.Substring(10, 8);
@@ -453,7 +453,7 @@ namespace SSMT
                     }
 
 
-                    SortedDictionary<int, string> MatchFirstIndex_IBTxtFileName_Dict = FrameAnalysisDataUtils.Get_MatchFirstIndex_IBTxtFileName_Dict(GlobalConfig.WorkFolder, DrawIB);
+                    SortedDictionary<int, string> MatchFirstIndex_IBTxtFileName_Dict = FrameAnalysisDataUtils.Get_MatchFirstIndex_IBTxtFileName_Dict(PathManager.WorkFolder, DrawIB);
 
                     int ComponentCount = 1;
                     int ComponentVertexOffset = 0;
@@ -470,7 +470,7 @@ namespace SSMT
                         int MatchFirstIndex = item.Key;
                         string TmpIBTxtFileName = item.Value;
                         string TmpIndex = TmpIBTxtFileName.Substring(0, 6);
-                        string TmpIBTxtFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(TmpIBTxtFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                        string TmpIBTxtFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(TmpIBTxtFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                         string IndexCountStr = DBMTFileUtils.FindMigotoIniAttributeInFile(TmpIBTxtFilePath, "index count");
                         LOG.Info("Index: " + TmpIndex + " MatchFirstIndex: " + item.Key.ToString() + " IndexCount: " + IndexCountStr);
 
@@ -614,10 +614,10 @@ namespace SSMT
                             //大部分角色的BoneMatrixSlot都是vs-cb4，但是部分角色比如夏空是vs-cb5
 
                             LOG.Info("开始读取BoneMatrix骨骼变换矩阵内容:");
-                            string BoneMatrixBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TmpIndex + "-vs-cb4=", ".buf");
+                            string BoneMatrixBufFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TmpIndex + "-vs-cb4=", ".buf");
 
                             LOG.Info("BoneMatrix BufFileName: " + BoneMatrixBufFileName);
-                            string BoneMatrixBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(BoneMatrixBufFileName, GlobalConfig.WorkFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                            string BoneMatrixBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(BoneMatrixBufFileName, PathManager.WorkFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
 
                             uint AssumeMinBoneMatrixFileSize = VGCount * 48;
                             long VSCB4BufFileSize = DBMTFileUtils.GetFileSize(BoneMatrixBufFilePath);
@@ -628,8 +628,8 @@ namespace SSMT
                                 //（夏空开技能问题）
 
                                 //LOG.Info("遇到特殊情况，VS-CB4槽位的内容大小小于骨骼变换矩阵应有的大小，决定使用VS-CB3进行提取");
-                                //BoneMatrixBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TmpIndex + "-vs-cb3=", ".buf");
-                                //BoneMatrixBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(BoneMatrixBufFileName, GlobalConfig.WorkFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                                //BoneMatrixBufFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TmpIndex + "-vs-cb3=", ".buf");
+                                //BoneMatrixBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(BoneMatrixBufFileName, PathManager.WorkFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                                 //long VSCB3BufFileSize = DBMTFileUtils.GetFileSize(BoneMatrixBufFilePath);
                                 //if (AssumeMinBoneMatrixFileSize > VSCB3BufFileSize)
                                 //{

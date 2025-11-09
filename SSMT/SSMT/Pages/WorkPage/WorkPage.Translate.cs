@@ -38,7 +38,6 @@ namespace SSMT
                 Menu_OpenDBMTLocationFolder.Text = "打开SSMT缓存文件夹";
                 Menu_OpenLogsFolder.Text = "打开Logs文件夹";
                 Menu_OpenLatestLogFile.Text = "打开最新的日志文件";
-                Menu_OpenConfigsFolder.Text = "打开Configs文件夹";
                 Menu_OpenPluginsFolder.Text = "打开Plugins文件夹";
 
                 Menu_GameTypeFolder.Text = "打开数据类型文件夹";
@@ -73,9 +72,6 @@ namespace SSMT
                 ToggleSwitch_DumpIBListConfig.OnContent = "当前Dump模式：指定IB列表";
                 ToggleSwitch_DumpIBListConfig.OffContent = "当前Dump模式：全局";
 
-                ToggleSwitch_ConvertDedupedTextures.OnContent = "转换DedupedTextures贴图";
-                ToggleSwitch_ConvertDedupedTextures.OffContent = "不转换DedupedTextures贴图";
-                ToolTipService.SetToolTip(ToggleSwitch_ConvertDedupedTextures, "推荐开启，开启后将会在提取模型后把DedupedTextures中的dds格式贴图转换为你设置中指定格式的贴图，关闭后将导致贴图标记相关功能无法使用");
 
                 //主要内容
                 TextBlock_DrawIBList.Text = "绘制IB hash列表";
@@ -131,7 +127,6 @@ namespace SSMT
                 Menu_OpenDBMTLocationFolder.Text = "Open SSMT Cache Folder";
                 Menu_OpenLogsFolder.Text = "Open Logs Folder";
                 Menu_OpenLatestLogFile.Text = "Open Latest Log File";
-                Menu_OpenConfigsFolder.Text = "Open Configs Folder";
                 Menu_OpenPluginsFolder.Text = "Open Plugins Folder";
 
                 Menu_GameTypeFolder.Text = "Open GameType Folder";
@@ -165,8 +160,6 @@ namespace SSMT
                 ToggleSwitch_DumpIBListConfig.OnContent = "Dump Specific IB List";
                 ToggleSwitch_DumpIBListConfig.OffContent = "Dump Everything";
 
-                ToggleSwitch_ConvertDedupedTextures.OnContent = "Convert DedupedTextures";
-                ToggleSwitch_ConvertDedupedTextures.OffContent = "Not Convert DedupedTextures";
 
                 //主要内容
                 TextBlock_DrawIBList.Text = "DrawIB List";

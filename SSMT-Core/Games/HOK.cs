@@ -37,7 +37,7 @@ namespace SSMT
                     int CategoryStride = d3d11GameType.CategoryStrideDict[CategoryName];
 
                     //因为王者这种类型，所有的vb0都相同的，一次提交多次使用，所以直接使用第一个TrianglelistIndex即可。
-                    VertexBufferCombFile VBCombFile = new VertexBufferCombFile(GlobalConfig.WorkFolder, TrianglelistIndexList[0], CategorySlot);
+                    VertexBufferCombFile VBCombFile = new VertexBufferCombFile(PathManager.WorkFolder, TrianglelistIndexList[0], CategorySlot);
 
                     int AssumeVertexCount = VBCombFile.ByteLength / CategoryStride;
 
@@ -83,7 +83,7 @@ namespace SSMT
         /// <returns></returns>
         public static bool ExtractPerDrawIB(string DrawIB, D3D11GameTypeLv2 d3D11GameTypeLv2, List<string> TrianglelistIndexList)
         {
-            string DrawIBFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+            string DrawIBFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
             if (!Directory.Exists(DrawIBFolder))
             {
                 Directory.CreateDirectory(DrawIBFolder);
@@ -141,14 +141,14 @@ namespace SSMT
                     {
                         string CategoryName = item.Key;
                         string CategorySlot = item.Value;
-                        VertexBufferCombFile VBCombFile = new VertexBufferCombFile(GlobalConfig.WorkFolder, TrianglelistIndex, CategorySlot);
+                        VertexBufferCombFile VBCombFile = new VertexBufferCombFile(PathManager.WorkFolder, TrianglelistIndex, CategorySlot);
                         BufDictList.Add(VBCombFile.BufDict);
                     }
 
 
                     //读取IBBufFile
-                    string IBBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-ib", ".buf");
-                    string IBBufFilePath = Path.Combine(GlobalConfig.WorkFolder, IBBufFileName);
+                    string IBBufFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TrianglelistIndex + "-ib", ".buf");
+                    string IBBufFilePath = Path.Combine(PathManager.WorkFolder, IBBufFileName);
 
                     IndexBufferBufFile IBBufFile = new IndexBufferBufFile(IBBufFilePath, "DXGI_FORMAT_R16_UINT");
 
@@ -209,7 +209,7 @@ namespace SSMT
                 }
                 LOG.NewLine();
 
-                List<string> TrianglelistIndexList = FrameAnalysisLogUtilsV2.Get_DrawCallIndexList_ByHash(DrawIB, false, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                List<string> TrianglelistIndexList = FrameAnalysisLogUtilsV2.Get_DrawCallIndexList_ByHash(DrawIB, false, PathManager.Path_LatestFrameAnalysisLogTxt);
                 foreach (string TrianglelistIndex in TrianglelistIndexList)
                 {
                     LOG.Info("TrianglelistIndex: " + TrianglelistIndex);

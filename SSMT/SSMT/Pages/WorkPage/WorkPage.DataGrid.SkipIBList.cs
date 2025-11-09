@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SSMT_Core;
 
 namespace SSMT
 {
@@ -62,7 +63,7 @@ namespace SSMT
                 SkipIBItems.Clear();
 
 
-                string Configpath = GlobalConfig.Path_CurrentWorkSpace_SkipIBConfigJson;
+                string Configpath = PathManager.Path_CurrentWorkSpace_SkipIBConfigJson;
                 Debug.WriteLine("读取配置文件路径: " + Configpath);
 
                 if (File.Exists(Configpath))
@@ -108,7 +109,7 @@ namespace SSMT
 
 
             //(3) 接下来把所有的drawIBList中的DrawIB保留下来存储到对应配置文件。
-            SaveSkipIBListConfigToFolder(GlobalConfig.Path_CurrentWorkSpaceFolder);
+            SaveSkipIBListConfigToFolder(PathManager.Path_CurrentWorkSpaceFolder);
 
             Debug.WriteLine("保存当前SkipIB列表::End");
             Debug.WriteLine("----------------------------------");
@@ -148,13 +149,13 @@ namespace SSMT
                 {
                     string json_string = DrawIBJarrayList.ToString(Formatting.Indented);
                     // 将JSON字符串写入文件
-                    File.WriteAllText(GlobalConfig.Path_CurrentWorkSpace_SkipIBConfigJson, json_string);
+                    File.WriteAllText(PathManager.Path_CurrentWorkSpace_SkipIBConfigJson, json_string);
                 }
                 else
                 {
                     try
                     {
-                        File.Delete(GlobalConfig.Path_CurrentWorkSpace_SkipIBConfigJson);
+                        File.Delete(PathManager.Path_CurrentWorkSpace_SkipIBConfigJson);
 
                     }
                     catch (Exception ex)
@@ -185,12 +186,12 @@ namespace SSMT
                 outputContent = outputContent + "\r\n";
             }
 
-            if (!File.Exists(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder))
+            if (!File.Exists(PathManager.Path_CurrentWorkSpaceGeneratedModFolder))
             {
-                Directory.CreateDirectory(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder);
+                Directory.CreateDirectory(PathManager.Path_CurrentWorkSpaceGeneratedModFolder);
             }
 
-            string outputPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder, "IBSkip.ini");
+            string outputPath = Path.Combine(PathManager.Path_CurrentWorkSpaceGeneratedModFolder, "IBSkip.ini");
 
             File.WriteAllText(outputPath, outputContent);
         }

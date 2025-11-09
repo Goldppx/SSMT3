@@ -1,0 +1,15 @@
+{
+  "TargetPath": "",
+  "3DmigotoPath": "",
+  "LaunchPath": "",
+  "LaunchArgs": "",
+  "WorkSpace": "",
+  "LogicName": "ZZMI",
+  "GameTypeName": "ZZMI",
+  "AutoSetAnalyseOptions": true,
+  "GithubPackageVersion": "",
+  "DllInitializationDelay": 100,
+  "DllReplaceSelectedIndex": 0,
+  "DllPreProcessSelectedIndex": 0,
+  "LaunchItems": []
+}

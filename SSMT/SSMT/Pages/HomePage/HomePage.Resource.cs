@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using WinUI3Helper;
+using SSMT_Core;
 
 namespace SSMT
 {
@@ -199,7 +200,7 @@ namespace SSMT
 
             try
             {
-                string folder = GlobalConfig.Path_CurrentGamesFolder;
+                string folder = PathManager.Path_CurrentGamesFolder;
 
                 // 清理旧背景文件
                 foreach (var file in new[] { "Background.webp", "Background.png", "Background.mp4" })

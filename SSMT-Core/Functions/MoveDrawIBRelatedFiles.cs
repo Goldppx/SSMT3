@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SSMT_Core;
 
 namespace SSMT
 {
@@ -15,7 +16,7 @@ namespace SSMT
         {
             //TODO 这个CTX也用不了
 
-            string OutputDrawIBRelatedFolder = GlobalConfig.Path_CurrentWorkSpaceFolder + IBRelatedFolderName + "\\FrameAnalysis-2028-08-28-666666\\";
+            string OutputDrawIBRelatedFolder = PathManager.Path_CurrentWorkSpaceFolder + IBRelatedFolderName + "\\FrameAnalysis-2028-08-28-666666\\";
             Directory.CreateDirectory(OutputDrawIBRelatedFolder);
 
             string DedupedFolderPath = OutputDrawIBRelatedFolder + "deduped\\";
@@ -39,7 +40,7 @@ namespace SSMT
                 foreach (string PointlistFileName in PointlistRelatedFiles)
                 {
                     CopyDedupedFiles.Add(PointlistFileName);
-                    File.Copy(GlobalConfig.WorkFolder + PointlistFileName, OutputDrawIBRelatedFolder + PointlistFileName, true);
+                    File.Copy(PathManager.WorkFolder + PointlistFileName, OutputDrawIBRelatedFolder + PointlistFileName, true);
                 }
 
                 List<string> DrawIBRelatedIndexList = new List<string>();
@@ -55,11 +56,11 @@ namespace SSMT
 
                 foreach (string DrawIBIndex in DrawIBRelatedIndexList)
                 {
-                    List<string> DrawIBRelatedFiles = FrameAnalysisDataUtils.FilterFrameAnalysisFile(GlobalConfig.WorkFolder, DrawIBIndex, "");
+                    List<string> DrawIBRelatedFiles = FrameAnalysisDataUtils.FilterFrameAnalysisFile(PathManager.WorkFolder, DrawIBIndex, "");
                     foreach (string DrawIBIndexFileName in DrawIBRelatedFiles)
                     {
                         CopyDedupedFiles.Add(DrawIBIndexFileName);
-                        File.Copy(GlobalConfig.WorkFolder + DrawIBIndexFileName, OutputDrawIBRelatedFolder + DrawIBIndexFileName, true);
+                        File.Copy(PathManager.WorkFolder + DrawIBIndexFileName, OutputDrawIBRelatedFolder + DrawIBIndexFileName, true);
                     }
                 }
 
@@ -67,20 +68,20 @@ namespace SSMT
                 {
                     string DedupedFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(FileName, FAInfo.FolderPath, FAInfo.LogFilePath);
                     string DedupedFileName = FrameAnalysisLogUtilsV2.Get_DedupedFileName(FileName, FAInfo.FolderPath, FAInfo.LogFilePath);
-                    File.Copy(GlobalConfig.WorkFolder + FileName, DedupedFolderPath + DedupedFileName, true);
+                    File.Copy(PathManager.WorkFolder + FileName, DedupedFolderPath + DedupedFileName, true);
                 }
 
             }
 
 
-            if (File.Exists(GlobalConfig.WorkFolder + "log.txt"))
+            if (File.Exists(PathManager.WorkFolder + "log.txt"))
             {
-                File.Copy(GlobalConfig.WorkFolder + "log.txt", OutputDrawIBRelatedFolder + "log.txt", true);
+                File.Copy(PathManager.WorkFolder + "log.txt", OutputDrawIBRelatedFolder + "log.txt", true);
             }
 
-            if (File.Exists(GlobalConfig.WorkFolder + "ShaderUsage.txt"))
+            if (File.Exists(PathManager.WorkFolder + "ShaderUsage.txt"))
             {
-                File.Copy(GlobalConfig.WorkFolder + "ShaderUsage.txt", OutputDrawIBRelatedFolder + "ShaderUsage.txt", true);
+                File.Copy(PathManager.WorkFolder + "ShaderUsage.txt", OutputDrawIBRelatedFolder + "ShaderUsage.txt", true);
             }
         }
 

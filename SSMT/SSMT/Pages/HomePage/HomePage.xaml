@@ -12,9 +12,16 @@
     xmlns:s="using:CommunityToolkit.WinUI"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:CommunityToolkit.WinUI.Behaviors"
+
     CacheMode="BitmapCache"
     Background="Transparent"
     >
+    
+    <!--WinUI3所有的东西都在CommunityToolkit里，
+    然后也没有一个可靠的文档来告诉萌新在哪里可以获取，
+    只有几个很久都不更新的Gallary程序勉强能参考-->
 
     <Grid >
         <!-- 定义行 -->
@@ -51,6 +58,20 @@
                 <ScaleTransform />
             </Image.RenderTransform>
         </Image>
+
+      
+
+
+        <InfoBar
+            Grid.ColumnSpan="2"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Center"
+            Margin="5"
+            >
+            <interactivity:Interaction.Behaviors>
+                <behaviors:StackedNotificationsBehavior x:Name="NotificationQueue" />
+            </interactivity:Interaction.Behaviors>
+        </InfoBar>
 
         <!--游戏图标列表-->
         <GridView
@@ -130,40 +151,7 @@ The following sets the maximum # of items to show before wrapping.-->
             </GridView.ItemsPanel>
         </GridView>
 
-        <!--版本号显示-->
-        <Grid 
-            Grid.ColumnSpan="2"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top">
 
-            <Rectangle
-                RadiusX="12"
-                RadiusY="12"
-                Margin="-12, -8, -12, -8">
-                <Rectangle.Fill>
-                    <AcrylicBrush
-                        TintColor="{ThemeResource SystemChromeLowColor}"
-                        TintOpacity="0.7"
-                        FallbackColor="{ThemeResource SystemChromeLowColor}"/>
-                </Rectangle.Fill>
-
-            </Rectangle>
-            <!-- 原来的StackPanel -->
-            <StackPanel 
-                Orientation="Horizontal">
-
-                <HyperlinkButton
-                    x:Name="HyperlinkButton_SSMTVersion"
-                    Content="SSMT Version: "
-                    ></HyperlinkButton>
-                
-                
-                <HyperlinkButton
-                    x:Name="HyperlinkButton_MigotoPackageVersion"
-                    Content="3Dmigoto Package Version: "
-                    />
-            </StackPanel>
-        </Grid>
 
 
         <!--当前游戏配置-->
@@ -174,7 +162,7 @@ The following sets the maximum # of items to show before wrapping.-->
             Grid.Column="0" 
             Grid.Row="1"  
             Grid.RowSpan="2"
-            Margin="40,50,40,40" >
+            Margin="40" >
             
             <Border.Background>
                 <AcrylicBrush
@@ -310,6 +298,12 @@ The following sets the maximum # of items to show before wrapping.-->
                                     Margin="5"
                                     x:Name="Button_Open3DmigotoFolder"
                                     Click="Button_Open3DmigotoFolder_Click"/>
+
+                                <HyperlinkButton
+                                    Margin="5"
+                                    x:Name="HyperlinkButton_MigotoPackageVersion"
+                                    Content="3Dmigoto Package Version: "
+                                    />
                             </StackPanel>
                             
                             
@@ -362,45 +356,9 @@ The following sets the maximum # of items to show before wrapping.-->
                                 x:Name="TextBox_LaunchArgsPath"/>
 
 
-                            <StackPanel Orientation="Horizontal">
-                                <ToggleSwitch 
-                                    Margin="5"
-                                    VerticalAlignment="Center" 
-                                    x:Name="ToggleSwitch_Symlink" 
-                                    Toggled="ToggleSwitch_Symlink_Toggled"/>
 
-                                <ToggleSwitch
-                                    Margin="5"
-                                    x:Name="ToggleSwitch_AutoSetAnalyseOptions"  
-                                    Toggled="ToggleSwitch_AutoSetAnalyseOptions_Toggled"
-                                    />
 
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal">
-
-                                <ToggleSwitch 
-                                    VerticalAlignment="Center" 
-                                    Margin="5" 
-                                    x:Name="ToggleSwitch_ShowWarning" 
-                                    Toggled="ToggleSwitch_ShowWarning_Toggled"
-                                    ToolTipService.ToolTip=""/>
-                                
-                                
-
-                            </StackPanel>
-
-                            <NumberBox 
-                                HorizontalAlignment="Left"
-                                Width="200"
-                                Margin="5"
-                                SmallChange="10"
-                                LargeChange="100"
-                                x:Name="NumberBox_DllInitializationDelay"
-                                LostFocus="NumberBox_DllInitializationDelay_LostFocus"
-                                ></NumberBox>
-
-                            
+                           
 
                         </StackPanel>
 
@@ -413,6 +371,41 @@ The following sets the maximum # of items to show before wrapping.-->
                         VerticalAlignment="Top">
 
                         <controls:SettingsExpander.Items>
+                            <controls:SettingsCard x:Name="SettingsCard_ShowWarnings">
+                                <!-- 这里换成你查到的编码 -->
+                                <controls:SettingsCard.HeaderIcon>
+                                    <FontIcon Glyph="&#xf19d;"     
+                                        FontFamily="Segoe Fluent Icons"/>
+                                </controls:SettingsCard.HeaderIcon>
+
+                            
+
+                                <ComboBox x:Name="ComboBox_ShowWarning" SelectionChanged="ComboBox_ShowWarning_SelectionChanged">
+                                    <ComboBoxItem x:Name="ComboBoxItem_ShowWarning_On"></ComboBoxItem>
+                                    <ComboBoxItem x:Name="ComboBoxItem_ShowWarning_Off"></ComboBoxItem>
+                                </ComboBox>
+
+
+                            </controls:SettingsCard>
+
+                            <controls:SettingsCard x:Name="SettingsCard_SymlinkFeature">
+                                <!-- 这里换成你查到的编码 -->
+                                <controls:SettingsCard.HeaderIcon>
+                                    <FontIcon Glyph="&#xe71b;"     
+                                        FontFamily="Segoe Fluent Icons"/>
+                                </controls:SettingsCard.HeaderIcon>
+
+                                
+
+                                <ComboBox 
+                                    SelectionChanged="ComboBox_Symlink_SelectionChanged"
+                                    x:Name="ComboBox_Symlink">
+                                    <ComboBoxItem x:Name="ComboBox_Symlink_On"></ComboBoxItem>
+                                    <ComboBoxItem x:Name="ComboBox_Symlink_Off"></ComboBoxItem>
+                                </ComboBox>
+
+
+                            </controls:SettingsCard>
 
                             <controls:SettingsCard 
                                 x:Name="SettingsCard_DllReplace"
@@ -455,48 +448,79 @@ The following sets the maximum # of items to show before wrapping.-->
 
                             </controls:SettingsCard>
 
-                        </controls:SettingsExpander.Items>
-                    </controls:SettingsExpander>
+                            <controls:SettingsCard x:Name="SettingsCard_DllInitializationDelay">
+                                <!-- 这里换成你查到的编码 -->
+                                <controls:SettingsCard.HeaderIcon>
+                                    <FontIcon Glyph="&#xe964;"     
+                                        FontFamily="Segoe Fluent Icons"/>
+                                </controls:SettingsCard.HeaderIcon>
 
 
-                    <StackPanel
-                        x:Name="StackPanel_GIError"
-                        Orientation="Vertical"
-                        >
-                        <Expander
-                            HorizontalContentAlignment="Stretch"
-                            HorizontalAlignment="Stretch"
-                            IsExpanded="True">
-                            <Expander.Header>
-                                <StackPanel Margin="10">
-                                    <TextBlock 
-                                        ToolTipService.ToolTip="清理本地缓存日志，以避免由于缓存日志导致标记重点扫描从而更容易出现【与服务器的连接已断开】的问题"
-                                        Text="某游戏Mod防报错措施" 
-                                        FontSize="14" 
-                                        FontWeight="Bold" />
-                                </StackPanel>
-                            </Expander.Header>
+                                <NumberBox 
+                                    Margin="5"
+                                    SmallChange="10"
+                                    LargeChange="100"
+                                    x:Name="NumberBox_DllInitializationDelay"
+                                    LostFocus="NumberBox_DllInitializationDelay_LostFocus"/>
 
-                            <StackPanel Orientation="Horizontal">
+                            </controls:SettingsCard>
+
+                            <controls:SettingsCard x:Name="SettingsCard_AutoSetAnalyseOptions">
+                                <!-- 这里换成你查到的编码 -->
+                                <controls:SettingsCard.HeaderIcon>
+                                    <FontIcon Glyph="&#xe736;"     
+                                        FontFamily="Segoe Fluent Icons"/>
+                                </controls:SettingsCard.HeaderIcon>
+
+
+                                <ComboBox 
+                                    SelectionChanged="ComboBox_AutoSetAnalyseOptions_SelectionChanged"
+                                    x:Name="ComboBox_AutoSetAnalyseOptions">
+                                    <ComboBoxItem x:Name="ComboboxItem_AutoSetAnalyseOptions_AutoSet"></ComboBoxItem>
+                                    <ComboBoxItem x:Name="ComboboxItem_AutoSetAnalyseOptions_DontSet"></ComboBoxItem>
+                                </ComboBox>
+
+
+                            </controls:SettingsCard>
+
+
+                            <controls:SettingsCard 
+                                x:Name="SettingsCard_ClearGICache">
+                                <!-- 这里换成你查到的编码 -->
+                                <controls:SettingsCard.HeaderIcon>
+                                    <FontIcon Glyph="&#xed62;"     
+                                    FontFamily="Segoe Fluent Icons"/>
+                                </controls:SettingsCard.HeaderIcon>
+
                                 <Button
-                                   Click="Button_CleanGICache_Click"
-                                   x:Name="Button_CleanGICache"
-                                   Margin="5"
-                                   Content="清理缓存日志"></Button>
+                                    Click="Button_CleanGICache_Click"
+                                    x:Name="Button_CleanGICache"
+                                    Margin="5"/>
+
+                            </controls:SettingsCard>
+
+                            <controls:SettingsCard 
+                                x:Name="SettingsCard_RunIgnoreGIError40">
+                                <!-- 这里换成你查到的编码 -->
+                                <controls:SettingsCard.HeaderIcon>
+                                    <FontIcon Glyph="&#xea0d;"     
+                                        FontFamily="Segoe Fluent Icons"/>
+                                </controls:SettingsCard.HeaderIcon>
+
+
 
                                 <Button
-                                    ToolTipService.ToolTip="开启后，使用SSMT启动游戏使用Mod将可以避免由于Mod导致的网络卡顿而出现的【与服务器的连接已断开】错误弹窗"
                                     Click="Button_RunIgnoreGIError40_Click"
                                     x:Name="Button_RunIgnoreGIError40"
                                     Margin="5"
-                                    Content="启动第四代防报错技术: 网络加固插件"></Button>
+                                    ></Button>
 
-                                
-                            </StackPanel>
-                            
-                        </Expander>
+                            </controls:SettingsCard>
 
-                    </StackPanel>
+                        </controls:SettingsExpander.Items>
+                    </controls:SettingsExpander>
+
+                    
                    
                 </StackPanel>
             </ScrollViewer>
@@ -522,22 +546,33 @@ The following sets the maximum # of items to show before wrapping.-->
                 <StackPanel Orientation="Horizontal">
 
                     <StackPanel Orientation="Vertical">
-                        <Border
-                            CornerRadius="25"
-                            Width="Auto"
-                            Margin="5"
-                            BorderThickness="2"
-                            BorderBrush="White"
-                            >
-                            <Button 
-                                BorderThickness="0"
-                                x:Name="Button_Run3DmigotoLoader" 
-                                Width="200"
-                                MinHeight="50"
-                                FontSize="21"
-                                FontWeight="Bold"
-                                Click="Open3DmigotoLoaderExe"/>
-                        </Border>
+                        <Grid>
+                            
+
+                            <Border
+                                CornerRadius="25"
+                                Width="Auto"
+                                Margin="5"
+                                BorderThickness="2"
+                                BorderBrush="White"
+                                >
+
+                                <Grid>
+                                    
+                                    <Button 
+                                        BorderThickness="0"
+                                        x:Name="Button_Run3DmigotoLoader" 
+                                        Width="200"
+                                        MinHeight="50"
+                                        FontSize="21"
+                                        FontWeight="Bold"
+                                        Click="Open3DmigotoLoaderExe"/>
+                                </Grid>
+
+                                
+                            </Border>
+                        </Grid>
+                        
                         <Border
                             CornerRadius="25"
                             Width="Auto"

@@ -187,11 +187,11 @@ namespace SSMT
 
             //读取所有的贴图配置
             Dictionary<string, JObject> TextureConfigName_JObject_Dict = new Dictionary<string, JObject>();
-            LOG.Info("当前游戏的贴图配置文件夹路径: " + GlobalConfig.Path_GameTextureConfigFolder);
+            LOG.Info("当前游戏的贴图配置文件夹路径: " + PathManager.Path_GameTextureConfigFolder);
 
-            if (Directory.Exists(GlobalConfig.Path_GameTextureConfigFolder))
+            if (Directory.Exists(PathManager.Path_GameTextureConfigFolder))
             {
-                string[] TextureConfigFilePathList = Directory.GetFiles(GlobalConfig.Path_GameTextureConfigFolder);
+                string[] TextureConfigFilePathList = Directory.GetFiles(PathManager.Path_GameTextureConfigFolder);
                 foreach (string TextureConfigFilePath in TextureConfigFilePathList)
                 {
                     string TextureConfigName = Path.GetFileNameWithoutExtension(TextureConfigFilePath);
@@ -228,7 +228,7 @@ namespace SSMT
         public static string GetConvertedTexturesFolderPath(string DrawIB)
         {
             string TextureFormatString = "jpg";
-            string DedupedTexturesConvertFolderPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\DedupedTextures_" + TextureFormatString + "\\");
+            string DedupedTexturesConvertFolderPath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\DedupedTextures_" + TextureFormatString + "\\");
             return DedupedTexturesConvertFolderPath;
         }
 
@@ -236,7 +236,7 @@ namespace SSMT
         {
             Dictionary<string, TextureDeduped> keyValuePairs = new Dictionary<string, TextureDeduped>();
 
-            string TrianglelistDedupedFileNameJsonPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder + DrawIB + "\\", "TrianglelistDedupedFileName.json");
+            string TrianglelistDedupedFileNameJsonPath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder + DrawIB + "\\", "TrianglelistDedupedFileName.json");
             if (!File.Exists(TrianglelistDedupedFileNameJsonPath))
             {
                 return keyValuePairs;
@@ -456,7 +456,7 @@ namespace SSMT
                 LOG.Info("应用: " + imageItem.MarkName);
 
                 string suffix = Path.GetExtension(imageItem.FileName);
-                string CurrentDrawIBOutputFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                string CurrentDrawIBOutputFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
 
                 string FALogDedupedFileName = dictionary[imageItem.FileName].FALogDedupedFileName;
                 string ImageSourcePath = CurrentDrawIBOutputFolder + "DedupedTextures\\" + FALogDedupedFileName;

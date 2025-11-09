@@ -39,15 +39,19 @@ namespace SSMT
         public string LaunchPath { get; set; } = "";
         public string LaunchArgs { get; set; } = "";
 
+        /// <summary>
+        /// Nico: 之前我们是存在Games对应游戏文件夹下面的MainConfig.json中的
+        /// 但是整个json里就一个WorkSpace字段，所以新版本咱们迁移到这个整体的配置文件里
+        /// </summary>
+        public string WorkSpace { get; set; } = "";
+
         public string LogicName { get; set; } = "GIMI";
 
         public string GameTypeName { get; set; } = "GIMI";
 
-        public bool IgnoreErrorGI25 { get; set; } = false;
 
-        public bool PlayVersionDll { get; set; } = false;
 
-        public bool AutoSetAnalyseOptions { get; set; } = true;
+        public int AutoSetAnalyseOptionsSelectedIndex { get; set; } = 0;
 
         public string GithubPackageVersion { get; set; } = "";
 
@@ -61,9 +65,9 @@ namespace SSMT
         public GameConfig()
         {
             //读取并设置当前3Dmigoto路径
-            if (File.Exists(GlobalConfig.Path_CurrentGameConfigJson))
+            if (File.Exists(PathManager.Path_CurrentGameConfigJson))
             {
-                JObject jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameConfigJson);
+                JObject jobj = DBMTJsonUtils.ReadJObjectFromFile(PathManager.Path_CurrentGameConfigJson);
                 if (jobj.ContainsKey("3DmigotoPath"))
                 {
 
@@ -92,6 +96,13 @@ namespace SSMT
                     this.TargetPath = TargetPath;
                 }
 
+                //WorkSpace
+                if (jobj.ContainsKey("WorkSpace"))
+                {
+                    string WorkSpace = jobj["WorkSpace"]?.ToString() ?? "";
+                    this.WorkSpace = WorkSpace;
+                }
+
                 if (jobj.ContainsKey("LogicName"))
                 {
 
@@ -115,27 +126,17 @@ namespace SSMT
                     this.GithubPackageVersion = GithubPackageVersion;
                 }
 
-                if (jobj.ContainsKey("PlayVersionDll"))
+
+
+                //AutoSetAnalyseOptionsSelectedIndex
+                if (jobj.ContainsKey("AutoSetAnalyseOptionsSelectedIndex"))
                 {
 
-                    bool PlayVersionDll = (bool)jobj["PlayVersionDll"];
-                    this.PlayVersionDll = PlayVersionDll;
+                    int AutoSetAnalyseOptionsSelectedIndex = (int)jobj["AutoSetAnalyseOptionsSelectedIndex"];
+                    this.AutoSetAnalyseOptionsSelectedIndex = AutoSetAnalyseOptionsSelectedIndex;
                 }
 
-                //AutoSetAnalyseOptions
-                if (jobj.ContainsKey("AutoSetAnalyseOptions"))
-                {
-
-                    bool AutoSetAnalyseOptions = (bool)jobj["AutoSetAnalyseOptions"];
-                    this.AutoSetAnalyseOptions = AutoSetAnalyseOptions;
-                }
-
-                if (jobj.ContainsKey("IgnoreGameError"))
-                {
-
-                    bool IgnoreGameError = (bool)jobj["IgnoreGameError"];
-                    this.IgnoreErrorGI25 = IgnoreGameError;
-                }
+                
 
                 //DllInitializationDelay
                 if (jobj.ContainsKey("DllInitializationDelay"))
@@ -204,26 +205,29 @@ namespace SSMT
 
             JObject jobj = DBMTJsonUtils.CreateJObject();
 
-            if (File.Exists(GlobalConfig.Path_CurrentGameConfigJson))
+            if (File.Exists(PathManager.Path_CurrentGameConfigJson))
             {
-                jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameConfigJson);
+                jobj = DBMTJsonUtils.ReadJObjectFromFile(PathManager.Path_CurrentGameConfigJson);
             }
 
             jobj["TargetPath"] = this.TargetPath;
             jobj["3DmigotoPath"] = this.MigotoPath;
             jobj["LaunchPath"] = this.LaunchPath;
             jobj["LaunchArgs"] = this.LaunchArgs;
+            jobj["WorkSpace"] = this.WorkSpace;
+
             jobj["LogicName"] = this.LogicName;
             jobj["GameTypeName"] = this.GameTypeName;
-            jobj["IgnoreGameError"] = this.IgnoreErrorGI25;
-            jobj["PlayVersionDll"] = this.PlayVersionDll;
-            jobj["AutoSetAnalyseOptions"] = this.AutoSetAnalyseOptions;
+
+            jobj["AutoSetAnalyseOptionsSelectedIndex"] = this.AutoSetAnalyseOptionsSelectedIndex;
             jobj["GithubPackageVersion"] = this.GithubPackageVersion;
+
             jobj["DllInitializationDelay"] = this.DllInitializationDelay;
             jobj["DllReplaceSelectedIndex"] = this.DllReplaceSelectedIndex;
             jobj["DllPreProcessSelectedIndex"] = this.DllPreProcessSelectedIndex;
+
             jobj["LaunchItems"] = jobjArray;
-            DBMTJsonUtils.SaveJObjectToFile(jobj, GlobalConfig.Path_CurrentGameConfigJson);
+            DBMTJsonUtils.SaveJObjectToFile(jobj, PathManager.Path_CurrentGameConfigJson);
         }
 
     }

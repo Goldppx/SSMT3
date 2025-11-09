@@ -1,5 +1,7 @@
-﻿using Microsoft.UI.Windowing;
+﻿using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using SSMT_Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,6 +20,64 @@ namespace WinUI3Helper
             {
                 root.RequestedTheme = theme;
             }
+        }
+
+    
+        public static void SetSmartSizeAndMoveToCenter(AppWindow appWindow,
+            double currentWidthDip, double currentHeightDip,
+            double minRatio = 0.6, double maxRatio = 0.9)
+        {
+            // 获取当前缩放比例
+            double scale = DPIUtils.GetScale();
+
+            //获取屏幕大小
+            var displayArea = DisplayArea.GetFromWindowId(appWindow.Id, DisplayAreaFallback.Nearest);
+            int screenW = displayArea.OuterBounds.Width;
+            int screenH = displayArea.OuterBounds.Height;
+
+            //计算窗口允许的最小宽度和最小高度，以及最大的宽度和高度
+            double minW = screenW * minRatio;
+            double minH = screenH * minRatio;
+            double maxW = screenW * maxRatio;
+            double maxH = screenH * maxRatio;
+
+            //如果当前窗口宽度高于最大值，则调整为最大值，小于最小值则调整为最小值
+            double desiredW = currentWidthDip;
+            if (desiredW < minW)
+            {
+                desiredW = minW;
+            }
+
+            if (desiredW > maxW)
+            {
+                desiredW = maxW;
+            }
+
+            double desiredH = currentHeightDip;
+            if (desiredH < minH)
+            {
+                desiredH = minH;
+            }
+            if (desiredH > maxH)
+            {
+                desiredH = maxH;
+            }
+
+            // 最后四舍五入并应用
+            ApplySize(appWindow, desiredW, desiredH, screenW, screenH);
+        }
+
+        private static void ApplySize(AppWindow appWindow, double w, double h, int screenW, int screenH)
+        {
+            int finalW = (int)Math.Round(w);
+            int finalH = (int)Math.Round(h);
+
+            appWindow.Resize(new SizeInt32(finalW, finalH));
+
+            // 可选：居中
+            int x = (screenW - finalW) / 2;
+            int y = (screenH - finalH) / 2;
+            appWindow.Move(new PointInt32(x, y));
         }
 
         public static void SetWindowSizeWithNavigationView(AppWindow appWindow,int Width,int Height)

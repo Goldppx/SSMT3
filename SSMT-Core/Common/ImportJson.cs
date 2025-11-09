@@ -245,7 +245,7 @@ namespace SSMT
 
             //VSList
             // 获取当前目录下的所有文件
-            List<string> IBTxtFileList = FrameAnalysisDataUtils.FilterFile(GlobalConfig.WorkFolder, "-ib=" + DrawIB, ".txt");
+            List<string> IBTxtFileList = FrameAnalysisDataUtils.FilterFile(PathManager.WorkFolder, "-ib=" + DrawIB, ".txt");
             HashSet<string> VSHashSet = new HashSet<string>();
             foreach (string IBTxtFileName in IBTxtFileList)
             {
@@ -363,7 +363,7 @@ namespace SSMT
 
             //VSList
             // 获取当前目录下的所有文件
-            List<string> IBTxtFileList = FrameAnalysisDataUtils.FilterFile(GlobalConfig.WorkFolder, "-ib=" + DrawIB, ".txt");
+            List<string> IBTxtFileList = FrameAnalysisDataUtils.FilterFile(PathManager.WorkFolder, "-ib=" + DrawIB, ".txt");
             HashSet<string> VSHashSet = new HashSet<string>();
             foreach (string IBTxtFileName in IBTxtFileList)
             {
