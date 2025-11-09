@@ -265,7 +265,7 @@ namespace SSMT_Core
                 {
                     var dirName = Path.GetFileName(subdir);
                     var destSubDir = Path.Combine(destDirName, dirName);
-                    CopyDirectory(subdir, destSubDir, copySubDirs);
+                    CopyDirectory(subdir, destSubDir, copySubDirs,overwriteFiles);
                 }
             }
 

@@ -639,10 +639,6 @@ namespace SSMT
             TextBox_LaunchPath.Text = "";
             TextBox_LaunchArgsPath.Text = "";
 
-
-            
-
-
 			IsLoading = false;
         }
 
@@ -664,7 +660,7 @@ namespace SSMT
             //如果没有就直接设置，比如有些人会直接填写YuanShen.exe
             if (CurrentGameConfig.TargetPath.Contains("\\"))
             {
-                if (File.Exists(CurrentGameConfig.TargetPath))
+                if (File.Exists(CurrentGameConfig.TargetPath.Trim()))
                 {
                     TextBox_TargetPath.Text = CurrentGameConfig.TargetPath;
                 }
@@ -674,14 +670,18 @@ namespace SSMT
                 TextBox_TargetPath.Text = CurrentGameConfig.TargetPath;
             }
 
-            LOG.Info("尝试设置LaunchPath:");
-            if (File.Exists(CurrentGameConfig.LaunchPath))
+            LOG.Info("尝试设置LaunchPath:" + CurrentGameConfig.LaunchPath);
+            if (File.Exists(CurrentGameConfig.LaunchPath.Trim()))
             {
-				LOG.Info("存在保存的LaunchPath:" + CurrentGameConfig.LaunchPath + "  现在进行设置" );
-				TextBox_LaunchPath.Text = CurrentGameConfig.LaunchPath;
+                LOG.Info("存在保存的LaunchPath:" + CurrentGameConfig.LaunchPath + "  现在进行设置");
+                TextBox_LaunchPath.Text = CurrentGameConfig.LaunchPath;
+            }
+            else
+            {
+                LOG.Info("文件中保存的LaunchPath不存在，无法设置");
             }
 
-            TextBox_LaunchArgsPath.Text = CurrentGameConfig.LaunchArgs;
+                TextBox_LaunchArgsPath.Text = CurrentGameConfig.LaunchArgs;
 
         }
 
