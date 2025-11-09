@@ -35,22 +35,22 @@ namespace SSMT
                 LOG.Info("CTXCode: " + CTXCode);
 
                 FolderName = "ctx-" + CTXCode;
-                FolderPath = Path.Combine(GlobalConfig.Path_LatestFrameAnalysisFolder, FolderName + "\\");
+                FolderPath = Path.Combine(PathManager.Path_LatestFrameAnalysisFolder, FolderName + "\\");
                 LOG.Info("CTXFolderPath: " + FolderPath);
             }
             else
             {
-                LogFilePath = GlobalConfig.Path_LatestFrameAnalysisLogTxt;
+                LogFilePath = PathManager.Path_LatestFrameAnalysisLogTxt;
                 LogFileName = Path.GetFileName(LogFilePath);
 
-                FolderPath = GlobalConfig.Path_LatestFrameAnalysisFolder;
+                FolderPath = PathManager.Path_LatestFrameAnalysisFolder;
                 FolderName = Path.GetFileName(FolderPath);
             }
         }
 
         public List<string> GetCTXLogFilePathList(string DrawIB)
         {
-            string[] TotalFrameAnalysisFiles = Directory.GetFiles(GlobalConfig.Path_LatestFrameAnalysisFolder);
+            string[] TotalFrameAnalysisFiles = Directory.GetFiles(PathManager.Path_LatestFrameAnalysisFolder);
             //LOG.Info("FrameAnalysis文件总数量: " + TotalFrameAnalysisFiles.Length.ToString());
 
             List<string> LogTxtFilePathList = [];

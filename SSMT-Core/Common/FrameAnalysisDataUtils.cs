@@ -86,7 +86,7 @@ namespace SSMT
             List<string> FileNameList = GetFrameAnalysisFileNameList(FilterFolderPath);
             List<string> SearchFileNameList = new List<string>();
 
-            if (FilterFolderPath == GlobalConfig.WorkFolder)
+            if (FilterFolderPath == PathManager.WorkFolder)
             {
                 SearchFileNameList = FileNameList;
             }
@@ -123,9 +123,9 @@ namespace SSMT
         {
 
             List<string> FileNameList = new List<string>();
-            if(FilterFolder == GlobalConfig.WorkFolder)
+            if(FilterFolder == PathManager.WorkFolder)
             {
-                FileNameList = GetFrameAnalysisFileNameList(GlobalConfig.WorkFolder);
+                FileNameList = GetFrameAnalysisFileNameList(PathManager.WorkFolder);
             }
             else
             {
@@ -309,7 +309,7 @@ namespace SSMT
                     continue;
                 }
                 string FrameAnalysisFolderName = Path.GetFileName(FrameAnalysisFolderPath);
-                string IBTxtFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBTxtFileName,GlobalConfig.WorkFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                string IBTxtFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBTxtFileName,PathManager.WorkFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                 IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(IBTxtFilePath,false);
                 int MatchFirstIndex = int.Parse(IBTxtFile.FirstIndex);
                 MatchFirstIndex_IBFileName_Dict[MatchFirstIndex] = IBTxtFileName;

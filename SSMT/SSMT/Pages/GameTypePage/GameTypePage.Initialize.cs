@@ -12,9 +12,9 @@ namespace SSMT
     {
         private void InitializeGameTypeFolder()
         {
-            if (!Directory.Exists(GlobalConfig.Path_GameTypeConfigsFolder))
+            if (!Directory.Exists(PathManager.Path_GameTypeConfigsFolder))
             {
-                Directory.CreateDirectory(GlobalConfig.Path_GameTypeConfigsFolder);
+                Directory.CreateDirectory(PathManager.Path_GameTypeConfigsFolder);
             }
 
             //在切换到数据类型页面时，如果对应游戏的数据类型文件夹不存在则创建
@@ -22,7 +22,7 @@ namespace SSMT
 
             foreach (string FolderName in GameNameList)
             {
-                string GameTypeFolderPath = Path.Combine(GlobalConfig.Path_GameTypeConfigsFolder, FolderName);
+                string GameTypeFolderPath = Path.Combine(PathManager.Path_GameTypeConfigsFolder, FolderName);
                 if (!Directory.Exists(GameTypeFolderPath))
                 {
                     Directory.CreateDirectory(GameTypeFolderPath);
@@ -36,9 +36,9 @@ namespace SSMT
 
             ComboBox_GameTypeNameList.Items.Clear();
 
-            if (Directory.Exists(GlobalConfig.Path_CurrentGame_GameTypeFolder))
+            if (Directory.Exists(PathManager.Path_CurrentGame_GameTypeFolder))
             {
-                string[] GameTypeJsonFilePathList = Directory.GetFiles(GlobalConfig.Path_CurrentGame_GameTypeFolder);
+                string[] GameTypeJsonFilePathList = Directory.GetFiles(PathManager.Path_CurrentGame_GameTypeFolder);
 
                 foreach (string GameTypeJsonFilePath in GameTypeJsonFilePathList)
                 {

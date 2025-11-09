@@ -24,7 +24,7 @@ namespace SSMT
         {
             LOG.Info("初始化D3D11GameTypeLv2::Start");
             LOG.Info("读取GameType分类: " + GameTypeFolderName);
-            string GameTypeCategory_Path = Path.Combine(GlobalConfig.Path_GameTypeConfigsFolder, GameTypeFolderName + "\\");
+            string GameTypeCategory_Path = Path.Combine(PathManager.Path_GameTypeConfigsFolder, GameTypeFolderName + "\\");
 
             string[] GameTypeCategory_Files = Directory.GetFiles(GameTypeCategory_Path);
 
@@ -85,7 +85,7 @@ namespace SSMT
                     string CategorySlot = d3D11GameType.CategorySlotDict[Category];
 
                     //寻找对应Buf文件
-                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
+                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
                     if (CategoryBufFileName == "")
                     {
                         AllSlotExists = false;

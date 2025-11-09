@@ -136,7 +136,7 @@ namespace SSMT
         private void Menu_OpenGameTypeFolder_Click(object sender, RoutedEventArgs e)
         {
 
-            string CurrentGameTypeFolder = Path.Combine(GlobalConfig.Path_GameTypeConfigsFolder,GlobalConfig.CurrentGameName + "\\");
+            string CurrentGameTypeFolder = Path.Combine(PathManager.Path_GameTypeConfigsFolder,GlobalConfig.CurrentGameName + "\\");
             SSMTCommandHelper.ShellOpenFolder(CurrentGameTypeFolder);
         }
 
@@ -298,10 +298,10 @@ namespace SSMT
             {
                 GameTypeName = "CPU_" + GameTypeName;
             }
-            string GameTypeFilePath = Path.Combine(GlobalConfig.Path_CurrentGame_GameTypeFolder, GameTypeName + ".json");
+            string GameTypeFilePath = Path.Combine(PathManager.Path_CurrentGame_GameTypeFolder, GameTypeName + ".json");
             DBMTJsonUtils.SaveJObjectToFile(jObject, GameTypeFilePath);
 
-            SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentGame_GameTypeFolder);
+            SSMTCommandHelper.ShellOpenFolder(PathManager.Path_CurrentGame_GameTypeFolder);
         }
 
 

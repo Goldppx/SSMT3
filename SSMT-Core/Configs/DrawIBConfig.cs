@@ -16,7 +16,7 @@ namespace SSMT
         {
             List<string> drawIBListValues = new List<string>();
 
-            string Configpath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, "Config.json");
+            string Configpath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, "Config.json");
             if (File.Exists(Configpath))
             {
                 //切换到对应配置
@@ -76,7 +76,7 @@ namespace SSMT
         {
             //先获取所有的TYPE_开头的数据类型文件夹
             List<string> TypeFolderPathList = new List<string>();
-            string CurrentDrawIBOutputFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+            string CurrentDrawIBOutputFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
 
             if (!Directory.Exists(CurrentDrawIBOutputFolder))
             {
@@ -107,7 +107,7 @@ namespace SSMT
         {
 
             List<string> DrawCallIndexList = new List<string>();
-            string ReadJsonFileFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+            string ReadJsonFileFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
             if (Directory.Exists(ReadJsonFileFolder))
             {
                 string ReadJsonFileName = "ComponentName_DrawCallIndexList.json";
@@ -125,7 +125,7 @@ namespace SSMT
 
         public static string GetCurrentDrawIBOutputFolder(string DrawIB)
         {
-            string CurrentDrawIBOutputFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+            string CurrentDrawIBOutputFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
             return CurrentDrawIBOutputFolder;
         }
 
@@ -141,7 +141,7 @@ namespace SSMT
         {
             LOG.Info("Get_ComponentName_DrawCallIndexList_Dict_FromJson::Start");
             Dictionary<string, List<string>> ComponentName_DrawCallIndexList_Dict = new Dictionary<string, List<string>>();
-            string ReadJsonFileFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+            string ReadJsonFileFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
 
             if (Directory.Exists(ReadJsonFileFolder))
             {

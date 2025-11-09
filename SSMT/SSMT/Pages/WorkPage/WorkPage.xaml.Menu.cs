@@ -14,26 +14,26 @@ namespace SSMT
     {
         private void Menu_OpenGlobalConfigFolder_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(GlobalConfig.Path_SSMT3GlobalConfigsFolder))
+            if (Directory.Exists(PathManager.Path_SSMT3GlobalConfigsFolder))
             {
-                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_SSMT3GlobalConfigsFolder);
+                SSMTCommandHelper.ShellOpenFolder(PathManager.Path_SSMT3GlobalConfigsFolder);
             }
         }
 
         private void Menu_OpenAssetsFolder_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(GlobalConfig.Path_AssetsFolder))
+            if (Directory.Exists(PathManager.Path_AssetsFolder))
             {
-                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_AssetsFolder);
+                SSMTCommandHelper.ShellOpenFolder(PathManager.Path_AssetsFolder);
             }
         }
 
         public async void OpenWorkSpaceGenerateModFolder(object sender, RoutedEventArgs e)
         {
 
-            if (Directory.Exists(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder))
+            if (Directory.Exists(PathManager.Path_CurrentWorkSpaceGeneratedModFolder))
             {
-                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder);
+                SSMTCommandHelper.ShellOpenFolder(PathManager.Path_CurrentWorkSpaceGeneratedModFolder);
             }
             else
             {
@@ -43,7 +43,7 @@ namespace SSMT
 
         public async void OpenModsFolder(object sender, RoutedEventArgs e)
         {
-            string modsFolder = Path.Combine(GlobalConfig.Path_3DmigotoLoaderFolder, "Mods\\");
+            string modsFolder = Path.Combine(PathManager.Path_3DmigotoLoaderFolder, "Mods\\");
             if (Directory.Exists(modsFolder))
             {
                 SSMTCommandHelper.ShellOpenFolder(modsFolder);
@@ -57,7 +57,7 @@ namespace SSMT
         public async void OpenLatestFrameAnalysisFolder(object sender, RoutedEventArgs e)
         {
 
-            string latestFrameAnalysisFolder = GlobalConfig.Path_LatestFrameAnalysisFolder;
+            string latestFrameAnalysisFolder = PathManager.Path_LatestFrameAnalysisFolder;
             Debug.WriteLine("latestFrameAnalysisFolder: " + latestFrameAnalysisFolder);
             if (latestFrameAnalysisFolder.Trim() == "\\")
             {
@@ -80,7 +80,7 @@ namespace SSMT
 
         public async void OpenLatestFrameAnalysisLogTxtFile(object sender, RoutedEventArgs e)
         {
-            string LatestFrameAnalysisFolderLogTxtFilePath = GlobalConfig.Path_LatestFrameAnalysisLogTxt;
+            string LatestFrameAnalysisFolderLogTxtFilePath = PathManager.Path_LatestFrameAnalysisLogTxt;
 
             if (LatestFrameAnalysisFolderLogTxtFilePath != "")
             {
@@ -97,7 +97,7 @@ namespace SSMT
 
         public async void OpenLatestFrameAnalysisDedupedFolder(object sender, RoutedEventArgs e)
         {
-            string LatestFrameAnalysisDedupedFolder = GlobalConfig.Path_LatestFrameAnalysisDedupedFolder;
+            string LatestFrameAnalysisDedupedFolder = PathManager.Path_LatestFrameAnalysisDedupedFolder;
             if (!string.IsNullOrEmpty(LatestFrameAnalysisDedupedFolder))
             {
                 SSMTCommandHelper.ShellOpenFolder(LatestFrameAnalysisDedupedFolder);
@@ -123,21 +123,21 @@ namespace SSMT
 
         public void OpenLogsFolder(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(GlobalConfig.Path_LogsFolder))
+            if (Directory.Exists(PathManager.Path_LogsFolder))
             {
-                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_LogsFolder);
+                SSMTCommandHelper.ShellOpenFolder(PathManager.Path_LogsFolder);
 
             }
             else
             {
-                _ = SSMTMessageHelper.Show(GlobalConfig.Path_LogsFolder + " 不存在，请至少执行任意一项任务后生成此日志文件夹。");
+                _ = SSMTMessageHelper.Show(PathManager.Path_LogsFolder + " 不存在，请至少执行任意一项任务后生成此日志文件夹。");
             }
         }
 
 
         public void OpenLatestLogFile(object sender, RoutedEventArgs e)
         {
-            string LogFilePath = GlobalConfig.Path_LatestDBMTLogFile;
+            string LogFilePath = PathManager.Path_LatestDBMTLogFile;
             if (File.Exists(LogFilePath))
             {
                 _ = SSMTCommandHelper.ShellOpenFile(LogFilePath);
@@ -148,26 +148,26 @@ namespace SSMT
 
         private async void OpenD3dxIniFile(object sender, RoutedEventArgs e)
         {
-            await SSMTCommandHelper.ShellOpenFile(GlobalConfig.Path_D3DXINI);
+            await SSMTCommandHelper.ShellOpenFile(PathManager.Path_D3DXINI);
         }
 
         private void Open3DmigotoFolder(object sender, RoutedEventArgs e)
         {
 
-            SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_3DmigotoLoaderFolder);
+            SSMTCommandHelper.ShellOpenFolder(PathManager.Path_3DmigotoLoaderFolder);
         }
 
         private void OpenShaderFixesFolder(object sender, RoutedEventArgs e)
         {
 
-            SSMTCommandHelper.ShellOpenFolder(Path.Combine(GlobalConfig.Path_3DmigotoLoaderFolder, "ShaderFixes\\"));
+            SSMTCommandHelper.ShellOpenFolder(Path.Combine(PathManager.Path_3DmigotoLoaderFolder, "ShaderFixes\\"));
         }
 
 
         public void OpenCurrentWorkSpaceFolder(object sender, RoutedEventArgs e)
         {
 
-            string WorkSpaceOutputFolder = GlobalConfig.Path_CurrentGameTotalWorkSpaceFolder + ComboBoxWorkSpaceSelection.Text + "\\";
+            string WorkSpaceOutputFolder = PathManager.Path_CurrentGameTotalWorkSpaceFolder + ComboBoxWorkSpaceSelection.Text + "\\";
             if (!string.IsNullOrEmpty(WorkSpaceOutputFolder))
             {
                 if (Directory.Exists(WorkSpaceOutputFolder))
@@ -184,7 +184,7 @@ namespace SSMT
         private void SetD3dxConfig_DisableMods()
         {
             //直接修改d3dx.ini的include部分
-            string[] D3DxIniLineList = File.ReadAllLines(GlobalConfig.Path_D3DXINI);
+            string[] D3DxIniLineList = File.ReadAllLines(PathManager.Path_D3DXINI);
             List<string> NewD3DxIniLineList = new List<string>();
 
             foreach (string iniLine in D3DxIniLineList)
@@ -207,12 +207,12 @@ namespace SSMT
                 }
             }
 
-            File.WriteAllLines(GlobalConfig.Path_D3DXINI, NewD3DxIniLineList);
+            File.WriteAllLines(PathManager.Path_D3DXINI, NewD3DxIniLineList);
         }
 
         private void SetD3dxConfig_EnableMods()
         {
-            string[] D3DxIniLineList = File.ReadAllLines(GlobalConfig.Path_D3DXINI);
+            string[] D3DxIniLineList = File.ReadAllLines(PathManager.Path_D3DXINI);
             List<string> NewD3DxIniLineList = new List<string>();
 
             foreach (string iniLine in D3DxIniLineList)
@@ -235,7 +235,7 @@ namespace SSMT
                 }
             }
 
-            File.WriteAllLines(GlobalConfig.Path_D3DXINI, NewD3DxIniLineList);
+            File.WriteAllLines(PathManager.Path_D3DXINI, NewD3DxIniLineList);
         }
 
         private void Menu_DisableModsFolder_Click(object sender, RoutedEventArgs e)

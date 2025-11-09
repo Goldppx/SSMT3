@@ -30,7 +30,7 @@ namespace SSMT
                     string CategorySlot = d3D11GameType.CategorySlotDict[Category];
 
                     //寻找对应Buf文件
-                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
+                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
                     if (CategoryBufFileName == "")
                     {
                         AllSlotExists = false;
@@ -84,11 +84,11 @@ namespace SSMT
                     string CategorySlot = d3D11GameType.CategorySlotDict[CategoryName];
                     LOG.Info("当前分类:" + CategoryName + " 提取Index: " + ExtractIndex + " 提取槽位:" + CategorySlot);
                     //获取文件名存入对应Dict
-                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ExtractIndex + "-" + CategorySlot, ".buf");
+                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, ExtractIndex + "-" + CategorySlot, ".buf");
                     CategoryBufFileMap[item.Key] = CategoryBufFileName;
 
                     //获取文件大小存入对应Dict
-                    string CategoryBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CategoryBufFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                    string CategoryBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CategoryBufFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                     //LOG.Info("Category: " + item.Key + " File:" + CategoryBufFilePath);
                     if (!File.Exists(CategoryBufFilePath))
                     {
@@ -191,12 +191,12 @@ namespace SSMT
             SortedDictionary<int, string> MatchFirstIndex_IBTxtFileName_Dict = new SortedDictionary<int, string>();
             foreach (string TrianglelistIndex in TrianglelistIndexList)
             {
-                string IBFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-ib", ".txt");
+                string IBFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TrianglelistIndex + "-ib", ".txt");
                 if (IBFileName == "")
                 {
                     continue;
                 }
-                string IBFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                string IBFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                 IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(IBFilePath, false);
                 MatchFirstIndex_IBTxtFileName_Dict[int.Parse(IBTxtFile.FirstIndex)] = IBFileName;
             }
@@ -219,12 +219,12 @@ namespace SSMT
                     string CategorySlot = d3D11GameType.CategorySlotDict[item.Key];
 
                     //获取文件名存入对应Dict
-                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
+                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
                     CategoryBufFileMap[item.Key] = CategoryBufFileName;
                 }
 
                 string GameTypeFolderName = "TYPE_" + d3D11GameType.GameTypeName;
-                string DrawIBFolderPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                string DrawIBFolderPath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
                 string GameTypeOutputPath = Path.Combine(DrawIBFolderPath, GameTypeFolderName + "\\");
                 if (!Directory.Exists(GameTypeOutputPath))
                 {
@@ -239,7 +239,7 @@ namespace SSMT
                 {
                     string CategoryName = item.Key;
                     string CategoryBufFileName = item.Value;
-                    string CategoryBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CategoryBufFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                    string CategoryBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(CategoryBufFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                     int CategoryStride = d3D11GameType.CategoryStrideDict[CategoryName];
 
                     Dictionary<int, byte[]> BufDict = DBMTBinaryUtils.ReadBinaryFileByStride(CategoryBufFilePath, CategoryStride);
@@ -263,8 +263,8 @@ namespace SSMT
                     LOG.Info(IBBufFileName);
 
 
-                    string IBTxtFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBTxtFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
-                    string IBBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBBufFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                    string IBTxtFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBTxtFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
+                    string IBBufFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(IBBufFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
 
                     IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(IBTxtFilePath, true);
                     LOG.Info(IBTxtFilePath);
@@ -296,7 +296,7 @@ namespace SSMT
                 //为了兼容旧版Catter，暂时先不改名
 
                 ImportJson importJson = new ImportJson();
-                string VB0FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-vb0", ".txt");
+                string VB0FileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TrianglelistIndex + "-vb0", ".txt");
 
                 importJson.DrawIB = DrawIB;
                 importJson.OriginalVertexCount = OriginalVertexCount;
@@ -335,7 +335,7 @@ namespace SSMT
                 LOG.NewLine();
 
 
-                List<string> TrianglelistIndexList = FrameAnalysisLogUtilsV2.Get_DrawCallIndexList_ByHash(DrawIB, false, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                List<string> TrianglelistIndexList = FrameAnalysisLogUtilsV2.Get_DrawCallIndexList_ByHash(DrawIB, false, PathManager.Path_LatestFrameAnalysisLogTxt);
                 foreach (string TrianglelistIndex in TrianglelistIndexList)
                 {
                     LOG.Info("TrianglelistIndex: " + TrianglelistIndex);

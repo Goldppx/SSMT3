@@ -21,29 +21,29 @@ namespace SSMT
             {
                 
 
-                if (!Directory.Exists(GlobalConfig.Path_LogsFolder))
+                if (!Directory.Exists(PathManager.Path_LogsFolder))
                 {
-                    Directory.CreateDirectory(GlobalConfig.Path_LogsFolder);
+                    Directory.CreateDirectory(PathManager.Path_LogsFolder);
                 }
 
-                if (!Directory.Exists(GlobalConfig.Path_TotalWorkSpaceFolder))
+                if (!Directory.Exists(PathManager.Path_TotalWorkSpaceFolder))
                 {
-                    Directory.CreateDirectory(GlobalConfig.Path_TotalWorkSpaceFolder);
+                    Directory.CreateDirectory(PathManager.Path_TotalWorkSpaceFolder);
                 }
 
 
 
                 //自动补全Plugins文件夹
-                if (!Directory.Exists(GlobalConfig.Path_PluginsFolder))
+                if (!Directory.Exists(PathManager.Path_PluginsFolder))
                 {
-                    Directory.CreateDirectory(GlobalConfig.Path_PluginsFolder);
+                    Directory.CreateDirectory(PathManager.Path_PluginsFolder);
                 }
-                string OurPluginsPath = Path.Combine(GlobalConfig.Path_BaseFolder, "Plugins\\");
+                string OurPluginsPath = Path.Combine(PathManager.Path_BaseFolder, "Plugins\\");
                 string[] FileList = Directory.GetFiles(OurPluginsPath);
                 foreach (string PluginFilePath in FileList)
                 {
                     string PluginFileName = Path.GetFileName(PluginFilePath);
-                    string TargetFileLocation = Path.Combine(GlobalConfig.Path_PluginsFolder, PluginFileName);
+                    string TargetFileLocation = Path.Combine(PathManager.Path_PluginsFolder, PluginFileName);
 
                     if (!File.Exists(TargetFileLocation))
                     {
@@ -52,18 +52,18 @@ namespace SSMT
                 }
 
                 //自动补全Games文件夹
-                if (!Directory.Exists(GlobalConfig.Path_GamesFolder))
+                if (!Directory.Exists(PathManager.Path_GamesFolder))
                 {
-                    Directory.CreateDirectory(GlobalConfig.Path_GamesFolder);
+                    Directory.CreateDirectory(PathManager.Path_GamesFolder);
                 }
-                string OurGamesPath = Path.Combine(GlobalConfig.Path_BaseFolder, "Games\\");
+                string OurGamesPath = Path.Combine(PathManager.Path_BaseFolder, "Games\\");
 
-                DBMTFileUtils.CopyDirectory(OurGamesPath, GlobalConfig.Path_GamesFolder, true, false);
+                DBMTFileUtils.CopyDirectory(OurGamesPath, PathManager.Path_GamesFolder, true, false);
 
 
                 //自动补全3Dmigoto文件夹
                 string Target3DmigotoFolderPath = Path.Combine(GlobalConfig.SSMTCacheFolderPath, "3Dmigoto\\");
-                string Our3DmigotoPath = Path.Combine(GlobalConfig.Path_BaseFolder, "3Dmigoto\\");
+                string Our3DmigotoPath = Path.Combine(PathManager.Path_BaseFolder, "3Dmigoto\\");
 
                 if (!Directory.Exists(Target3DmigotoFolderPath))
                 {
@@ -121,7 +121,7 @@ namespace SSMT
             // 创建保存路径
             string fileName = Path.GetFileName(new Uri(imageUrl).LocalPath);
             string ext = Path.GetExtension(fileName);
-            string savePath = Path.Combine(GlobalConfig.Path_GamesFolder, GlobalConfig.CurrentGameName + "\\Background" + ext);
+            string savePath = Path.Combine(PathManager.Path_GamesFolder, GlobalConfig.CurrentGameName + "\\Background" + ext);
 
             if (File.Exists(savePath))
             {
@@ -136,7 +136,7 @@ namespace SSMT
 
         public static List<string> GetFrameAnalysisFileNameList()
         {
-            string[] directories = Directory.GetDirectories(GlobalConfig.Path_3DmigotoLoaderFolder);
+            string[] directories = Directory.GetDirectories(PathManager.Path_3DmigotoLoaderFolder);
             List<string> frameAnalysisFileList = new List<string>();
             foreach (string directory in directories)
             {
@@ -173,12 +173,12 @@ namespace SSMT
 
             List<GameIconItem> gameIconItems = [];
 
-            if (!Directory.Exists(GlobalConfig.Path_GamesFolder))
+            if (!Directory.Exists(PathManager.Path_GamesFolder))
             {
                 return gameIconItems;
             }
 
-            string[] GamesFolderList = Directory.GetDirectories(GlobalConfig.Path_GamesFolder);
+            string[] GamesFolderList = Directory.GetDirectories(PathManager.Path_GamesFolder);
 
             foreach (string GameFolderPath in GamesFolderList)
             {
@@ -188,17 +188,17 @@ namespace SSMT
                     string GameName = Path.GetFileName(GameFolderPath);
                     //LOG.Info(GameName);
 
-                    string GameIconImage = Path.Combine(GlobalConfig.Path_GamesFolder,GameName + "\\Icon.png");
+                    string GameIconImage = Path.Combine(PathManager.Path_GamesFolder,GameName + "\\Icon.png");
                     if (!File.Exists(GameIconImage))
                     {
-                        GameIconImage = Path.Combine(GlobalConfig.Path_GamesFolder, "DefaultIcon.png");
+                        GameIconImage = Path.Combine(PathManager.Path_GamesFolder, "DefaultIcon.png");
                     }
                     //LOG.Info(GameIconImage);
 
-                    string GameBackGroundImage = Path.Combine(GlobalConfig.Path_GamesFolder, GameName + "\\Background.png");
+                    string GameBackGroundImage = Path.Combine(PathManager.Path_GamesFolder, GameName + "\\Background.png");
                     if (!File.Exists(GameBackGroundImage))
                     {
-                        GameBackGroundImage = Path.Combine(GlobalConfig.Path_GamesFolder, "DefaultBackground.png");
+                        GameBackGroundImage = Path.Combine(PathManager.Path_GamesFolder, "DefaultBackground.png");
                     }
                     //LOG.Info(GameBackGroundImage);
 

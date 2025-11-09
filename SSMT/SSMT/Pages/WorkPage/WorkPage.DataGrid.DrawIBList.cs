@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SSMT_Core;
 
 namespace SSMT
 {
@@ -59,7 +60,7 @@ namespace SSMT
                 DrawIBItems.Clear();
 
 
-                string Configpath = GlobalConfig.Path_CurrentWorkSpace_ConfigJson;
+                string Configpath = PathManager.Path_CurrentWorkSpace_ConfigJson;
                 Debug.WriteLine("读取配置文件路径: " + Configpath);
 
                 if (File.Exists(Configpath))
@@ -111,7 +112,7 @@ namespace SSMT
             GlobalConfig.SaveConfig();
 
             //(3) 接下来把所有的drawIBList中的DrawIB保留下来存储到对应配置文件。
-            SaveDrawIBListConfigToFolder(GlobalConfig.Path_CurrentWorkSpaceFolder, DeleteConfigJsonIfAllEmpty);
+            SaveDrawIBListConfigToFolder(PathManager.Path_CurrentWorkSpaceFolder, DeleteConfigJsonIfAllEmpty);
 
             Debug.WriteLine("保存当前DrawIB列表::End");
             Debug.WriteLine("----------------------------------");
@@ -163,7 +164,7 @@ namespace SSMT
                         //如果切换游戏导致工作空间发生变化，必须第一时间更新Path_CurrentWorkSpace_ConfigJson内容，否则就会导致文件被清空
                         try
                         {
-                            File.Delete(GlobalConfig.Path_CurrentWorkSpace_ConfigJson);
+                            File.Delete(PathManager.Path_CurrentWorkSpace_ConfigJson);
                         }
                         catch (Exception ex)
                         {

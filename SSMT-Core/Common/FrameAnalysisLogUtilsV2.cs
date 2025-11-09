@@ -121,7 +121,7 @@ namespace SSMT
             else
             {
                 //这里Deduped文件夹用的是最新的是因为不管是CTX还是普通架构，Deduped文件夹的位置都是固定的。
-                return Path.Combine(GlobalConfig.Path_LatestFrameAnalysisDedupedFolder, DedupedFileName);
+                return Path.Combine(PathManager.Path_LatestFrameAnalysisDedupedFolder, DedupedFileName);
             }
 
         }

@@ -141,12 +141,12 @@ namespace SSMT
         {
             IsLoading = true;
             //初始化图标列表
-            if (!Directory.Exists(GlobalConfig.Path_GamesFolder))
+            if (!Directory.Exists(PathManager.Path_GamesFolder))
             {
                 return;
             }
 
-            string[] GamesFolderList = Directory.GetDirectories(GlobalConfig.Path_GamesFolder);
+            string[] GamesFolderList = Directory.GetDirectories(PathManager.Path_GamesFolder);
 
             GameIconItemList.Clear();
 
@@ -168,7 +168,7 @@ namespace SSMT
 
                 GameIconItem gameIconItem = new GameIconItem();
                 gameIconItem.GameName = GameFolderName;
-                gameIconItem.GameIconImage = Path.Combine(GlobalConfig.Path_GamesFolder, GameFolderName + "\\Icon.png");
+                gameIconItem.GameIconImage = Path.Combine(PathManager.Path_GamesFolder, GameFolderName + "\\Icon.png");
                 GameIconItemList.Add(gameIconItem);
             }
 
@@ -181,7 +181,7 @@ namespace SSMT
 
             ComboBox_GameTypeFolder.Items.Clear();
 
-            string[] GameTypeFolderPathList = Directory.GetDirectories (GlobalConfig.Path_GameTypeConfigsFolder);
+            string[] GameTypeFolderPathList = Directory.GetDirectories (PathManager.Path_GameTypeConfigsFolder);
 
             foreach (string GameTypeFolderPath in GameTypeFolderPathList)
             {
@@ -225,7 +225,7 @@ namespace SSMT
             GlobalConfig.CurrentGameName = ChangeToGameName;
             GlobalConfig.SaveConfig();
 
-            string folder = GlobalConfig.Path_CurrentGamesFolder;
+            string folder = PathManager.Path_CurrentGamesFolder;
             string BackgroundWebpPath = Path.Combine(folder, "Background.webp");
             string BackgroundPngPath = Path.Combine(folder, "Background.png");
             string BackgroundMp4Path = Path.Combine(folder, "Background.mp4");
@@ -389,8 +389,8 @@ namespace SSMT
                     )
                 {
                     //_ = SSMTMessageHelper.Show(CurrentLogicName);
-                    string PossibleWebpPicture = Path.Combine(GlobalConfig.Path_CurrentGamesFolder, "Background.webp");
-                    string PossiblePngBackgroundPath = Path.Combine(GlobalConfig.Path_CurrentGamesFolder, "Background.png");
+                    string PossibleWebpPicture = Path.Combine(PathManager.Path_CurrentGamesFolder, "Background.webp");
+                    string PossiblePngBackgroundPath = Path.Combine(PathManager.Path_CurrentGamesFolder, "Background.png");
 
                     if (!File.Exists(PossibleWebpPicture))
                     {
@@ -510,12 +510,12 @@ namespace SSMT
 
         private void InitializeGameNameList()
         {
-            if (!Directory.Exists(GlobalConfig.Path_GamesFolder))
+            if (!Directory.Exists(PathManager.Path_GamesFolder))
             {
                 return;
             }
 
-            string[] GamesFolderList = Directory.GetDirectories(GlobalConfig.Path_GamesFolder);
+            string[] GamesFolderList = Directory.GetDirectories(PathManager.Path_GamesFolder);
 
             ComboBox_GameName.Items.Clear();
 
@@ -557,7 +557,7 @@ namespace SSMT
                 }
 
 
-                string MigotoSourceDll = Path.Combine(GlobalConfig.Path_AssetsFolder, DllModeFolderName + "\\d3d11.dll");
+                string MigotoSourceDll = Path.Combine(PathManager.Path_AssetsFolder, DllModeFolderName + "\\d3d11.dll");
 
 
                 string MigotoFolder = Path.Combine(GlobalConfig.SSMTCacheFolderPath, "3Dmigoto\\");
@@ -606,11 +606,11 @@ namespace SSMT
 
             if (ToggleSwitch_ShowWarning.IsOn)
             {
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI,"[Logging]", "show_warnings", "0");
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI,"[Logging]", "show_warnings", "0");
             }
             else
             {
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[Logging]", "show_warnings", "1");
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[Logging]", "show_warnings", "1");
             }
         }
 
@@ -627,14 +627,14 @@ namespace SSMT
                 return;
             }
 
-            if (!File.Exists(GlobalConfig.Path_D3DXINI))
+            if (!File.Exists(PathManager.Path_D3DXINI))
             {
                 _ = SSMTMessageHelper.Show("请先选择正确的3Dmigoto路径，确保d3dx.ini存在于当前选择的3Dmigoto路径下。");
                 return;
             }
 
             //设置symlink特性
-            string AnalyseOptions = D3dxIniConfig.ReadAttributeFromD3DXIni(GlobalConfig.Path_D3DXINI, "analyse_options");
+            string AnalyseOptions = D3dxIniConfig.ReadAttributeFromD3DXIni(PathManager.Path_D3DXINI, "analyse_options");
             if (AnalyseOptions == "")
             {
                 _ = SSMTMessageHelper.Show("当前3Dmigoto的d3dx.ini中暂未设置analyse_options，无法开启symlink特性");
@@ -645,14 +645,14 @@ namespace SSMT
             {
                 if (!AnalyseOptions.Contains("symlink"))
                 {
-                    D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", AnalyseOptions + " symlink");
+                    D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", AnalyseOptions + " symlink");
                 }
                 _ = SSMTMessageHelper.Show("Symlink特性已开启，游戏中F10刷新即可生效");
             }
             else
             {
                 AnalyseOptions = AnalyseOptions.Replace("symlink", " ");
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", AnalyseOptions);
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", AnalyseOptions);
                 _ = SSMTMessageHelper.Show("Symlink特性已关闭，游戏中F10刷新即可生效");
             }
 
@@ -674,7 +674,7 @@ namespace SSMT
                 CurrentGame3DmigotoFolder = SelectedMigotoFolderPath;
             }
 
-            string MigotoSourceDll = Path.Combine(GlobalConfig.Path_AssetsFolder, "ReleaseX64Dev\\d3d11.dll");
+            string MigotoSourceDll = Path.Combine(PathManager.Path_AssetsFolder, "ReleaseX64Dev\\d3d11.dll");
             string MigotoTargetDll = Path.Combine(CurrentGame3DmigotoFolder, "d3d11.dll");
 
             //只有dll不存在时才复制
@@ -683,7 +683,7 @@ namespace SSMT
                 File.Copy(MigotoSourceDll, MigotoTargetDll, true);
             }
 
-            string MigotoSource47Dll = Path.Combine(GlobalConfig.Path_AssetsFolder, "d3dcompiler_47.dll");
+            string MigotoSource47Dll = Path.Combine(PathManager.Path_AssetsFolder, "d3dcompiler_47.dll");
             string MigotoTarget47Dll = Path.Combine(CurrentGame3DmigotoFolder, "d3dcompiler_47.dll");
 
             if (File.Exists(MigotoSource47Dll) )
@@ -692,7 +692,7 @@ namespace SSMT
             }
             else
             {
-                string MigotoSource46Dll = Path.Combine(GlobalConfig.Path_AssetsFolder, "d3dcompiler_46.dll");
+                string MigotoSource46Dll = Path.Combine(PathManager.Path_AssetsFolder, "d3dcompiler_46.dll");
                 string MigotoTarget46Dll = Path.Combine(CurrentGame3DmigotoFolder, "d3dcompiler_46.dll");
                 File.Copy(MigotoSource46Dll, MigotoTarget46Dll, true);
             }
@@ -784,7 +784,7 @@ namespace SSMT
 
             try
             {
-                string NewGameDirectory = Path.Combine(GlobalConfig.Path_GamesFolder, GameName + "\\");
+                string NewGameDirectory = Path.Combine(PathManager.Path_GamesFolder, GameName + "\\");
                 Directory.CreateDirectory(NewGameDirectory);
 
                 ToggleSwitch_ShowIcon.IsOn = true;
@@ -808,7 +808,7 @@ namespace SSMT
 
             try
             {
-                Directory.Delete(GlobalConfig.Path_CurrentGamesFolder,true);
+                Directory.Delete(PathManager.Path_CurrentGamesFolder,true);
                 Frame.Navigate(typeof(HomePage));
             }
             catch (Exception ex)
@@ -861,7 +861,7 @@ namespace SSMT
 
             try
             {
-                string NewBackgroundPath = Path.Combine(GlobalConfig.Path_CurrentGamesFolder, "Icon.png");
+                string NewBackgroundPath = Path.Combine(PathManager.Path_CurrentGamesFolder, "Icon.png");
                 File.Copy(filepath, NewBackgroundPath, true);
 
                 IsLoading = true;
@@ -885,7 +885,7 @@ namespace SSMT
         {
             try
             {
-                string IgnoreGIErrorExePath = Path.Combine(GlobalConfig.Path_PluginsFolder, GlobalConfig.GIPluginName);
+                string IgnoreGIErrorExePath = Path.Combine(PathManager.Path_PluginsFolder, GlobalConfig.GIPluginName);
                 if (!File.Exists(IgnoreGIErrorExePath))
                 {
                     _ = SSMTMessageHelper.Show("您还没有安装此插件，请在爱发电上赞助NicoMico的SSMT技术社群方案，加入技术社群获取并安装此插件，您可以在SSMT的设置页面中右侧看到直达赞助链接的按钮。","Not Supported Yet.");

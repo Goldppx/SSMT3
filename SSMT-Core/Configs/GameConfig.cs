@@ -65,9 +65,9 @@ namespace SSMT
         public GameConfig()
         {
             //读取并设置当前3Dmigoto路径
-            if (File.Exists(GlobalConfig.Path_CurrentGameConfigJson))
+            if (File.Exists(PathManager.Path_CurrentGameConfigJson))
             {
-                JObject jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameConfigJson);
+                JObject jobj = DBMTJsonUtils.ReadJObjectFromFile(PathManager.Path_CurrentGameConfigJson);
                 if (jobj.ContainsKey("3DmigotoPath"))
                 {
 
@@ -205,9 +205,9 @@ namespace SSMT
 
             JObject jobj = DBMTJsonUtils.CreateJObject();
 
-            if (File.Exists(GlobalConfig.Path_CurrentGameConfigJson))
+            if (File.Exists(PathManager.Path_CurrentGameConfigJson))
             {
-                jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameConfigJson);
+                jobj = DBMTJsonUtils.ReadJObjectFromFile(PathManager.Path_CurrentGameConfigJson);
             }
 
             jobj["TargetPath"] = this.TargetPath;
@@ -227,7 +227,7 @@ namespace SSMT
             jobj["DllPreProcessSelectedIndex"] = this.DllPreProcessSelectedIndex;
 
             jobj["LaunchItems"] = jobjArray;
-            DBMTJsonUtils.SaveJObjectToFile(jobj, GlobalConfig.Path_CurrentGameConfigJson);
+            DBMTJsonUtils.SaveJObjectToFile(jobj, PathManager.Path_CurrentGameConfigJson);
         }
 
     }

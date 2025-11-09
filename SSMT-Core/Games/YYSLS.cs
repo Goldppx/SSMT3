@@ -180,7 +180,7 @@ namespace SSMT
                 {
                     LOG.Info("当前提取数据类型:" + d3d11GameType.GameTypeName);
                     string GameTypeFolderName = "TYPE_" + d3d11GameType.GameTypeName;
-                    string DrawIBFolderPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                    string DrawIBFolderPath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
                     string GameTypeOutputPath = Path.Combine(DrawIBFolderPath, GameTypeFolderName + "\\");
                     if (!Directory.Exists(GameTypeOutputPath))
                     {

@@ -38,8 +38,8 @@ namespace SSMT
                 FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
 
 
-                string CTXLogFilePath = GlobalConfig.Path_LatestFrameAnalysisLogTxt;
-                string CTXFolderPath = GlobalConfig.Path_LatestFrameAnalysisFolder;
+                string CTXLogFilePath = PathManager.Path_LatestFrameAnalysisLogTxt;
+                string CTXFolderPath = PathManager.Path_LatestFrameAnalysisFolder;
 
                 //接下来也不需要PointlistIndex，因为是在Trianglelist上直接计算骨骼变换矩阵的。
                 List<string> TrianglelistIBFileList = FrameAnalysisDataUtils.FilterFile(CTXFolderPath, "-ib=" + DrawIB, ".txt");
@@ -264,7 +264,7 @@ namespace SSMT
                 {
                     LOG.Info("当前提取数据类型:" + d3d11GameType.GameTypeName);
                     string GameTypeFolderName = "TYPE_" + d3d11GameType.GameTypeName;
-                    string DrawIBFolderPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                    string DrawIBFolderPath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
                     string GameTypeOutputPath = Path.Combine(DrawIBFolderPath, GameTypeFolderName + "\\");
                     if (!Directory.Exists(GameTypeOutputPath))
                     {

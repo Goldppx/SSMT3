@@ -33,7 +33,7 @@ namespace SSMT
 
                 FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
 
-                string[] TotalFrameAnalysisFiles = Directory.GetFiles(GlobalConfig.Path_LatestFrameAnalysisFolder);
+                string[] TotalFrameAnalysisFiles = Directory.GetFiles(PathManager.Path_LatestFrameAnalysisFolder);
 
                 List<string> LogTxtFilePathList = new List<string>();
                 foreach (string LogTxtFilePath in TotalFrameAnalysisFiles)
@@ -78,8 +78,8 @@ namespace SSMT
                     LOG.Info("CTXCode: " + CTXCode);
                     string CTXFolderName = "ctx-" + CTXCode;
                     string CTXLogFileName = "log-" + CTXCode + ".txt";
-                    string CTXLogFilePath = Path.Combine(GlobalConfig.Path_LatestFrameAnalysisFolder, CTXLogFileName);
-                    string CTXFolderPath = Path.Combine(GlobalConfig.Path_LatestFrameAnalysisFolder, CTXFolderName + "\\");
+                    string CTXLogFilePath = Path.Combine(PathManager.Path_LatestFrameAnalysisFolder, CTXLogFileName);
+                    string CTXFolderPath = Path.Combine(PathManager.Path_LatestFrameAnalysisFolder, CTXFolderName + "\\");
                     LOG.Info("CTXFolderPath: " + CTXFolderPath);
 
 
@@ -309,7 +309,7 @@ namespace SSMT
                     {
                         LOG.Info("当前提取数据类型:" + d3d11GameType.GameTypeName);
                         string GameTypeFolderName = "TYPE_" + d3d11GameType.GameTypeName;
-                        string DrawIBFolderPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                        string DrawIBFolderPath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
                         string GameTypeOutputPath = Path.Combine(DrawIBFolderPath, GameTypeFolderName + "\\");
                         if (!Directory.Exists(GameTypeOutputPath))
                         {

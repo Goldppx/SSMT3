@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SSMT_Core;
 
 namespace SSMT
 {
@@ -30,7 +31,7 @@ namespace SSMT
 
             string GameTypeName = ComboBox_GameTypeNameList.SelectedItem.ToString();
             
-            string GameTypeFilePath = Path.Combine(GlobalConfig.Path_CurrentGame_GameTypeFolder, GameTypeName + ".json");
+            string GameTypeFilePath = Path.Combine(PathManager.Path_CurrentGame_GameTypeFolder, GameTypeName + ".json");
             if (File.Exists(GameTypeFilePath))
             {
                 ReadD3D11ElementListFromFile(GameTypeFilePath);

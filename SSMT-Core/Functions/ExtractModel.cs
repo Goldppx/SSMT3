@@ -19,7 +19,7 @@ namespace SSMT
             try
             {
                 
-                LOG.Info("FrameAnalysisFolderPath: " + GlobalConfig.Path_LatestFrameAnalysisFolder);
+                LOG.Info("FrameAnalysisFolderPath: " + PathManager.Path_LatestFrameAnalysisFolder);
 
                 
 

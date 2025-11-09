@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SSMT_Core;
 
 namespace SSMT
 {
@@ -85,12 +86,12 @@ namespace SSMT
 
             }
 
-            if (!File.Exists(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder))
+            if (!File.Exists(PathManager.Path_CurrentWorkSpaceGeneratedModFolder))
             {
-                Directory.CreateDirectory(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder);
+                Directory.CreateDirectory(PathManager.Path_CurrentWorkSpaceGeneratedModFolder);
             }
 
-            string VSCheckIniFilePath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder, VSCheckIniFileName + ".ini");
+            string VSCheckIniFilePath = Path.Combine(PathManager.Path_CurrentWorkSpaceGeneratedModFolder, VSCheckIniFileName + ".ini");
             File.WriteAllText(VSCheckIniFilePath, outputContent);
         }
 
@@ -129,7 +130,7 @@ namespace SSMT
                 VSCheckAddBlankRow();
             }
 
-            SaveVSCheckListConfigToFolder(GlobalConfig.Path_CurrentWorkSpaceFolder);
+            SaveVSCheckListConfigToFolder(PathManager.Path_CurrentWorkSpaceFolder);
         }
 
         public void SaveVSCheckListConfigToFolder(string SaveFolderPath)
@@ -162,13 +163,13 @@ namespace SSMT
                 {
                     string json_string = VSCheckJarrayList.ToString(Formatting.Indented);
                     // 将JSON字符串写入文件
-                    File.WriteAllText(GlobalConfig.Path_CurrentWorkSpace_VSCheckConfigJson, json_string);
+                    File.WriteAllText(PathManager.Path_CurrentWorkSpace_VSCheckConfigJson, json_string);
                 }
                 else
                 {
                     try
                     {
-                        File.Delete(GlobalConfig.Path_CurrentWorkSpace_VSCheckConfigJson);
+                        File.Delete(PathManager.Path_CurrentWorkSpace_VSCheckConfigJson);
 
                     }
                     catch (Exception ex)
@@ -188,7 +189,7 @@ namespace SSMT
                 VSCheckItems.Clear();
 
 
-                string Configpath = GlobalConfig.Path_CurrentWorkSpace_VSCheckConfigJson;
+                string Configpath = PathManager.Path_CurrentWorkSpace_VSCheckConfigJson;
                 Debug.WriteLine("读取配置文件路径: " + Configpath);
 
                 if (File.Exists(Configpath))
@@ -305,7 +306,7 @@ namespace SSMT
 
 
                 //保存到当前工作空间
-                SaveVSCheckListConfigToFolder(GlobalConfig.Path_CurrentWorkSpaceFolder);
+                SaveVSCheckListConfigToFolder(PathManager.Path_CurrentWorkSpaceFolder);
             }
             catch (Exception ex)
             {
@@ -346,15 +347,15 @@ namespace SSMT
                     outputContent += "endif\r\n\r\n";
                 }
 
-                if (!File.Exists(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder))
+                if (!File.Exists(PathManager.Path_CurrentWorkSpaceGeneratedModFolder))
                 {
-                    Directory.CreateDirectory(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder);
+                    Directory.CreateDirectory(PathManager.Path_CurrentWorkSpaceGeneratedModFolder);
                 }
 
-                string VSCheckIniFilePath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder,  "VSCheck.ini");
+                string VSCheckIniFilePath = Path.Combine(PathManager.Path_CurrentWorkSpaceGeneratedModFolder,  "VSCheck.ini");
                 File.WriteAllText(VSCheckIniFilePath, outputContent);
 
-                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder);
+                SSMTCommandHelper.ShellOpenFolder(PathManager.Path_CurrentWorkSpaceGeneratedModFolder);
             }
             catch (Exception ex)
             {

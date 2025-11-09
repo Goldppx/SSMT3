@@ -32,11 +32,11 @@ namespace SSMT
         /// </summary>
         public static List<string> Get_LatestLogLineList()
         {
-            if (!FrameAnalysisFolderName_LogLineList_Dict.ContainsKey(GlobalConfig.LatestFrameAnalysisFolderName))
+            if (!FrameAnalysisFolderName_LogLineList_Dict.ContainsKey(PathManager.LatestFrameAnalysisFolderName))
             {
-                FrameAnalysisFolderName_LogLineList_Dict[GlobalConfig.LatestFrameAnalysisFolderName] = File.ReadAllLines(GlobalConfig.Path_LatestFrameAnalysisLogTxt).ToList();
+                FrameAnalysisFolderName_LogLineList_Dict[PathManager.LatestFrameAnalysisFolderName] = File.ReadAllLines(PathManager.Path_LatestFrameAnalysisLogTxt).ToList();
             }
-            List<string> LogLineList = FrameAnalysisFolderName_LogLineList_Dict[GlobalConfig.LatestFrameAnalysisFolderName];
+            List<string> LogLineList = FrameAnalysisFolderName_LogLineList_Dict[PathManager.LatestFrameAnalysisFolderName];
 
             return LogLineList;
         }
@@ -96,8 +96,8 @@ namespace SSMT
             //Foreach every index to see it's match_first_index.
             foreach (string Index in IndexList)
             {
-                string IBTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, Index + "-ib", ".txt");
-                IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(GlobalConfig.WorkFolder + IBTxtFileName, false);
+                string IBTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, Index + "-ib", ".txt");
+                IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(PathManager.WorkFolder + IBTxtFileName, false);
 
                 if (IBTxtFile.Topology != "trianglelist")
                 {

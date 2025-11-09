@@ -33,7 +33,7 @@ namespace SSMT
             process.StartInfo.FileName = PathManager.Path_UpxExe;
             process.StartInfo.Arguments = arguments;  // 可选，如果该程序接受命令行参数
             //运行目录必须是调用的文件所在的目录，不然的话就会在当前SSMT.exe下面运行，就会导致很多东西错误，比如逆向的日志无法显示。
-            process.StartInfo.WorkingDirectory = GlobalConfig.Path_PluginsFolder; // <-- 新增
+            process.StartInfo.WorkingDirectory = PathManager.Path_PluginsFolder; // <-- 新增
 
             // 配置进程启动信息
             process.StartInfo.UseShellExecute = ShellExecute;  // 不使用操作系统的shell启动程序

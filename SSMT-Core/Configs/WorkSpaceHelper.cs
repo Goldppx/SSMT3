@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SSMT_Core;
 
 namespace SSMT
 {
@@ -23,7 +24,7 @@ namespace SSMT
         {
             List<DrawIBPair> drawIBListValues = new List<DrawIBPair>();
 
-            string Configpath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, "Config.json");
+            string Configpath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, "Config.json");
             if (File.Exists(Configpath))
             {
                 //切换到对应配置

@@ -41,12 +41,12 @@ namespace SSMT
 
 
             //寻找Position的当前Hash值
-            string CSU0BufferFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, PointlistIndex + "-" + Slot + "=", ".buf");
+            string CSU0BufferFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, PointlistIndex + "-" + Slot + "=", ".buf");
             string CSU0Hash = CSU0BufferFileName.Substring(10, 8);
 
             //这里不是查找第一个，而是查找最后一个出现的，并且Index要比PointlistIndex还小。
             string PrePositionBufferFileName = "";
-            List<string> FileNameList = FrameAnalysisDataUtils.FilterFile(GlobalConfig.WorkFolder, CSU0Hash, "-cs=4e03bd5b704abbdd.buf");
+            List<string> FileNameList = FrameAnalysisDataUtils.FilterFile(PathManager.WorkFolder, CSU0Hash, "-cs=4e03bd5b704abbdd.buf");
             if (FileNameList.Count >= 1)
             {
                 PrePositionBufferFileName = FileNameList[FileNameList.Count - 1];
@@ -55,7 +55,7 @@ namespace SSMT
             FrameAnalysisFileName FAFileName = new FrameAnalysisFileName();
 
 
-            string PrePositionBufferFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(PrePositionBufferFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+            string PrePositionBufferFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(PrePositionBufferFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
 
             int PrePositionSize = (int)DBMTFileUtils.GetFileSize(PrePositionBufferFilePath);
             int PRePositionVertexCount = PrePositionSize / PositionStride;
@@ -117,8 +117,8 @@ namespace SSMT
                 string TrianglelistIndex = d3D11GameTypeLv2.FilterTrianglelistIndex_UnityVS(TrianglelistIndexList, d3D11GameType);
 
                 //获取Buffer文件
-                string VB1BufferFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-vb1=", ".buf");
-                string VB1BufferFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(VB1BufferFileName, GlobalConfig.Path_LatestFrameAnalysisFolder, GlobalConfig.Path_LatestFrameAnalysisLogTxt);
+                string VB1BufferFileName = FrameAnalysisDataUtils.FilterFirstFile(PathManager.WorkFolder, TrianglelistIndex + "-vb1=", ".buf");
+                string VB1BufferFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(VB1BufferFileName, PathManager.Path_LatestFrameAnalysisFolder, PathManager.Path_LatestFrameAnalysisLogTxt);
                 int VB1Size = (int)DBMTFileUtils.GetFileSize(VB1BufferFilePath);
 
                 //求出预期顶点数

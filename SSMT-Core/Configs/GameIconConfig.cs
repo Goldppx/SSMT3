@@ -31,9 +31,9 @@ namespace SSMT
         public GameIconConfig()
         {
             //读取并设置当前3Dmigoto路径
-            if (File.Exists(GlobalConfig.Path_GamesIconConfigJson))
+            if (File.Exists(PathManager.Path_GamesIconConfigJson))
             {
-                JObject jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_GamesIconConfigJson);
+                JObject jobj = DBMTJsonUtils.ReadJObjectFromFile(PathManager.Path_GamesIconConfigJson);
 
                 //LaunchItems
                 if (jobj.ContainsKey("GameIconSettingList"))
@@ -76,13 +76,13 @@ namespace SSMT
 
             JObject jobj = DBMTJsonUtils.CreateJObject();
 
-            if (File.Exists(GlobalConfig.Path_GamesIconConfigJson))
+            if (File.Exists(PathManager.Path_GamesIconConfigJson))
             {
-                jobj = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_GamesIconConfigJson);
+                jobj = DBMTJsonUtils.ReadJObjectFromFile(PathManager.Path_GamesIconConfigJson);
             }
 
             jobj["GameIconSettingList"] = jobjArray;
-            DBMTJsonUtils.SaveJObjectToFile(jobj, GlobalConfig.Path_GamesIconConfigJson);
+            DBMTJsonUtils.SaveJObjectToFile(jobj, PathManager.Path_GamesIconConfigJson);
         }
 
 

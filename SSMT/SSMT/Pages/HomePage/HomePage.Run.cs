@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SSMT_Core;
 
 namespace SSMT
 {
@@ -21,7 +22,7 @@ namespace SSMT
                 GameConfig gameConfig = new GameConfig();
 
                 string LoaderExeName = "LOD.exe";
-                string OriginalLoaderExePath = Path.Combine(GlobalConfig.Path_AssetsFolder, LoaderExeName);
+                string OriginalLoaderExePath = Path.Combine(PathManager.Path_AssetsFolder, LoaderExeName);
                 if (!File.Exists(OriginalLoaderExePath))
                 {
                     _ = SSMTMessageHelper.Show("您的SSMT中自带的LOD.exe缺失了，请检查是否被杀软误删，或重新安装SSMT以解决此问题");
@@ -60,20 +61,20 @@ namespace SSMT
 
                 if (ToggleSwitch_AutoSetAnalyseOptions.IsOn)
                 {
-                    D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", analyse_options);
+                    D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", analyse_options);
                 }
 
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[loader]", "target", gameConfig.TargetPath);
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "target", gameConfig.TargetPath);
 
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[loader]", "launch", "");
-                //D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[loader]", "launch_args", gameConfig.LaunchArgs);
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "launch", "");
+                //D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "launch_args", gameConfig.LaunchArgs);
 
                 int dllInitializationDelay = (int)NumberBox_DllInitializationDelay.Value;
 
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[system]", "dll_initialization_delay", dllInitializationDelay.ToString());
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[system]", "dll_initialization_delay", dllInitializationDelay.ToString());
 
                 //强制设置hunting
-                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "hunting", "2");
+                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "hunting", "2");
 
                 await SSMTCommandHelper.ProcessRunFile(MigotoLoaderExePath);
 

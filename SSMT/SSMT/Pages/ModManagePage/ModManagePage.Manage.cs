@@ -35,9 +35,9 @@ namespace SSMT
         {
             try
             {
-                if (!Directory.Exists(GlobalConfig.Path_ModsFolder))
+                if (!Directory.Exists(PathManager.Path_ModsFolder))
                 {
-                    Directory.CreateDirectory(GlobalConfig.Path_ModsFolder);
+                    Directory.CreateDirectory(PathManager.Path_ModsFolder);
                 }
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace SSMT
 
                 string NewCategoryName = TextBox_AddCategoryPrimaryName.Text;
 
-                string NewCategoryPath = Path.Combine(GlobalConfig.Path_ModsFolder,NewCategoryName + "\\");
+                string NewCategoryPath = Path.Combine(PathManager.Path_ModsFolder,NewCategoryName + "\\");
 
                 if (!Directory.Exists(NewCategoryPath))
                 {
@@ -116,7 +116,7 @@ namespace SSMT
                 ModCategory PrimaryCategory = Get_SelectedCategoryPrimary();
                 LOG.Info("当前PrimaryCategory: " + PrimaryCategory.Name);
 
-                string PrimaryCategoryPath = Path.Combine(GlobalConfig.Path_ModsFolder, PrimaryCategory.Name + "\\");
+                string PrimaryCategoryPath = Path.Combine(PathManager.Path_ModsFolder, PrimaryCategory.Name + "\\");
 
                 string NewCategoryPath = Path.Combine(PrimaryCategoryPath, NewCategoryName + "\\");
 

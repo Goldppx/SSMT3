@@ -19,9 +19,9 @@ namespace SSMT
         public void ReadConfig() {
             //读取配置时优先读取全局的
 
-            if (File.Exists(GlobalConfig.Path_ModManageConfig))
+            if (File.Exists(PathManager.Path_ModManageConfig))
             {
-                JObject SettingsJsonObject = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_ModManageConfig);
+                JObject SettingsJsonObject = DBMTJsonUtils.ReadJObjectFromFile(PathManager.Path_ModManageConfig);
 
                 //古法读取
                 if (SettingsJsonObject.ContainsKey("CategoryPrimaryName"))
@@ -52,7 +52,7 @@ namespace SSMT
             SettingsJsonObject["CategorySecondaryName"] = CategorySecondaryName;
             SettingsJsonObject["ModItemName"] = ModItemName;
 
-            DBMTJsonUtils.SaveJObjectToFile(SettingsJsonObject, GlobalConfig.Path_ModManageConfig);
+            DBMTJsonUtils.SaveJObjectToFile(SettingsJsonObject, PathManager.Path_ModManageConfig);
             
         }
 

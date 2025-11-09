@@ -52,9 +52,9 @@ namespace SSMT
             this.InitializeComponent();
 
             //全局配置文件夹不存在就创建一个
-            if (!Directory.Exists(GlobalConfig.Path_SSMT3GlobalConfigsFolder))
+            if (!Directory.Exists(PathManager.Path_SSMT3GlobalConfigsFolder))
             {
-                Directory.CreateDirectory(GlobalConfig.Path_SSMT3GlobalConfigsFolder);
+                Directory.CreateDirectory(PathManager.Path_SSMT3GlobalConfigsFolder);
             }
 
             CurrentWindow = this;
@@ -121,7 +121,7 @@ namespace SSMT
             {
                 //如果不存在，那没办法了，只能创建一个了
 
-                DirectoryInfo dir = new DirectoryInfo(GlobalConfig.Path_BaseFolder);
+                DirectoryInfo dir = new DirectoryInfo(PathManager.Path_BaseFolder);
                 DirectoryInfo parentDir = dir.Parent;
                 string parentPath = parentDir.FullName;
                 string DefaultCacheLocation = System.IO.Path.Combine(parentPath,"SSMTDefaultCacheFolder\\");
@@ -142,7 +142,7 @@ namespace SSMT
             if (nvSample.MenuItems.Count > 0)
             {
                 //一开始就设为透明的
-                if (GlobalConfig.CurrentGameMigotoFolder != "" && Directory.Exists(GlobalConfig.CurrentGameMigotoFolder))
+                if (PathManager.CurrentGameMigotoFolder != "" && Directory.Exists(PathManager.CurrentGameMigotoFolder))
                 {
                     if (GlobalConfig.OpenToWorkPage)
                     {

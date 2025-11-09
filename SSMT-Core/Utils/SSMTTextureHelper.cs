@@ -127,7 +127,7 @@ namespace SSMT_Core
             foreach (string DrawIB in DrawIBList)
             {
                 //在这里把所有output目录下的dds转为jpg格式
-                string DedupedTexturesFolderPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder ,DrawIB + "\\DedupedTextures\\");
+                string DedupedTexturesFolderPath = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder ,DrawIB + "\\DedupedTextures\\");
                 if (!Directory.Exists(DedupedTexturesFolderPath))
                 {
                     throw new Exception("无法找到DedupedTextures文件夹: " + DedupedTexturesFolderPath);

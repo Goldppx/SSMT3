@@ -19,9 +19,9 @@ namespace SSMT
         public void ReadConfig()
         {
             //读取配置时优先读取全局的
-            if (File.Exists(GlobalConfig.Path_TexturePageIndexConfig))
+            if (File.Exists(PathManager.Path_TexturePageIndexConfig))
             {
-                JObject SettingsJsonObject = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_TexturePageIndexConfig);
+                JObject SettingsJsonObject = DBMTJsonUtils.ReadJObjectFromFile(PathManager.Path_TexturePageIndexConfig);
 
                 //古法读取
                 if (SettingsJsonObject.ContainsKey("DrawIBIndex"))
@@ -53,7 +53,7 @@ namespace SSMT
             SettingsJsonObject["ComponentIndex"] = ComponentIndex;
             SettingsJsonObject["DrawCallIndex"] = DrawCallIndex;
 
-            DBMTJsonUtils.SaveJObjectToFile(SettingsJsonObject, GlobalConfig.Path_TexturePageIndexConfig);
+            DBMTJsonUtils.SaveJObjectToFile(SettingsJsonObject, PathManager.Path_TexturePageIndexConfig);
         }
 
     }

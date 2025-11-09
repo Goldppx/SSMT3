@@ -314,7 +314,7 @@ namespace SSMT
             LOG.Info("PS: " + TextureConfigName);
 
             Debug.WriteLine("TextureConfigName: " + TextureConfigName);
-            string TextureConfigSavePath = GlobalConfig.Path_GameTextureConfigFolder + TextureConfigName + ".json";
+            string TextureConfigSavePath = PathManager.Path_GameTextureConfigFolder + TextureConfigName + ".json";
             Debug.WriteLine("TextureConfigSavePath: " + TextureConfigSavePath);
             if (File.Exists(TextureConfigSavePath))
             {
@@ -350,16 +350,16 @@ namespace SSMT
             string PSHashValue = GetCurrentPSValue();
             if (PSHashValue != "")
             {
-                string TextureConfigSavePath = Path.Combine(GlobalConfig.Path_GameTextureConfigFolder, PSHashValue + ".json");
+                string TextureConfigSavePath = Path.Combine(PathManager.Path_GameTextureConfigFolder, PSHashValue + ".json");
                 TextureConfig.SaveTextureConfig(imageCollection, TextureConfigSavePath);
             }
         }
 
         private void Menu_OpenGameTextureConfigsFolder_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(GlobalConfig.Path_TextureConfigsFolder))
+            if (Directory.Exists(PathManager.Path_TextureConfigsFolder))
             {
-                SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_GameTextureConfigFolder);
+                SSMTCommandHelper.ShellOpenFolder(PathManager.Path_GameTextureConfigFolder);
             }
             else
             {
@@ -438,7 +438,7 @@ namespace SSMT
 
         private void Menu_OpenCurrentWorkSpaceFolder_Click(object sender, RoutedEventArgs e)
         {
-            SSMTCommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceFolder);
+            SSMTCommandHelper.ShellOpenFolder(PathManager.Path_CurrentWorkSpaceFolder);
         }
 
 
@@ -453,7 +453,7 @@ namespace SSMT
             string ComponentName = ComboBoxComponent.SelectedItem.ToString();
             string PartName = ComponentName.Substring("Component ".Length);
             //创建生成贴图Mod的文件夹
-            string GenerateTextureModFolderPath = GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder;
+            string GenerateTextureModFolderPath = PathManager.Path_CurrentWorkSpaceGeneratedModFolder;
             Directory.CreateDirectory(GenerateTextureModFolderPath);
 
             Dictionary<string, TextureDeduped> dictionary = TextureConfig.Read_TrianglelistDedupedFileNameDict_FromJson(DrawIB);
@@ -494,7 +494,7 @@ namespace SSMT
                 }
 
                 string suffix = Path.GetExtension(imageItem.FileName);
-                string CurrentDrawIBOutputFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                string CurrentDrawIBOutputFolder = Path.Combine(PathManager.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
 
                 string FALogDedupedFileName = dictionary[imageItem.FileName].FALogDedupedFileName;
                 string ImageSourcePath = CurrentDrawIBOutputFolder + "DedupedTextures\\" + FALogDedupedFileName;
