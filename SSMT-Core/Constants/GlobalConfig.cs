@@ -15,14 +15,7 @@ namespace SSMT
     
     public static class GlobalConfig
     {
-        public static string analyse_options = "deferred_ctx_immediate dump_rt dump_cb dump_vb dump_ib buf txt dds dump_tex dds";
-
-        public static string SSMT_Version = "V3.0.5";
-
-        public static string GIPluginName = "GoodWorkGI.exe";
-
-        //程序窗口名称
-        public static string SSMT_Title = "SSMT " + SSMT_Version;
+  
         public static string CurrentGameName { get; set; } = "ZZZ";
         public static string CurrentWorkSpace { get; set; } = "";
         public static string SSMTCacheFolderPath { get; set; } = "";

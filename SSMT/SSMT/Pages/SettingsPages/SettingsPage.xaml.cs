@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using SSMT;
+using SSMT_Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,7 +44,7 @@ namespace SSMT
         {
             this.InitializeComponent();
             
-            HyperlinkButton_SSMTVersion.Content = GlobalConfig.SSMT_Title;
+            HyperlinkButton_SSMTVersion.Content = ConstantsManager.SSMT_Title;
 
             try
             {

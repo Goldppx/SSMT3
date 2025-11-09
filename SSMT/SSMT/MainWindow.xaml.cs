@@ -111,7 +111,7 @@ namespace SSMT
 
 
             //设置标题和宽高
-            this.Title = GlobalConfig.SSMT_Title;
+            this.Title = ConstantsManager.SSMT_Title;
             //设置图标
             this.AppWindow.SetIcon("Assets/XiaoMai.ico");
 

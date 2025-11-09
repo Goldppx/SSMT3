@@ -10,15 +10,16 @@ namespace SSMT_Core
 {
     public class PathManager
     {
-        public static string Name_Upx = "upx.exe";
-        public static string Name_Texconv = "texconv.exe";
+        public static string Name_Plugin_Upx = "upx.exe";
+        public static string Name_Plugin_Texconv = "texconv.exe";
         public static string Name_GlobalConfigFileName = "SSMT3-Config.json";
+        public static string Name_Plugin_GoodWorkGI = "GoodWorkGI.exe";
 
         public static string Path_TexconvExe
         {
             get
             {
-                return Path.Combine(PathManager.Path_AssetsFolder, Name_Texconv);
+                return Path.Combine(PathManager.Path_AssetsFolder, Name_Plugin_Texconv);
             }
         }
 
@@ -26,7 +27,7 @@ namespace SSMT_Core
         {
             get
             {
-                return Path.Combine(PathManager.Path_AssetsFolder, Name_Upx);
+                return Path.Combine(PathManager.Path_AssetsFolder, Name_Plugin_Upx);
             }
         }
 

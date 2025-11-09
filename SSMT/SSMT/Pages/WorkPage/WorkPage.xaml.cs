@@ -766,7 +766,7 @@ namespace SSMT
                     {
                         DumpIBListConfigIniList.Add("[TextureOverride_IB_Dump_" + item.DrawIB + "]");
                         DumpIBListConfigIniList.Add("hash = " + item.DrawIB);
-                        DumpIBListConfigIniList.Add("analyse_options = " + GlobalConfig.analyse_options);
+                        DumpIBListConfigIniList.Add("analyse_options = " + ConstantsManager.analyse_options);
                         DumpIBListConfigIniList.Add("");
                     }
 
@@ -809,7 +809,7 @@ namespace SSMT
                 DumpIBListConfigIniList.Add("[ShaderOverride_Dump_" + RootShader + "]");
                 DumpIBListConfigIniList.Add("hash = " + RootShader);
                 //DumpIBListConfigIniList.Add("allow_duplicate_hash = overrule");
-                DumpIBListConfigIniList.Add("analyse_options = " + GlobalConfig.analyse_options);
+                DumpIBListConfigIniList.Add("analyse_options = " + ConstantsManager.analyse_options);
                 DumpIBListConfigIniList.Add("");
             }
 
@@ -830,7 +830,7 @@ namespace SSMT
                 File.Delete(PathManager.Path_DumpIBListConfig);
             }
 
-            D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", GlobalConfig.analyse_options);
+            D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", ConstantsManager.analyse_options);
         }
        
 
@@ -879,7 +879,7 @@ namespace SSMT
                     }
 
                     //恢复全局Dump
-                    D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", GlobalConfig.analyse_options);
+                    D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", ConstantsManager.analyse_options);
 
                     //恢复Mods引用并取消特定Dump引用
                     MigotoIniFile migotoIniFile = new MigotoIniFile(PathManager.Path_D3DXINI);

@@ -40,7 +40,7 @@ namespace SSMT
 
 
         private float glowIntensity = 0f; // 光晕强度
-        private CanvasRadialGradientBrush? glowBrush;
+        private CanvasRadialGradientBrush glowBrush;
 
 
         public HomePage()
@@ -885,7 +885,7 @@ namespace SSMT
         {
             try
             {
-                string IgnoreGIErrorExePath = Path.Combine(PathManager.Path_PluginsFolder, GlobalConfig.GIPluginName);
+                string IgnoreGIErrorExePath = Path.Combine(PathManager.Path_PluginsFolder, PathManager.Name_Plugin_GoodWorkGI);
                 if (!File.Exists(IgnoreGIErrorExePath))
                 {
                     _ = SSMTMessageHelper.Show("您还没有安装此插件，请在爱发电上赞助NicoMico的SSMT技术社群方案，加入技术社群获取并安装此插件，您可以在SSMT的设置页面中右侧看到直达赞助链接的按钮。","Not Supported Yet.");

@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SSMT_Core;
 
 namespace SSMT
 {
@@ -52,7 +51,7 @@ namespace SSMT
 
 
                 //强制设置analyse_options 使用deferred_ctx_immediate确保IdentityV和YYSLS都能正确Dump出东西
-                string analyse_options = GlobalConfig.analyse_options;
+                string analyse_options = ConstantsManager.analyse_options;
 
                 if (ToggleSwitch_Symlink.IsOn)
                 {
