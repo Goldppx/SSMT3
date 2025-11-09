@@ -423,6 +423,7 @@ The following sets the maximum # of items to show before wrapping.-->
                                 </controls:SettingsCard.HeaderIcon>
 
                                 <ComboBox 
+                                    Width="200"
                                     SelectionChanged="ComboBox_DllReplace_SelectionChanged"
                                     x:Name="ComboBox_DllReplace" 
                                     >
@@ -444,6 +445,7 @@ The following sets the maximum # of items to show before wrapping.-->
                                 </controls:SettingsCard.HeaderIcon>
 
                                 <ComboBox 
+                                    Width="200"
                                     SelectionChanged="ComboBox_DllPreProcess_SelectionChanged"
                                     
                                     x:Name="ComboBox_DllPreProcess">
