@@ -160,21 +160,7 @@ namespace SSMT
 
             }
 
-            double logicalWidth = GlobalConfig.WindowWidth;
-            double logicalHeight = GlobalConfig.WindowHeight;
-
-            int actualWidth = (int)(logicalWidth);
-            int actualHeight = (int)(logicalHeight);
-
-            if (actualHeight < 720)
-            {
-                actualHeight = 720;
-            }
-
-            if (actualWidth < 1280)
-            {
-                actualWidth = 1280;
-            }
+            
 
             //设置页面是否显示
             this.SetGameTypePageVisibility(GlobalConfig.ShowGameTypePage);
@@ -182,13 +168,24 @@ namespace SSMT
             this.SetTextureToolBoxPageVisibility(GlobalConfig.ShowTextureToolBoxPage);
 
 
-            WindowHelper.SetWindowSizeWithNavigationView(AppWindow, actualWidth, actualHeight);
-            WindowHelper.MoveWindowToCenter(AppWindow);
+            
 
             TranslatePage();
-        }
 
-        private void TranslatePage()
+            ResetWindow();
+
+		}
+
+
+        private void ResetWindow() {
+			double logicalWidth = GlobalConfig.WindowWidth;
+			double logicalHeight = GlobalConfig.WindowHeight;
+
+			WindowHelper.SetSmartSizeAndMoveToCenter(AppWindow, (int)(logicalWidth), (int)(logicalHeight));
+		}
+
+		
+		private void TranslatePage()
         {
             if (GlobalConfig.Chinese)
             {

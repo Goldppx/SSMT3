@@ -13,6 +13,6 @@ namespace SSMT_Core
         public static string SSMT_Version = "V3.0.5";
 
         public static string SSMT_Title = "SSMT " + SSMT_Version;
-
+        
     }
 }
