@@ -41,10 +41,10 @@ namespace SSMT
                 SyncD3D11DllFile();
 
                 string MigotoTargetDll = Path.Combine(gameConfig.MigotoPath, "d3d11.dll");
-                
-                //用户需要仪式感和掌控力，所以不能直接运行，必须检测到按钮开启才运行
-                //必须是能看见的情况下才解决报错，否则不解决。
-                if (ComboBox_DllPreProcess.SelectedIndex == 1)
+
+				//使用UPX压缩DLL，避开最基础的md5识别，当然目前原神热更新已经修复了这个，所以大部分情况下不管用了
+                //但是不是每个游戏都有反作弊，都能意识到这一点，所以保留此功能，万一有用，呵呵
+				if (ComboBox_DllPreProcess.SelectedIndex == 1)
                 {
                     SSMTCommandHelper.RunUPX(MigotoTargetDll, false);
                 }
@@ -63,7 +63,19 @@ namespace SSMT
                     D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[hunting]", "analyse_options", analyse_options);
                 }
 
-                D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "target", gameConfig.TargetPath);
+                string target_path = gameConfig.TargetPath;
+                if (target_path.Trim() == "") {
+                    target_path = TextBox_TargetPath.Text;
+                    if (target_path.Trim() == "")
+                    {
+                        _ = SSMTMessageHelper.Show("启动前请先填写进程路径","Please set your target path before start");
+                        return;
+                    }
+			    }
+
+                
+
+				D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "target", gameConfig.TargetPath);
 
                 D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "launch", "");
                 //D3dxIniConfig.SaveAttributeToD3DXIni(PathManager.Path_D3DXINI, "[loader]", "launch_args", gameConfig.LaunchArgs);
