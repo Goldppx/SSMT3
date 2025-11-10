@@ -53,22 +53,33 @@ namespace SSMT
                 Button_AutoUpdate.Content = "自动检查新版本并更新";
                 TextBlock_UpdateProgressing.Text = "自动更新下载进度:";
 
-                TextBlock_WindowOpacitySetting.Text = "窗口透明度调整";
-                Slider_LuminosityOpacity.Header = "透光度";
+            
 
-                TextBlock_ShowPagesSetting.Text = "页面显示设置";
 
-                
-                ToggleSwitch_ShowGameTypePage.OnContent = "显示 数据类型管理页面";
-                ToggleSwitch_ShowGameTypePage.OffContent = "隐藏 数据类型管理页面";
+                SettingsCard_LuminosityOpacity.Header = "窗口透明度设置";
+                SettingsCard_LuminosityOpacity.Description = "窗口透明度的值越小越透明看起来越炫酷，值越大越不透明看起来越厚重";
 
                 
-                ToggleSwitch_ShowModManagePage.OnContent = "显示 Mod 管理页面";
-                ToggleSwitch_ShowModManagePage.OffContent = "隐藏 Mod 管理页面";
+                ToggleSwitch_ShowGameTypePage.OnContent = "显示";
+                ToggleSwitch_ShowGameTypePage.OffContent = "隐藏";
+
+                
+                ToggleSwitch_ShowModManagePage.OnContent = "显示";
+                ToggleSwitch_ShowModManagePage.OffContent = "隐藏";
 
 
-                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "显示 贴图工具箱页面";
-                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "隐藏 贴图工具箱页面";
+                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "显示";
+                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "隐藏";
+
+                SettingsCard_ShowTextureToolBoxPage.Header = "贴图工具箱页面显示设置";
+                SettingsCard_ShowTextureToolBoxPage.Description = "设置是否在侧边导航栏显示贴图工具箱页面的入口，贴图工具箱页面包含动态贴图Mod制作，贴图格式批量转换等功能，适合进阶Mod作者";
+
+                SettingsCard_ShowGameTypePage.Header = "数据类型管理页面显示设置";
+                SettingsCard_ShowGameTypePage.Description = "设置是否在侧边导航栏显示数据类型管理页面的入口，数据类型管理页面包含游戏数据类型的添加、删除与修改等功能，适合SSMT工具开发者以及高阶Mod作者使用";
+
+                SettingsCard_ShowModManagePage.Header = "Mod管理页面显示设置";
+                SettingsCard_ShowModManagePage.Description = "设置是否在侧边导航栏显示Mod管理页面的入口，Mod管理页面包含Mod的启用、禁用、安装与卸载等功能，适合懒得使用第三方管理器的Mod玩家使用";
+
 
                 SettingsCard_Language.Header = "语言设置";
                 SettingsCard_Language.Description = "设置SSMT的界面显示语言，仅支持中文和英文";
@@ -111,26 +122,37 @@ namespace SSMT
                 Button_AutoUpdate.Content = "Auto Update To Latest Version";
                 TextBlock_UpdateProgressing.Text = "Auto Update Download Progress:";
 
-                TextBlock_WindowOpacitySetting.Text = "Window Opacity";
-                Slider_LuminosityOpacity.Header = "Luminosity Opacity";
-
-                TextBlock_ShowPagesSetting.Text = "Pages Show Setting";
-
-                ToggleSwitch_ShowGameTypePage.OnContent = "Show Game Type Management Page";
-                ToggleSwitch_ShowGameTypePage.OffContent = "Hide Game Type Management Page";
-
-                ToggleSwitch_ShowModManagePage.OnContent = "Show Mod Management Page";
-                ToggleSwitch_ShowModManagePage.OffContent = "Hide Mod Management Page";
+         
 
 
-                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "Show Texture Toolbox Page";
-                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "Hide Texture Toolbox Page";
+                ToggleSwitch_ShowGameTypePage.OnContent = "Show";
+                ToggleSwitch_ShowGameTypePage.OffContent = "Hide";
+
+                ToggleSwitch_ShowModManagePage.OnContent = "Show";
+                ToggleSwitch_ShowModManagePage.OffContent = "Hide";
+
+
+                ToggleSwitch_ShowTextureToolBoxPage.OnContent = "Show";
+                ToggleSwitch_ShowTextureToolBoxPage.OffContent = "Hide";
+
+
+                SettingsCard_ShowTextureToolBoxPage.Header = "Texture Toolbox Page Show Setting" ;
+                SettingsCard_ShowTextureToolBoxPage.Description = "Set whether to show the entrance of the Texture Toolbox Page on the main page. The Texture Toolbox Page includes functions such as Dynamic Texture Mod Creation and Batch Texture Format Conversion.";
+                
+                SettingsCard_ShowGameTypePage.Header = "Game Type Management Page Show Setting";
+                SettingsCard_ShowGameTypePage.Description = "Set whether to show the entrance of the Game Type Management Page on the main page. The Game Type Management Page includes functions such as adding, deleting, and modifying game data types.";
+
+                SettingsCard_ShowModManagePage.Header = "Mod Management Page Show Setting";
+                SettingsCard_ShowModManagePage.Description = "Set whether to show the entrance of the Mod Management Page on the main page. The Mod Management Page includes functions such as enabling, disabling, installing, and uninstalling mods.";
 
                 SettingsCard_Language.Header = "Language Setting";
                 SettingsCard_Language.Description = "Decide what kind of language ssmt show,only support English and Chinese";
 
                 SettingsCard_Theme.Header = "Theme Setting";
                 SettingsCard_Theme.Description = "Decide what kind of theme color ssmt use, support Light and Dark theme, Light is recommended";
+
+                SettingsCard_LuminosityOpacity.Header = "Window Opacity Setting";
+                SettingsCard_LuminosityOpacity.Description = "The smaller the value, the more transparent the window looks cool; the larger the value, the more opaque the window looks heavy";
 
             }
 

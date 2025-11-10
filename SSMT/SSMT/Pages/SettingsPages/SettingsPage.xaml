@@ -64,79 +64,13 @@
 
                 </Expander>
 
-
-         
-
-
-               
-                <Expander
-                    HorizontalContentAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-                    IsExpanded="True">
-                    <Expander.Header>
-                        <StackPanel Margin="10">
-                            <TextBlock 
-                                x:Name="TextBlock_WindowOpacitySetting"
-                                FontSize="14" 
-                                FontWeight="Bold" />
-
-                        </StackPanel>
-                    </Expander.Header>
-
-                    <StackPanel Orientation="Vertical">
-                        <Slider
-                            Margin="5"
-                            x:Name="Slider_LuminosityOpacity"
-                            Minimum="0"
-                            Maximum="1"
-                            StepFrequency="0.01"
-                            ValueChanged="Slider_LuminosityOpacity_ValueChanged"
-                            LostFocus="Slider_LuminosityOpacity_LostFocus"
-                            ></Slider>
-                    </StackPanel>
-
-                </Expander>
              
 
-                <Expander
-                    HorizontalContentAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-                    IsExpanded="True">
-                    <Expander.Header>
-                        <StackPanel Margin="10">
-                            <TextBlock 
-                                x:Name="TextBlock_ShowPagesSetting"
-                                FontSize="14" 
-                                FontWeight="Bold" />
+             
 
-                        </StackPanel>
-                    </Expander.Header>
 
-                    <StackPanel Orientation="Vertical" Spacing="1">
 
-                        <ToggleSwitch
-                            Margin="5"
-                            x:Name="ToggleSwitch_ShowTextureToolBoxPage"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Stretch"
-                            Toggled="ToggleSwitch_ShowTextureToolBoxPage_Toggled"/>
 
-                        <ToggleSwitch 
-                            Margin="5"
-                            x:Name="ToggleSwitch_ShowGameTypePage"
-                            Toggled="ToggleSwitch_ShowGameTypePage_Toggled"
-                            />
-                        <ToggleSwitch 
-                            Margin="5"
-                            x:Name="ToggleSwitch_ShowModManagePage"
-                            Toggled="ToggleSwitch_ShowModManagePage_Toggled"
-                            />
-
-                    </StackPanel>
-
-                </Expander>
-
-              
 
                 <controls:SettingsCard x:Name="SettingsCard_Language">
                     <!-- 这里换成你查到的编码 -->
@@ -167,6 +101,72 @@
                         x:Name="ToggleSwitch_Theme"
                         Toggled="ToggleSwitch_Theme_Toggled"
                         />
+
+
+                </controls:SettingsCard>
+
+
+                <controls:SettingsCard x:Name="SettingsCard_LuminosityOpacity">
+                    <!-- 这里换成你查到的编码 -->
+                    <controls:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE745;"     
+           FontFamily="Segoe Fluent Icons"/>
+                    </controls:SettingsCard.HeaderIcon>
+
+
+                    <Slider
+                        Margin="5"
+                        x:Name="Slider_LuminosityOpacity"
+                        Minimum="0"
+                        Maximum="1"
+                        StepFrequency="0.01"
+                        ValueChanged="Slider_LuminosityOpacity_ValueChanged"
+                        LostFocus="Slider_LuminosityOpacity_LostFocus"
+                        ></Slider>
+
+                </controls:SettingsCard>
+                
+                <controls:SettingsCard x:Name="SettingsCard_ShowTextureToolBoxPage">
+                    <!-- 这里换成你查到的编码 -->
+                    <controls:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xe735;"     
+                            FontFamily="Segoe Fluent Icons"/>
+                    </controls:SettingsCard.HeaderIcon>
+
+                    <ToggleSwitch
+                        Margin="5"
+                        x:Name="ToggleSwitch_ShowTextureToolBoxPage"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        Toggled="ToggleSwitch_ShowTextureToolBoxPage_Toggled"/>
+                </controls:SettingsCard>
+
+                <controls:SettingsCard x:Name="SettingsCard_ShowGameTypePage">
+                    <!-- 这里换成你查到的编码 -->
+                    <controls:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xe735;"  FontFamily="Segoe Fluent Icons"/>
+                    </controls:SettingsCard.HeaderIcon>
+
+                    <ToggleSwitch 
+                            Margin="5"
+                            x:Name="ToggleSwitch_ShowGameTypePage"
+                            Toggled="ToggleSwitch_ShowGameTypePage_Toggled"
+                            />
+                </controls:SettingsCard>
+
+                <controls:SettingsCard x:Name="SettingsCard_ShowModManagePage">
+                    <!-- 这里换成你查到的编码 -->
+                    <controls:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xe735;"     
+           FontFamily="Segoe Fluent Icons"/>
+                    </controls:SettingsCard.HeaderIcon>
+
+                    <ToggleSwitch 
+             Margin="5"
+             x:Name="ToggleSwitch_ShowModManagePage"
+             Toggled="ToggleSwitch_ShowModManagePage_Toggled"
+             />
+
 
 
                 </controls:SettingsCard>
