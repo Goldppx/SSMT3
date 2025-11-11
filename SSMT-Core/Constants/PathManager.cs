@@ -44,8 +44,9 @@ namespace SSMT_Core
         public static string Path_LogsFolder
         {
             get {
+                
                 string LogsFolder = Path.Combine(PathManager.Path_BaseFolder, "Logs\\");
-
+                
                 if (!Directory.Exists(LogsFolder))
                 {
                     Directory.CreateDirectory(LogsFolder);
