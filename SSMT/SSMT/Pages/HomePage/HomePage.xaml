@@ -172,18 +172,11 @@ The following sets the maximum # of items to show before wrapping.-->
                     Orientation="Vertical" 
                     HorizontalAlignment="Stretch">
 
-                    <Expander
-                        HorizontalContentAlignment="Stretch"
-                        HorizontalAlignment="Stretch"
-                        IsExpanded="True">
-                        <Expander.Header>
-                            <StackPanel Margin="10">
-                                <TextBlock 
-                                    x:Name="TextBlock_GameName"
-                                    FontSize="14" 
-                                    FontWeight="Bold" />
-                            </StackPanel>
-                        </Expander.Header>
+                    <controls:SettingsCard x:Name="SettingsCard_GameName">
+                        <!-- 这里换成你查到的编码 -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xe7fc;" FontFamily="Segoe Fluent Icons"/>
+                        </controls:SettingsCard.HeaderIcon>
 
                         <StackPanel Orientation="Vertical">
                             <ComboBox
@@ -209,54 +202,46 @@ The following sets the maximum # of items to show before wrapping.-->
                                     >
                                 </Button>
                             </StackPanel>
-
-
-                            <ComboBox 
-                                HorizontalAlignment="Stretch"
-                                Margin="5"
-                                x:Name="ComboBox_LogicName"
-                                SelectionChanged="ComboBox_LogicName_SelectionChanged">
-                            </ComboBox>
-
-                            <ComboBox
-                                SelectionChanged="ComboBox_GameTypeFolder_SelectionChanged"
-                                HorizontalAlignment="Stretch"
-                                Margin="5"
-                                x:Name="ComboBox_GameTypeFolder"
-                                >
-                                
-                            </ComboBox>
-                            
-                            <StackPanel Orientation="Horizontal">
-                                <Button
-                                    Click="Button_CheckBGUpdate_Click"
-                                    Style="{StaticResource AccentButtonStyle}"
-                                    Margin="5"
-                                    x:Name="Button_AutoUpdateBackground"
-                                    />
-                                <Button
-                                    Click="Button_SelectBackgroundFile_Click"
-                                    x:Name="Button_SelectBackgroundFile"
-                                    Margin="5"/>
-                                
-                                <Button
-                                    Click="Button_ChooseGameIcon_Click"
-                                    Margin="5"
-                                    x:Name="Button_ChooseGameIcon"
-                                    />
-                                
-                                <ToggleSwitch
-                                    Toggled="ToggleSwitch_ShowIcon_Toggled"
-                                    Margin="5"
-                                    x:Name="ToggleSwitch_ShowIcon"
-                                    >
-                                </ToggleSwitch>
-
-                                
-                            </StackPanel>
-                            
                         </StackPanel>
-                    </Expander>
+
+
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard x:Name="SettingsCard_LogicName">
+                        <!-- 这里换成你查到的编码 -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xEb44;" FontFamily="Segoe Fluent Icons"/>
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <ComboBox 
+                            HorizontalAlignment="Stretch"
+                            Margin="5"
+                            x:Name="ComboBox_LogicName"
+                            SelectionChanged="ComboBox_LogicName_SelectionChanged">
+                        </ComboBox>
+
+
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard  x:Name="SettingsCard_GameTypeFolder">
+                        <!-- 这里换成你查到的编码 -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xf003;" FontFamily="Segoe Fluent Icons"/>
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <ComboBox
+                            SelectionChanged="ComboBox_GameTypeFolder_SelectionChanged"
+                            HorizontalAlignment="Stretch"
+                            Margin="5"
+                            x:Name="ComboBox_GameTypeFolder"
+                            >
+
+                        </ComboBox>
+
+
+                    </controls:SettingsCard>
+
+                   
                    
                     <Expander
                         HorizontalContentAlignment="Stretch"
@@ -464,28 +449,24 @@ The following sets the maximum # of items to show before wrapping.-->
 
                         </controls:SettingsCard>
 
+                    <controls:SettingsCard x:Name="SettingsCard_ClearGICache">
+                        <!-- 这里换成你查到的编码 -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xed62;"  FontFamily="Segoe Fluent Icons"/>
+                        </controls:SettingsCard.HeaderIcon>
 
-                        <controls:SettingsCard 
-                            x:Name="SettingsCard_ClearGICache">
-                            <!-- 这里换成你查到的编码 -->
-                            <controls:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xed62;"     
-                                FontFamily="Segoe Fluent Icons"/>
-                            </controls:SettingsCard.HeaderIcon>
+                        <Button
+                            Click="Button_CleanGICache_Click"
+                            x:Name="Button_CleanGICache"
+                            Margin="5"/>
 
-                            <Button
-                                Click="Button_CleanGICache_Click"
-                                x:Name="Button_CleanGICache"
-                                Margin="5"/>
+                    </controls:SettingsCard>
 
-                        </controls:SettingsCard>
-
-                    <controls:SettingsCard 
-                            x:Name="SettingsCard_RunIgnoreGIError40">
+                    <controls:SettingsCard x:Name="SettingsCard_RunIgnoreGIError40">
                         <!-- 这里换成你查到的编码 -->
                         <controls:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xea0d;"     
-                                    FontFamily="Segoe Fluent Icons"/>
+                FontFamily="Segoe Fluent Icons"/>
                         </controls:SettingsCard.HeaderIcon>
 
 
@@ -497,6 +478,67 @@ The following sets the maximum # of items to show before wrapping.-->
                             ></Button>
 
                     </controls:SettingsCard>
+
+                    <controls:SettingsCard  x:Name="SettingsCard_AutoUpdateBackground">
+                        <!-- 这里换成你查到的编码 -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xe8ba;" FontFamily="Segoe Fluent Icons"/>
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <Button
+                            Click="Button_CheckBGUpdate_Click"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Margin="5"
+                            x:Name="Button_AutoUpdateBackground"
+                            />
+
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard  x:Name="SettingsCard_SelectBackgroundPicture">
+                        <!-- 这里换成你查到的编码 -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xe8b9;" FontFamily="Segoe Fluent Icons"/>
+                        </controls:SettingsCard.HeaderIcon>
+
+
+                        <Button
+                            Click="Button_SelectBackgroundFile_Click"
+                            x:Name="Button_SelectBackgroundFile"
+                            Margin="5"/>
+
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard  x:Name="SettingsCard_ShowIcon">
+                        <!-- 这里换成你查到的编码 -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xeca5;" FontFamily="Segoe Fluent Icons"/>
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <ToggleSwitch
+                            Toggled="ToggleSwitch_ShowIcon_Toggled"
+                            Margin="5"
+                            x:Name="ToggleSwitch_ShowIcon"
+                            >
+                        </ToggleSwitch>
+
+
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard  x:Name="SettingsCard_SelectIconFile">
+                        <!-- 这里换成你查到的编码 -->
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xecaa;" FontFamily="Segoe Fluent Icons"/>
+                        </controls:SettingsCard.HeaderIcon>
+
+                        <Button
+                            Click="Button_ChooseGameIcon_Click"
+                            Margin="5"
+                            x:Name="Button_ChooseGameIcon"
+                            />
+
+                    </controls:SettingsCard>
+
+                    
 
                 </StackPanel>
             </ScrollViewer>

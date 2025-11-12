@@ -24,8 +24,27 @@ namespace SSMT
         public void TranslatePage() {
             if (GlobalConfig.Chinese)
             {
+                SettingsCard_GameName.Header = "游戏名称";
+                SettingsCard_GameName.Description = "当前配置的名称，一般以简短的字母排列来表示，例如原神是GIMI，如果你同时玩一个游戏的国际服和国服，就可以通过创建游戏名称然后进行配置的方式在SSMT中实现快速切换";
 
-                TextBlock_GameName.Text = "游戏基础设置";
+                SettingsCard_LogicName.Header = "执行逻辑";
+                SettingsCard_LogicName.Description = "执行逻辑会影响到当前游戏下载的3Dmigoto包类型和来源，以及会影响到背景图的自动更新，以及提取模型时执行的逻辑，架构设计上来说每个游戏都有专属于它的执行逻辑";
+
+                SettingsCard_GameTypeFolder.Header = "数据类型文件夹";
+                SettingsCard_GameTypeFolder.Description = "数据类型文件夹决定了你在提取模型的时候，使用的是哪个数据类型";
+
+                SettingsCard_AutoUpdateBackground.Header = "自动更新背景图";
+                SettingsCard_AutoUpdateBackground.Description = "点击即可自动检查最新背景图并进行更新，仅支持部分游戏的背景图自动更新";
+
+                SettingsCard_SelectBackgroundPicture.Header = "选择背景文件";
+                SettingsCard_SelectBackgroundPicture.Description = "选择一个文件来作为当前游戏名称指定的背景";
+
+                SettingsCard_ShowIcon.Header = "显示游戏图标";
+                SettingsCard_ShowIcon.Description = "开启后将在主页的图标列表中显示当前游戏名称对应的图标，关闭后则隐藏图标，显示图标有助于在常用游戏间进行快速切换，不常用的游戏则隐藏避免视觉干扰";
+
+                SettingsCard_SelectIconFile.Header = "选择游戏图标文件";
+                SettingsCard_SelectIconFile.Description = "选择一个图片文件来作为当前游戏名称对应的图标，推荐使用正方形的PNG图片以获得最佳显示效果";
+
 
                 ComboBox_GameName.Header = "游戏名称";
                 Button_CreateNewGame.Content = "创建自定义游戏名称";
@@ -123,7 +142,27 @@ namespace SSMT
             }
             else
             {
-                TextBlock_GameName.Text = "Game Basic Settings";
+                SettingsCard_GameName.Header = "GameName";
+                SettingsCard_GameName.Description = "Current game's nick name, usually we use simplified name,like GI or GIMI for GenshinImpact";
+
+                SettingsCard_LogicName.Header = "LogicName";
+                SettingsCard_LogicName.Description = "LogicName will affect the 3Dmigoto package type and source for current game, also will affect the background auto update, and model extraction logic, in architecture design, each game has its unique LogicName";
+
+                SettingsCard_GameTypeFolder.Header = "GameType Folder";
+                SettingsCard_GameTypeFolder.Description = "GameType Folder decides which data type you are using when you extract model";
+
+                SettingsCard_AutoUpdateBackground.Header = "Auto Update Background";
+                SettingsCard_AutoUpdateBackground.Description = "Click to auto check and update background image, only support part of games' background auto update";
+
+                SettingsCard_SelectBackgroundPicture.Header = "Select Background File";
+                SettingsCard_SelectBackgroundPicture.Description = "Select a file to be the background for current GameName";
+
+                SettingsCard_ShowIcon.Header = "Show Game Icon";
+                SettingsCard_ShowIcon.Description = "If enabled, the icon for current GameName will be shown in homepage icon list, otherwise hide the icon, showing icon can help to quickly switch between frequently used games, while hiding icon can avoid visual interference for rarely used games";
+
+                SettingsCard_SelectIconFile.Header = "Select Game Icon File";
+                SettingsCard_SelectIconFile.Description = "Select an image file to be the icon for current GameName, it's recommended to use square PNG image for best display effect";
+
 
                 ComboBox_GameName.Header = "Game Name";
                 Button_CreateNewGame.Content = "Create New GameName";
@@ -207,6 +246,7 @@ namespace SSMT
                 SettingsCard_RunIgnoreGIError40.Description = "The 4th Generation Mod Network Protect Technique";
                 SettingsCard_RunIgnoreGIError40.Header = "Network Protect Plugin";
 
+                Button_RunLaunchPath.Content = " Start Game";
 
             }
         }
