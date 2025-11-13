@@ -74,6 +74,7 @@ namespace SSMT
                 GlobalConfig.ShowModManagePage = ToggleSwitch_ShowModManagePage.IsOn;
                 GlobalConfig.ShowTextureToolBoxPage = ToggleSwitch_ShowTextureToolBoxPage.IsOn;
                 GlobalConfig.ComboBoxUseGithubTokenSelectedIndex = ComboBox_UseGithubToken.SelectedIndex;
+                GlobalConfig.UseTitleBar = ToggleSwitch_UseTitleBar.IsOn;
 
                 GlobalConfig.GithubToken = TextBox_GithubToken.Text;
 
@@ -107,6 +108,8 @@ namespace SSMT
 
             ComboBox_UseGithubToken.SelectedIndex = GlobalConfig.ComboBoxUseGithubTokenSelectedIndex;
             TextBox_GithubToken.Text = GlobalConfig.GithubToken;
+
+            ToggleSwitch_UseTitleBar.IsOn = GlobalConfig.UseTitleBar;
 
             if (ComboBox_UseGithubToken.SelectedIndex == 0)
             {
@@ -394,6 +397,15 @@ namespace SSMT
             {
                 SaveSettingsToConfig();
 
+            }
+        }
+
+        private void ToggleSwitch_UseTitleBar_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (ReadOver)
+            {
+                SaveSettingsToConfig();
+                MainWindow.CurrentWindow.ExtendsContentIntoTitleBar = !ToggleSwitch_UseTitleBar.IsOn;
             }
         }
     }

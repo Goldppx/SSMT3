@@ -65,7 +65,7 @@ namespace SSMT
             //SSMT首先是一个生产力工具，其次才是一个炫酷的工具。
             //this.ExtendsContentIntoTitleBar = true;
 
-
+            
             // 1. 把窗口变成可以挂系统背景的目标
             var target = this.As<ICompositionSupportsSystemBackdrop>();
 
@@ -107,6 +107,7 @@ namespace SSMT
 
             GlobalConfig.SaveConfig();
 
+            this.ExtendsContentIntoTitleBar = !GlobalConfig.UseTitleBar;
 
             //设置标题和宽高
             this.Title = ConstantsManager.SSMT_Title;

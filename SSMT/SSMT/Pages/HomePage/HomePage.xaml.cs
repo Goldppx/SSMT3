@@ -360,7 +360,7 @@ namespace SSMT
             HyperlinkButton_MigotoPackageVersion.NavigateUri = new Uri(url);
         }
 
-        private void LoadAtLeastPicture()
+        private async void LoadAtLeastPicture()
         {
             //只有米的四个游戏会根据游戏名称默认触发保底背景图更新
             try
@@ -382,7 +382,7 @@ namespace SSMT
                         if (!File.Exists(PossiblePngBackgroundPath))
                         {
                             //自动加载当前背景图，因为满足LogicName且并未设置背景图
-                            AutoUpdateBackgroundPicture(CurrentGameName);
+                            await AutoUpdateBackgroundPicture(CurrentGameName);
                         }
                     }
                 }

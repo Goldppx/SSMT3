@@ -97,6 +97,11 @@ namespace SSMT
 
                 TextBox_GithubToken.PlaceholderText = "在此处填写你的Github Token";
 
+                SettingsCard_UseTitleBar.Header = "使用标题栏";
+                SettingsCard_UseTitleBar.Description = "开启后显示上方标题栏，关闭后隐藏标题栏并扩展内容区域";
+
+                ToggleSwitch_UseTitleBar.OnContent = "开启";
+                ToggleSwitch_UseTitleBar.OffContent = "关闭";
             }
             else
             {
@@ -172,6 +177,13 @@ namespace SSMT
                 TextBlock_GithubToken.Text = "Github Token";
 
                 TextBox_GithubToken.PlaceholderText = "Input your Github Token here";
+
+                SettingsCard_UseTitleBar.Header = "Use Title Bar";
+                SettingsCard_UseTitleBar.Description = "Enable this will use traditional title bar, disbale will let content use more space";
+
+                ToggleSwitch_UseTitleBar.OnContent = "Enable";
+                ToggleSwitch_UseTitleBar.OffContent = "Disable";
+
             }
 
         }

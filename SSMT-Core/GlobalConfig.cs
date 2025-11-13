@@ -44,6 +44,7 @@ namespace SSMT
         /// 是否显示贴图工具箱页面，因为这个页面用的人非常少。
         /// </summary>
         public static bool ShowTextureToolBoxPage { get; set; } = false;
+        public static bool UseTitleBar { get; set; } = false;
 
 
         //默认选中关闭，因为大部分人都不用Github Token，此选项只服务于少数需要用到的用户
@@ -137,6 +138,12 @@ namespace SSMT
                         ShowTextureToolBoxPage = (bool)SettingsJsonObject["ShowTextureToolBoxPage"];
                     }
 
+                    //UseTitleBar
+                    if (SettingsJsonObject.ContainsKey("UseTitleBar"))
+                    {
+                        UseTitleBar = (bool)SettingsJsonObject["UseTitleBar"];
+                    }
+
                     //ComboBoxUseGithubTokenSelectedIndex
                     if (SettingsJsonObject.ContainsKey("ComboBoxUseGithubTokenSelectedIndex"))
                     {
@@ -177,6 +184,7 @@ namespace SSMT
                 SettingsJsonObject["ShowGameTypePage"] = ShowGameTypePage;
                 SettingsJsonObject["ShowModManagePage"] = ShowModManagePage;
                 SettingsJsonObject["ShowTextureToolBoxPage"] = ShowTextureToolBoxPage;
+                SettingsJsonObject["UseTitleBar"] = UseTitleBar;
                 SettingsJsonObject["ComboBoxUseGithubTokenSelectedIndex"] = ComboBoxUseGithubTokenSelectedIndex;
 
                 //写出内容

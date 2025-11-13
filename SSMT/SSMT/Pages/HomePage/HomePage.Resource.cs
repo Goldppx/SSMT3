@@ -16,7 +16,16 @@ namespace SSMT
 {
     public partial class HomePage
     {
-        DispatcherTimer loopTimer;
+
+        //IsLoopingEnabled有个严重的问题就是循环播放时，会卡顿一瞬间
+        //但是米哈游启动器就不卡，这个基本上就是WinUI3这个MediaPlayer实现的问题
+        //暂时先不解决
+        //咱先解决有没有的问题，再解决好不好的问题。
+        MediaPlayer BackgroundMediaPlayer = new MediaPlayer { 
+            IsLoopingEnabled = true,
+        };
+
+
         private async void Button_CheckMigotoPackageUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -114,7 +123,35 @@ namespace SSMT
                 ProgressRing_PackageUpdateRing.IsActive = false;
             }
         }
-        
+
+        public void ShowBackgroundVideo(string NewWebmBackgroundPath)
+        {
+            MainWindowImageBrush.Visibility = Visibility.Collapsed;
+            BackgroundVideo.Visibility = Visibility.Visible;
+
+            BackgroundMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(NewWebmBackgroundPath));
+
+            BackgroundVideo.SetMediaPlayer(BackgroundMediaPlayer);
+            BackgroundMediaPlayer.Play();
+
+
+            VisualHelper.CreateFadeAnimation(BackgroundVideo);
+        }
+
+        public void ShowBackgroundPicture(string NewWebpBackgroundPath)
+        {
+            BackgroundVideo.Visibility = Visibility.Collapsed;
+            MainWindowImageBrush.Visibility = Visibility.Visible;
+
+            //MainWindowImageBrush.Source = new BitmapImage(new Uri(NewBackGroundPath));
+            VisualHelper.CreateScaleAnimation(imageVisual);
+            VisualHelper.CreateFadeAnimation(imageVisual);
+
+            MainWindowImageBrush.Source = new BitmapImage(new Uri(NewWebpBackgroundPath + "?t=" + DateTime.Now.Ticks));
+        }
+
+
+
         private async Task AutoUpdateBackgroundPicture(string SpecificLogicName = "")
         {
             string GameId = HoyoBackgroundUtils.GetGameId(SpecificLogicName,GlobalConfig.Chinese);
@@ -137,47 +174,7 @@ namespace SSMT
                     UseWebmBackground = true;
                 }
 
-                MainWindowImageBrush.Visibility = Visibility.Collapsed;
-                BackgroundVideo.Visibility = Visibility.Visible;
-
-                var player = new MediaPlayer
-                {
-                    Source = MediaSource.CreateFromUri(new Uri(NewWebmBackgroundPath)),
-                    IsLoopingEnabled = false
-                };
-
-
-                
-                BackgroundVideo.SetMediaPlayer(player);
-                player.Play();
-
-                // 2. 提前一定时间 手动 Seek 到 0，试图避免循环播放时，一瞬间卡顿的问题
-                //试了好久，根本没用，WinUI3默认提供的MediaPlayer就没考虑过这种用途
-                //我估计米哈游启动器里面是直接用Shader实现的。
-                //他吗的必须得换QT6了，不然被限制的死死的。
-                //开箱即用的好处就是下限高，但是问题是上限也被锁死了。
-                //如果不能做到最好，那做出来还有什么意义，给用户喂粑粑嘛？
-                //暂时不管了，反正核心功能不在视觉效果上，抓紧迁移到QT6再考虑追上限。
-
-                //哦对了，我们可以去抄StarWard、CollapsedLauncher等同类产品。
-                loopTimer = new DispatcherTimer
-                {
-                    Interval = TimeSpan.FromMilliseconds(10)
-                };
-
-                loopTimer.Tick += (_, __) =>
-                {
-                    //如果当前的Position + 100毫秒 大于持续时间
-                    if (player.PlaybackSession.Position + TimeSpan.FromMilliseconds(10) >=
-                        player.PlaybackSession.NaturalDuration)
-                    {
-                        player.PlaybackSession.Position = TimeSpan.FromMilliseconds(0);
-                    }
-                };
-
-                loopTimer.Start();
-
-                VisualHelper.CreateFadeAnimation(BackgroundVideo);
+                ShowBackgroundVideo(NewWebmBackgroundPath);
                 LOG.Info("设置好背景图视频了");
             }
             catch (Exception ex) {
@@ -194,14 +191,7 @@ namespace SSMT
             string NewWebpBackgroundPath = await HoyoBackgroundUtils.DownloadLatestWebpBackground(BaseUrl);
             if (File.Exists(NewWebpBackgroundPath))
             {
-                BackgroundVideo.Visibility = Visibility.Collapsed;
-                MainWindowImageBrush.Visibility = Visibility.Visible;
-
-                //MainWindowImageBrush.Source = new BitmapImage(new Uri(NewBackGroundPath));
-                VisualHelper.CreateScaleAnimation(imageVisual);
-                VisualHelper.CreateFadeAnimation(imageVisual);
-
-                MainWindowImageBrush.Source = new BitmapImage(new Uri(NewWebpBackgroundPath + "?t=" + DateTime.Now.Ticks));
+                ShowBackgroundPicture(NewWebpBackgroundPath);
             }
             
         }
@@ -231,7 +221,7 @@ namespace SSMT
 
         private async void Button_SelectBackgroundFile_Click(object sender, RoutedEventArgs e)
         {
-            string filepath = await SSMTCommandHelper.ChooseFileAndGetPath(".png;.mp4");
+            string filepath = await SSMTCommandHelper.ChooseFileAndGetPath(".png;.mp4;.webp;.webm");
             if (string.IsNullOrWhiteSpace(filepath))
                 return;
 
@@ -240,7 +230,7 @@ namespace SSMT
                 string folder = PathManager.Path_CurrentGamesFolder;
 
                 // 清理旧背景文件
-                foreach (var file in new[] { "Background.webp", "Background.png", "Background.mp4" })
+                foreach (var file in new[] { "Background.webp", "Background.png", "Background.mp4", "Background.webm" })
                 {
                     string fullPath = Path.Combine(folder, file);
                     if (File.Exists(fullPath))
@@ -249,35 +239,19 @@ namespace SSMT
 
                 string ext = Path.GetExtension(filepath).ToLowerInvariant();
 
-                if (ext == ".png")
+                if (ext == ".png" || ext == ".webp")
                 {
-                    string NewBackgroundPath = Path.Combine(folder, "Background.png");
+                    string NewBackgroundPath = Path.Combine(folder, "Background" + ext);
                     File.Copy(filepath, NewBackgroundPath, true);
 
-                    BackgroundVideo.Visibility = Visibility.Collapsed;
-                    MainWindowImageBrush.Visibility = Visibility.Visible;
-
-                    VisualHelper.CreateScaleAnimation(MainWindowImageBrush);
-                    VisualHelper.CreateFadeAnimation(MainWindowImageBrush);
-                    MainWindowImageBrush.Source = new BitmapImage(new Uri(NewBackgroundPath));
+                    ShowBackgroundPicture(NewBackgroundPath);
                 }
-                else if (ext == ".mp4")
+                else if (ext == ".mp4" || ext == ".webm")
                 {
-                    string NewBackgroundPath = Path.Combine(folder, "Background.mp4");
+                    string NewBackgroundPath = Path.Combine(folder, "Background" + ext);
                     File.Copy(filepath, NewBackgroundPath, true);
 
-                    MainWindowImageBrush.Visibility = Visibility.Collapsed;
-                    BackgroundVideo.Visibility = Visibility.Visible;
-
-                    var player = new MediaPlayer
-                    {
-                        Source = MediaSource.CreateFromUri(new Uri(NewBackgroundPath)),
-                        IsLoopingEnabled = true
-                    };
-                    BackgroundVideo.SetMediaPlayer(player);
-                    player.Play();
-
-                    VisualHelper.CreateFadeAnimation(BackgroundVideo);
+                    ShowBackgroundVideo(NewBackgroundPath);
                 }
                 else
                 {
