@@ -848,5 +848,7 @@ namespace SSMT
 				_ = SSMTMessageHelper.Show("关闭成功，游戏中F10刷新即可生效", "Disable Success, Press F10 in game to reload.");
 			}
 		}
+
+        
     }
 }
