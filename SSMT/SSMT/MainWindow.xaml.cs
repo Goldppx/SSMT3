@@ -58,7 +58,7 @@ namespace SSMT
 
         public MediaPlayerElement MainWindowBackgroundMediaPlayer;
 
-        //TODO IsLoopingEnabled有个严重的问题就是循环播放时，会卡顿一瞬间
+        //Nico: IsLoopingEnabled有个严重的问题就是循环播放时，会卡顿一瞬间
         //但是米哈游启动器就不卡，这个基本上就是WinUI3这个MediaPlayer实现的问题
         //暂时先不解决，不碰底层的情况下，不是轻易能解决的。
         //咱先解决有没有的问题，再解决好不好的问题。

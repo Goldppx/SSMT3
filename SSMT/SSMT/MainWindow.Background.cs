@@ -36,8 +36,13 @@ namespace SSMT
             MainWindowImageBrush.Source = null;
         }
 
-        public void ShowBackgroundVideo(string path)
+        public void ShowBackgroundVideo(string path,string TargetGameName)
         {
+            if (GlobalConfig.CurrentGameName != TargetGameName)
+            {
+                return;
+            }
+
             ResetBackground();
 
             BackgroundVideo.Visibility = Visibility.Visible;
@@ -54,8 +59,13 @@ namespace SSMT
         }
 
 
-        public void ShowBackgroundPicture(string path)
+        public void ShowBackgroundPicture(string path, string TargetGameName)
         {
+            if (GlobalConfig.CurrentGameName != TargetGameName)
+            {
+                return;
+            }
+
             ResetBackground();
 
             MainWindowImageBrush.Visibility = Visibility.Visible;
@@ -69,20 +79,10 @@ namespace SSMT
         }
 
 
-        public async Task InitializeBackground()
+        public async Task InitializeBackground(string TargetGame)
         {
 
-            // 默认：隐藏视频，清空图片
-            if (BackgroundVideo != null)
-            {
-                BackgroundVideo.SetMediaPlayer(null);
-                BackgroundVideo.Visibility = Visibility.Collapsed;
-            }
-
-            //清空图片内容并且设置为不显示，防止上一个游戏切换过来时，
-            //由于缓存导致新切换到的游戏没有背景图时显示上一个游戏的背景图残留
-            MainWindowImageBrush.Source = null;
-            MainWindowImageBrush.Visibility = Visibility.Collapsed;
+            ResetBackground();
 
             //来一个支持的后缀名列表，然后依次判断
             List<BackgroundSuffixItem> SuffixList = new List<BackgroundSuffixItem>();
@@ -95,11 +95,12 @@ namespace SSMT
 
             //这里轮着试一遍所有的背景图类型，如果有的话就设置上了
             //如果没有的话就保持刚开始初始化完那种没有的状态了
+            string TargetGameFolderPath = Path.Combine(PathManager.Path_GamesFolder, TargetGame + "\\");
 
             bool BackgroundExists = false;
             foreach (BackgroundSuffixItem SuffixItem in SuffixList)
             {
-                string BackgroundFilePath = Path.Combine(PathManager.Path_CurrentGamesFolder, "Background" + SuffixItem.Suffix);
+                string BackgroundFilePath = Path.Combine(TargetGameFolderPath, "Background" + SuffixItem.Suffix);
 
                 if (!File.Exists(BackgroundFilePath))
                 {
@@ -108,13 +109,13 @@ namespace SSMT
 
                 if (SuffixItem.IsVideo)
                 {
-                    ShowBackgroundVideo(BackgroundFilePath);
+                    ShowBackgroundVideo(BackgroundFilePath,TargetGame);
                     BackgroundExists = true;
                     break;
                 }
                 else if (SuffixItem.IsPicture)
                 {
-                    ShowBackgroundPicture(BackgroundFilePath);
+                    ShowBackgroundPicture(BackgroundFilePath,TargetGame);
                     BackgroundExists = true;
                     break;
                 }
@@ -128,19 +129,18 @@ namespace SSMT
                 //只有米的四个游戏会根据游戏名称默认触发保底背景图更新
                 try
                 {
-                    GameConfig gameConfig = new GameConfig();
+               
 
-                    string CurrentGameName = gameConfig.LogicName;
 
-                    if (CurrentGameName == LogicName.GIMI ||
-                        CurrentGameName == LogicName.SRMI ||
-                        CurrentGameName == LogicName.HIMI ||
-                        CurrentGameName == LogicName.ZZMI
+                    if (TargetGame == LogicName.GIMI ||
+                        TargetGame == LogicName.SRMI ||
+                        TargetGame == LogicName.HIMI ||
+                        TargetGame == LogicName.ZZMI
                         )
                     {
                         //_ = SSMTMessageHelper.Show(CurrentLogicName);
-                        string PossibleWebpPicture = Path.Combine(PathManager.Path_CurrentGamesFolder, "Background.webp");
-                        string PossiblePngBackgroundPath = Path.Combine(PathManager.Path_CurrentGamesFolder, "Background.png");
+                        string PossibleWebpPicture = Path.Combine(TargetGameFolderPath, "Background.webp");
+                        string PossiblePngBackgroundPath = Path.Combine(TargetGameFolderPath, "Background.png");
 
 
                         if (!File.Exists(PossibleWebpPicture))
@@ -148,7 +148,7 @@ namespace SSMT
                             if (!File.Exists(PossiblePngBackgroundPath))
                             {
                                 //自动加载当前背景图，因为满足LogicName且并未设置背景图
-                                await AutoUpdateBackgroundPicture(CurrentGameName);
+                                await AutoUpdateBackgroundPicture(TargetGame,TargetGame);
                             }
                         }
                     }
@@ -161,7 +161,7 @@ namespace SSMT
 
         }
 
-        public async Task AutoUpdateBackgroundPicture(string SpecificLogicName = "")
+        public async Task AutoUpdateBackgroundPicture(string TargetGame,string SpecificLogicName = "" )
         {
             ResetBackground();
             string GameId = HoyoBackgroundUtils.GetGameId(SpecificLogicName, GlobalConfig.Chinese);
@@ -177,7 +177,7 @@ namespace SSMT
 
             bool UseWebmBackground = false;
 
-            //TODO 注意，绝区零的背景图视频有毛病，虽然都是.webm格式，但是只能在浏览器中播放，无法使用本地的媒体播放器播放
+            //Nico: 注意，绝区零的背景图视频有毛病，虽然都是.webm格式，但是只能在浏览器中播放，无法使用本地的媒体播放器播放
             //这意味着我们必须添加ffmpeg转码，下载下来之后执行转换，变为mp4视频，然后再应用为背景图，因为我实际测试发现WinUI3也是无法播放的
             //因为WinUI3用的就是系统的解码，底层都是一个东西导致的。
             //有点麻烦了，而且动态背景图本身就存在循环播放一瞬间卡顿的问题，而且暂时没法解决
@@ -188,7 +188,7 @@ namespace SSMT
 
             try
             {
-                string NewWebmBackgroundPath = await HoyoBackgroundUtils.DownloadLatestWebmBackground(BaseUrl);
+                string NewWebmBackgroundPath = await HoyoBackgroundUtils.DownloadLatestWebmBackground(BaseUrl,TargetGame);
 
                 if (File.Exists(NewWebmBackgroundPath))
                 {
@@ -269,7 +269,7 @@ namespace SSMT
                     }
                 }
 
-                ShowBackgroundVideo(finalVideoPath);
+                ShowBackgroundVideo(finalVideoPath,TargetGame);
                 LOG.Info("设置好背景图视频了");
             }
             catch (Exception ex)
@@ -293,7 +293,7 @@ namespace SSMT
             string NewWebpBackgroundPath = await HoyoBackgroundUtils.DownloadLatestWebpBackground(BaseUrl);
             if (File.Exists(NewWebpBackgroundPath))
             {
-                ShowBackgroundPicture(NewWebpBackgroundPath);
+                ShowBackgroundPicture(NewWebpBackgroundPath, TargetGame);
 
             }
 

@@ -173,7 +173,7 @@ namespace SSMT_Core.Utils
         }
 
 
-        public static async Task<string> DownloadLatestWebmBackground(string AppUrl)
+        public static async Task<string> DownloadLatestWebmBackground(string AppUrl,string TargetGame)
         {
             // 创建 HttpClient
             using HttpClient client = new HttpClient();
@@ -218,7 +218,7 @@ namespace SSMT_Core.Utils
 
             string ext = Path.GetExtension(fileName);
 
-            string savePath = Path.Combine(PathManager.Path_GamesFolder, GlobalConfig.CurrentGameName + "\\Background" + ext);
+            string savePath = Path.Combine(PathManager.Path_GamesFolder, TargetGame + "\\Background" + ext);
 
             if (File.Exists(savePath))
             {

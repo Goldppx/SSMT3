@@ -133,7 +133,7 @@ namespace SSMT
             {
                 ProgressRing_AutoUpdateBackground.Visibility = Visibility.Visible;
                 Button_AutoUpdateBackground.IsEnabled = false;
-                await MainWindow.CurrentWindow.AutoUpdateBackgroundPicture(ComboBox_LogicName.SelectedItem.ToString());
+                await MainWindow.CurrentWindow.AutoUpdateBackgroundPicture(ComboBox_GameName.SelectedItem.ToString(),ComboBox_LogicName.SelectedItem.ToString());
                 _ = SSMTMessageHelper.Show("背景图更新成功");
                 Button_AutoUpdateBackground.IsEnabled = true;
                 ProgressRing_AutoUpdateBackground.Visibility = Visibility.Collapsed;
@@ -176,14 +176,14 @@ namespace SSMT
                     string NewBackgroundPath = Path.Combine(folder, "Background" + ext);
                     File.Copy(filepath, NewBackgroundPath, true);
 
-                    MainWindow.CurrentWindow.ShowBackgroundPicture(NewBackgroundPath);
+                    MainWindow.CurrentWindow.ShowBackgroundPicture(NewBackgroundPath,GlobalConfig.CurrentGameName);
                 }
                 else if (ext == ".mp4" || ext == ".webm")
                 {
                     string NewBackgroundPath = Path.Combine(folder, "Background" + ext);
                     File.Copy(filepath, NewBackgroundPath, true);
 
-                    MainWindow.CurrentWindow.ShowBackgroundVideo(NewBackgroundPath);
+                    MainWindow.CurrentWindow.ShowBackgroundVideo(NewBackgroundPath,GlobalConfig.CurrentGameName);
                 }
                 else
                 {

@@ -223,7 +223,7 @@ namespace SSMT
 
             //背景图放到最后更新，没必要更新那么早
             //根据当前游戏，初始化背景图或者背景视频
-            await MainWindow.CurrentWindow.InitializeBackground();
+            await MainWindow.CurrentWindow.InitializeBackground(GlobalConfig.CurrentGameName);
 
         }
      
