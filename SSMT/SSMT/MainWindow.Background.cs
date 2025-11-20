@@ -203,8 +203,8 @@ namespace SSMT
 
                     try
                     {
-                        string ffmpegPath = Path.Combine(AppContext.BaseDirectory, "Plugins", "ffmpeg.exe");
-                        if (!File.Exists(ffmpegPath))
+                        
+                        if (!File.Exists(PathManager.Path_Plugin_FFMPEG))
                         {
                             LOG.Info("ffmpeg.exe 不存在，无法进行 ZZZ 背景视频转码");
                             throw new FileNotFoundException("ffmpeg.exe missing");
@@ -214,7 +214,7 @@ namespace SSMT
 
                         var psi = new ProcessStartInfo
                         {
-                            FileName = ffmpegPath,
+                            FileName = PathManager.Path_Plugin_FFMPEG,
                             Arguments = $"-y -i \"{NewWebmBackgroundPath}\" -c:v libx264 -preset veryfast -pix_fmt yuv420p \"{mp4Output}\"",
                             UseShellExecute = false,
                             CreateNoWindow = true,

@@ -24,6 +24,19 @@ namespace SSMT_Core
         /// </summary>
         public static string Name_3DmigotoLoaderExe = "LOD.exe";
 
+        /// <summary>
+        /// 用于音视频转码
+        /// </summary>
+        public static string Name_Plugin_FFMPEG = "ffmpeg.exe";
+
+
+        public static string Path_Plugin_FFMPEG
+        {
+            get
+            {
+                return Path.Combine(PathManager.Path_AssetsFolder, Name_Plugin_FFMPEG);
+            }
+        }
 
         public static string Path_Default3DmigotoLoaderExe
         {
