@@ -474,10 +474,7 @@ namespace SSMT
                     LOG.Info("Copy: " + ImageSourcePath + " To " + TargetImageFilePath);
 
                     //首先，如果贴图已经存在，就不需要重新复制了，节省一点性能
-                    if (!File.Exists(TargetImageFilePath))
-                    {
-                        File.Copy(ImageSourcePath, TargetImageFilePath, false);
-                    }
+                    File.Copy(ImageSourcePath, TargetImageFilePath, true);
 
                 }
             }

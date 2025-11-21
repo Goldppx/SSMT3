@@ -430,8 +430,18 @@ namespace SSMT
                 return;
             }
 
-            //应用标记的贴图
-            TextureConfig.ApplyTextureConfig(imageCollection.ToList(),DrawIB, ComponentName);
+            try
+            {
+
+                //应用标记的贴图
+                TextureConfig.ApplyTextureConfig(imageCollection.ToList(), DrawIB, ComponentName);
+
+            }
+            catch (Exception ex)
+            {
+                _ = SSMTMessageHelper.Show(ex.ToString());
+            }
+
 
             _ = SSMTMessageHelper.Show("应用成功","Apply Texture Success!");
         }
@@ -638,10 +648,18 @@ namespace SSMT
             //获取DrawIB 和 ComponentName
             string DrawIB = ComboBoxDrawIB.SelectedItem.ToString();
             string ComponentName = ComboBoxComponent.SelectedItem.ToString();
-            
+            try
+            {
+                //应用标记的贴图
+                TextureConfig.ApplyTextureConfig(imageCollection.ToList(), DrawIB, ComponentName, false);
+            }
+            catch (Exception ex) {
 
-            //应用标记的贴图
-            TextureConfig.ApplyTextureConfig(imageCollection.ToList(), DrawIB, ComponentName,false);
+                _ = SSMTMessageHelper.Show(ex.ToString());
+            }
+
+
+           
 
             _ = SSMTMessageHelper.Show("应用成功", "Apply Texture Success!");
         }
