@@ -634,35 +634,7 @@ namespace SSMT
             SaveCurrentTextureConfig();
         }
 
-        private void Button_ApplyToPreViewTexture_Click(object sender, RoutedEventArgs e)
-        {
-            string TextureConfigName = GetCurrentPSValue();
-            if (TextureConfigName.Trim() == "")
-            {
-                _ = SSMTMessageHelper.Show("请至少选择一个贴图配置");
-                return;
-            }
-
-            SaveCurrentTextureConfig();
-
-            //获取DrawIB 和 ComponentName
-            string DrawIB = ComboBoxDrawIB.SelectedItem.ToString();
-            string ComponentName = ComboBoxComponent.SelectedItem.ToString();
-            try
-            {
-                //应用标记的贴图
-                TextureConfig.ApplyTextureConfig(imageCollection.ToList(), DrawIB, ComponentName, false);
-            }
-            catch (Exception ex) {
-
-                _ = SSMTMessageHelper.Show(ex.ToString());
-            }
-
-
-           
-
-            _ = SSMTMessageHelper.Show("应用成功", "Apply Texture Success!");
-        }
+   
 
         private void ColorListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

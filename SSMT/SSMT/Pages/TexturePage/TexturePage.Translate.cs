@@ -45,8 +45,6 @@ namespace SSMT
 
                 Button_ApplyToAutoTexture.Content = "应用到自动贴图";
                 Button_CancelAutoTextureForCurrentDrawIB.Content = "取消当前绘制IB hash的自动贴图";
-                Button_ApplyToPreViewTexture.Content = "应用到预览贴图";
-                ToolTipService.SetToolTip(Button_ApplyToPreViewTexture, "此按钮和应用到自动贴图不同，应用后可以在Blender中一键导入时自动上贴图，但是无法参与生成Mod的全自动ini，适合仅预览的模型部分使用也就是只标记DiffuseMap用来上色");
 
                 
 
@@ -76,7 +74,6 @@ namespace SSMT
 
                 Button_ApplyToAutoTexture.Content = "Apply To Auto Texture";
                 Button_CancelAutoTextureForCurrentDrawIB.Content = "Cancel Auto Texture";
-                Button_ApplyToPreViewTexture.Content = "Apply To Preview Texture";
 
             }
         }

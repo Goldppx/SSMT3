@@ -243,12 +243,7 @@
                     x:Name="Button_CancelAutoTextureForCurrentDrawIB"
                     Margin="5"
                     Click="Button_CancelAutoTextureForCurrentDrawIB_Click"></Button>
-                <Button
-                    Click="Button_ApplyToPreViewTexture_Click"
-                    Style="{StaticResource AccentButtonStyle}"
-                    x:Name="Button_ApplyToPreViewTexture"
-                    Margin="5">
-                </Button>
+                
             </StackPanel>
         </ScrollViewer>
 
