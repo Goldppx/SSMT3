@@ -168,7 +168,10 @@ namespace SSMT
             ComboBox_DllPreProcess.SelectedIndex = gameConfig.DllPreProcessSelectedIndex;
             ComboBox_DllReplace.SelectedIndex = gameConfig.DllReplaceSelectedIndex;
             ComboBox_AutoSetAnalyseOptions.SelectedIndex = gameConfig.AutoSetAnalyseOptionsSelectedIndex;
+
+            //LOG.Info("MigotoPackage设为: " + gameConfig.MigotoPackage);
             ComboBox_MigotoPackage.SelectedItem = gameConfig.MigotoPackage;
+            
 
 
             //是否显示防报错按钮
@@ -222,8 +225,7 @@ namespace SSMT
         {
             GameConfig gameConfig = new GameConfig();
             //设置左上角Package版本
-            string PackageName = ComboBox_MigotoPackage.SelectedItem.ToString();
-            RepositoryInfo repositoryInfo = GithubUtils.GetCurrentRepositoryInfo(PackageName);
+            RepositoryInfo repositoryInfo = GithubUtils.GetCurrentRepositoryInfo(gameConfig.MigotoPackage);
             HyperlinkButton_MigotoPackageVersion.Content = repositoryInfo.RepositoryName + " " + gameConfig.GithubPackageVersion;
             var url = $"https://github.com/{repositoryInfo.OwnerName}/{repositoryInfo.RepositoryName}/releases/latest";
             HyperlinkButton_MigotoPackageVersion.NavigateUri = new Uri(url);

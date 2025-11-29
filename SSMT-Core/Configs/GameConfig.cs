@@ -60,6 +60,7 @@ namespace SSMT
         public string LogicName { get; set; } = "GIMI";
 
         public string GameTypeName { get; set; } = "GIMI";
+
         public string MigotoPackage { get; set; } = "GIMI-Package";
 
 
